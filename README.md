@@ -1,4 +1,4 @@
-![alt text](https://github.com/Technion236503/2019a-Shiftly/blob/master/readme_logo.jpg?raw=true)
+![Shiftly](https://github.com/Technion236503/2019a-Shiftly/blob/master/readme_logo.jpg?raw=true)(#)
 ### Automatic shift scheduling 
 
 
