@@ -1,4 +1,4 @@
-package shiftly.shiftly;
+package com.technion.shiftly;
 
 import org.junit.Test;
 
