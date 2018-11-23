@@ -3,6 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -14,5 +16,21 @@
         <item name="android:colorForeground">@color/foreground_material_light</item>
         <item name="android:textColorSecondary">@color/text_color_primary</item>
         <item name="android:textColorSecondaryInverse">@color/secondary_text_material_dark</item>
+    </style>
+    <style name="CustomEditText">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+    </style>
+    <style name="CustomButton">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/rounded_login_button</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 </resources>
