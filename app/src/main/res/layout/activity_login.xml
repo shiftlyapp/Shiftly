@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     tools:context=".LoginActivity">
+
 
     <TextView
         android:id="@+id/welcome_header"
@@ -12,12 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/welcome_msg"
         android:textAlignment="center"
-        android:textSize="32sp"
+        android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +27,8 @@
 
     <ImageView
         android:id="@+id/smiley_pic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="192dp"
+        android:layout_height="192dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="28dp"
@@ -35,7 +37,7 @@
         android:contentDescription="@string/smiley_img"
         android:src="@drawable/smiley"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome_header" />
 
@@ -51,12 +53,17 @@
         android:layout_marginRight="8dp"
         android:autofillHints="true"
         android:background="@drawable/rounded_edittext"
+        android:drawableEnd="@drawable/baseline_alternate_email_black_24"
+        android:drawableRight="@drawable/baseline_alternate_email_black_24"
         android:ems="10"
         android:hint="@string/email_edittext_hint"
         android:inputType="textEmailAddress"
+        android:paddingLeft="12dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/smiley_pic"
         tools:targetApi="O" />
@@ -73,15 +80,23 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="false"
+        android:maxLength="@integer/pass_max_length"
         android:background="@drawable/rounded_edittext"
+        android:drawableEnd="@drawable/baseline_lock_black_24"
+        android:drawableRight="@drawable/baseline_lock_black_24"
         android:ems="10"
         android:hint="@string/password_edittext_hint"
         android:inputType="textPassword"
+        android:paddingStart="12dp"
+        android:paddingLeft="12dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/forgot_pass_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email_edittext"
+        app:layout_constraintVertical_chainStyle="spread"
         tools:targetApi="O" />
 
     <TextView
@@ -90,15 +105,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="180dp"
         android:text="@string/forgot_password_txt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
+        app:layout_constraintEnd_toEndOf="@id/password_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/password_edittext"
+        tools:layout_editor_absoluteY="462dp" />
 
     <Button
         android:id="@+id/login_button"
@@ -111,27 +123,38 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
+        android:drawableLeft="@drawable/round_arrow_forward_ios_white_18"
+        android:paddingStart="12dp"
+        android:paddingLeft="12dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
         android:text="@string/login_txt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/password_edittext"
+        app:layout_constraintVertical_bias="0.341" />
 
     <TextView
         android:id="@+id/new_to_our_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableEnd="@drawable/in"
+        android:drawableRight="@drawable/in"
         android:text="@string/new_txt"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button"
         app:layout_constraintVertical_bias="1.0" />
+
 </android.support.constraint.ConstraintLayout>
