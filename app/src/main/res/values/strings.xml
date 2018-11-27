@@ -13,4 +13,8 @@
     <string name="firstname_edittext_hint">FIRST NAME</string>
     <string name="lastname_edittext_hint">LAST NAME</string>
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
+    <string name="group_name_edittext_hint">Group Name</string>
+    <string name="group_code">Group Code</string>
+    <string name="share_code">Share Code</string>
+    <string name="continue_text">Continue</string>
 </resources>
