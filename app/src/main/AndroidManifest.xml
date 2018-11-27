@@ -17,6 +17,8 @@
         </activity>
         <activity android:name="com.technion.shiftly.SignupActivity">
         </activity>
+        <activity android:name="com.technion.shiftly.GroupCreationActivity">
+        </activity>
     </application>
 
 </manifest>
