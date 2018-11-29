@@ -1,8 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/CustomButton</item>
         <item name="windowActionBar">false</item>
@@ -20,15 +18,21 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
         <item name="android:textColorHighlight">@color/colorPrimary</item>
+        <item name="android:elevation">4dp</item>
     </style>
     <style name="CustomButton">
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:background">@drawable/rounded_login_button</item>
+        <item name="android:background">@drawable/rounded_button</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">22sp</item>
+        <item name="android:elevation">4dp</item>
     </style>
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:shadowDy">4</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">@color/text_shadow</item>
     </style>
 </resources>

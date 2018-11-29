@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Shiftly</string>
     <string name="welcome_msg">Welcome to Shiftly.</string>
-    <string name="smiley_img">Smiley</string>
+    <string name="user_img">User</string>
     <string name="signup_img">Signup</string>
     <string name="email_edittext_hint">EMAIL ADDRESS</string>
     <string name="password_edittext_hint">PASSWORD</string>

@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:padding="0dp" android:shape="rectangle">
-            <stroke android:width="3dp" android:color="@color/focus_dash_color" android:dashGap="15px" android:dashWidth="15px"/>
+            <stroke android:width="2dp" android:color="@color/orange_color" />
             <solid android:color="#FFFFFF" />
             <corners android:bottomLeftRadius="28dp" android:bottomRightRadius="28dp" android:topLeftRadius="28dp" android:topRightRadius="28dp" />
         </shape>

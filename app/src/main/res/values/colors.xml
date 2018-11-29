@@ -7,5 +7,7 @@
     <color name="background_color">#006064</color>
     <color name="text_color_secondary">#ffffff</color>
     <color name="secondary_text_material_dark">#ffffff</color>
-    <color name="focus_dash_color">#aeea00</color>
+    <color name="orange_color">#BF360C</color>
+    <color name="dark_orange_color">#691d06</color>
+    <color name="text_shadow">#e1000000</color>
 </resources>
