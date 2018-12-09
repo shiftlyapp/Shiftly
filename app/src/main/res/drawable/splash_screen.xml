@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
     <!-- The background color, preferably the same as your normal theme -->
-    <item android:drawable="@drawable/first_bg_layer"/>
+    <item android:drawable="@drawable/first_bg_layer" />
     <!-- Your product logo - 144dp color version of your app icon -->
-    <item android:height="140dp" android:width="140dp">
+    <item>
+        <!--<bitmap-->
+        <!--android:gravity="center"-->
+        <!--android:src="@drawable/splashscreen_logo" />-->
         <bitmap
-            android:src="@drawable/shiftly_logo"
+            android:antialias="true"
             android:gravity="center"
-            />
+            android:src="@drawable/pinwheel" />
+
     </item>
 </layer-list>
