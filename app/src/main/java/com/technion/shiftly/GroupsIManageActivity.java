@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 
-public class GroupsIBelongActivity extends Activity {
+public class GroupsIManageActivity extends Activity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -18,8 +18,8 @@ public class GroupsIBelongActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groups_i_belong);
-        mRecyclerView = (RecyclerView) findViewById(R.id.groups_i_belong);
+        setContentView(R.layout.activity_groups_i_manage);
+        mRecyclerView = (RecyclerView) findViewById(R.id.groups_i_manage);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -40,4 +40,3 @@ public class GroupsIBelongActivity extends Activity {
     }
     // ...
 }
-
