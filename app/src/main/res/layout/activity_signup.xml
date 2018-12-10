@@ -27,8 +27,8 @@
 
     <ImageView
         android:id="@+id/signup_pic"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/signup_img"
         android:src="@drawable/signup_symbol"
