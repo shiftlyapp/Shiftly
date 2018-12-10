@@ -18,7 +18,7 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
         <item name="android:textColorHighlight">@color/colorPrimary</item>
-        <item name="android:elevation">4dp</item>
+        <!--<item name="android:elevation">4dp</item>-->
     </style>
     <style name="CustomButton">
         <item name="android:gravity">center</item>
@@ -26,7 +26,7 @@
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:elevation">4dp</item>
+        <!--<item name="android:elevation">4dp</item>-->
     </style>
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-condensed</item>
@@ -34,5 +34,9 @@
         <item name="android:shadowDx">0</item>
         <item name="android:shadowRadius">1</item>
         <item name="android:shadowColor">@color/text_shadow</item>
+    </style>
+    <style name="CustomToolBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 </resources>
