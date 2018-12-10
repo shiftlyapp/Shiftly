@@ -10,12 +10,11 @@
     android:id="@+id/signup_cl"
     tools:layout_editor_absoluteY="25dp">
 
-
     <TextView
         android:id="@+id/signup_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:text="@string/signup_header"
         android:textAlignment="center"
         android:textSize="42sp"

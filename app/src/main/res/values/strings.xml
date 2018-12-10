@@ -17,10 +17,9 @@
     <string name="group_code">Group Code</string>
     <string name="share_code">Share Code</string>
     <string name="continue_text">Continue</string>
-
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
     <string name="err_email">Please enter a vaild mail address</string>
-    <string name="err_password_confirmation">Pass error</string>
-    <string name="err_password">Passwords mismatch</string>
+    <string name="err_password">Invalid Password (No spaces allowed. Minimum length: 6) </string>
+    <string name="err_password_confirmation">Password does not match</string>
 </resources>
