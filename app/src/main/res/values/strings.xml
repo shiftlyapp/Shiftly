@@ -15,7 +15,7 @@
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
     <string name="group_name_edittext_hint">Group Name</string>
     <string name="group_code">Group Code</string>
-    <string name="share_code">Share Code</string>
+    <string name="share_code">C</string>
     <string name="continue_text">Continue</string>
     <string name="group_create">Create Group</string>
 </resources>

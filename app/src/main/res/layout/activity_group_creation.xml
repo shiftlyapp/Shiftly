@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:layout_gravity="center"
+    android:background="@drawable/first_bg_layer"
     tools:context=".GroupCreationActivity">
 
     <android.support.v7.widget.Toolbar
@@ -13,10 +15,23 @@
         android:layout_height="wrap_content"
         android:theme="@style/CustomToolBar" />
 
+    <ImageView
+        android:id="@+id/group_image"
+        style="@style/CustomImageButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+        android:src="@drawable/edit_photo"
+        />
+
     <EditText
         android:id="@+id/group_name_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -33,50 +48,88 @@
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
         android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/group_image"
         tools:targetApi="O" />
+
 
     <TextView
         android:id="@+id/group_code_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/group_code"
-        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/share_group_code"
-        app:layout_constraintTop_toBottomOf="@+id/group_name_edittext"
-        app:layout_constraintHorizontal_bias="0.5"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/group_name_edittext" />
 
-    <Button
-        android:id="@+id/share_group_code"
-        style="@style/CustomButton"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
+
+    <EditText
+        android:id="@+id/group_code"
+        style="@style/CustomEditText"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="4dp"
+        android:autofillHints="true"
+        android:background="@drawable/rounded_edittext"
+        android:ems="10"
+        android:hint="@string/group_code"
+        android:inputType="text"
+        android:maxLength="20"
+        android:paddingLeft="12dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_code_text"
+        tools:targetApi="O"
+        />
+
+
+    <ImageView
+        android:id="@+id/share_image"
+        style="@style/CustomImageButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_code"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:src="@drawable/share"
+        />
+
+    <ImageView
+        android:id="@+id/share_group_code"
+        style="@style/CustomImageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
-        android:drawableLeft="@drawable/round_arrow_forward_ios_white_18"
-        android:paddingStart="12dp"
-        android:paddingLeft="12dp"
-        android:paddingEnd="12dp"
-        android:paddingRight="12dp"
-        android:text="@string/share_code"
+        android:src="@drawable/copy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="@id/group_code_text"
-        app:layout_constraintTop_toBottomOf="@+id/group_name_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/group_code_text"/>
 
     <Button
         android:id="@+id/continue_button"

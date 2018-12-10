@@ -36,7 +36,10 @@
         <item name="android:shadowColor">@color/text_shadow</item>
     </style>
     <style name="CustomToolBar">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:textColor">#FFFFFF</item>
+    </style>
+    <style name="CustomImageButton">
+        <item name="android:background">@null</item>
     </style>
 </resources>
