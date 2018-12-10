@@ -17,4 +17,7 @@
     <string name="group_code">Group Code</string>
     <string name="share_code">Share Code</string>
     <string name="continue_text">Continue</string>
+    <!--Group lists -->
+    <string name="groups_i_belong">GROUPS I BELONG</string>
+    <string name="groups_i_manage">GROUPS I MANAGE</string>
 </resources>
