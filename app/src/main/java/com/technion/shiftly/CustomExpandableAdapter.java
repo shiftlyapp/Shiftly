@@ -1,9 +1,11 @@
 package com.technion.shiftly;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,21 +54,33 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        return null;
+        String parent_group = (String)getGroup(groupPosition);
+        LayoutInflater parent_inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = parent_inflater.inflate(R.layout.group_items_layout, null);
+        TextView parent_text = convertView.findViewById(R.id.expandable_group_items);
+        parent_text.setText(parent_group);
+        return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        return null;
+        String child_group = (String)getChild(groupPosition, childPosition);
+        LayoutInflater child_inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = child_inflater.inflate(R.layout.child_items_layout, null);
+        TextView child_text = convertView.findViewById(R.id.expandable_child_items);
+        child_text.setText(child_group);
+        return convertView;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
 }
