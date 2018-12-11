@@ -40,7 +40,7 @@
     <EditText
         android:id="@+id/signup_firstname_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -63,7 +63,7 @@
     <EditText
         android:id="@+id/signup_lastname_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -86,7 +86,7 @@
     <EditText
         android:id="@+id/signup_email_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -109,7 +109,7 @@
     <EditText
         android:id="@+id/signup_password_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="false"
@@ -134,7 +134,7 @@
     <EditText
         android:id="@+id/signup_confirm_password_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="17dp"
         android:autofillHints="false"
