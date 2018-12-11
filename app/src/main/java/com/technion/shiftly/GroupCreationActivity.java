@@ -23,8 +23,8 @@ public class GroupCreationActivity extends AppCompatActivity {
 
 
 
-        Button continue_button = findViewById(R.id.continue_button);
-        continue_button.setOnClickListener(new View.OnClickListener() {
+        Button create_button = findViewById(R.id.create_button);
+        create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);

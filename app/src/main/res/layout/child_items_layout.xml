@@ -9,11 +9,12 @@
     android:background="@drawable/first_bg_layer"
     tools:context=".GroupCreationActivity">
 
-    <TextView
+    <CheckBox
         android:id="@+id/expandable_child_items"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:textSize="24dp"
+        android:textColor="@color/text_color_primary"
         />
 
 </android.support.constraint.ConstraintLayout>

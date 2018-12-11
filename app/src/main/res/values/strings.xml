@@ -16,7 +16,7 @@
     <string name="group_name_edittext_hint">Group Name</string>
     <string name="group_code">Group Code</string>
     <string name="share_code">C</string>
-    <string name="continue_text">Continue</string>
+    <string name="create_text">Create</string>
     <string name="configure_text">Configure</string>
     <string name="group_create">Create Group</string>
     <string name="timeslots_configure">Configure Timeslots</string>

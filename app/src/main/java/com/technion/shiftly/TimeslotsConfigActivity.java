@@ -7,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,9 +22,6 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
     private List<String> days_data;
     private HashMap<String, List<String>> timeslots_data;
-
-//    private List<HashMap<String, String>> days_titles_text;
-//    private List<List<HashMap<String, String>>> timeslots_titles_text;
 
 
     @Override
@@ -84,38 +79,13 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
         timeslots_data = new HashMap<>();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < days_data.size(); i++) {
             List<String> shifts = new ArrayList<>();
             shifts.add("12AM - 8AM");
             shifts.add("8AM - 4PM");
             shifts.add("4PM - 12AM");
             timeslots_data.put(days_data.get(i), shifts);
         }
-
-//        days_titles_text = new ArrayList<>();
-//        timeslots_titles_text = new ArrayList<>();
-//
-//        for (int i = 0; i < days_data.size(); i++) {
-//            // Creating a map for each day
-//            HashMap<String, String> one_day_map = new HashMap<>();
-//            one_day_map.put("Day_Name", days_data.get(i));
-//            days_titles_text.add(one_day_map);
-//
-//
-//            // Creating the list of 3 timeslots for one day
-//            List<HashMap<String, String>> one_day_timeslots = new ArrayList<>();
-//            for (int j = 0; j < 3; j++) {
-//                // Creating a map for every child (timeslot) in this day
-//                HashMap<String, String> one_timeslot = new HashMap<>();
-//                one_timeslot.put("Time", timeslots_data.get(days_data.get(i)).get(j));
-//                one_day_timeslots.add(one_timeslot);
-//            }
-//
-//            // Adding the timeslots of one day to the titles
-//            timeslots_titles_text.add(one_day_timeslots);
-//
-//        }
-
 
     }
 }

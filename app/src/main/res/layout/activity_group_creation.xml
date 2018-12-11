@@ -132,7 +132,7 @@
         app:layout_constraintTop_toBottomOf="@+id/group_code_text"/>
 
     <Button
-        android:id="@+id/continue_button"
+        android:id="@+id/create_button"
         style="@style/CustomButton"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -148,7 +148,7 @@
         android:paddingLeft="12dp"
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
-        android:text="@string/continue_text"
+        android:text="@string/create_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
