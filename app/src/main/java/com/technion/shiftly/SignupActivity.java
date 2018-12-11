@@ -1,15 +1,22 @@
 package com.technion.shiftly;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.constraint.ConstraintLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -27,15 +34,42 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private ConstraintLayout mLayout;
     private DatabaseReference mDatabase, newUser;
     private FirebaseUser mCurrentUser;
     private EditText email_edt, password_edt, firstname_edt, lastname_edt;
+
+    private void showCustomSnakeBar(String msg) {
+        final Snackbar mySnackbar = Snackbar.make(mLayout, msg, Snackbar.LENGTH_SHORT);
+        final View snackbarView = mySnackbar.getView();
+        final TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        } else {
+            tv.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+        snackbarView.setBackgroundColor(getResources().getColor(R.color.text_color_primary));
+        tv.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        tv.setTextSize(22);
+        tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.snackbar_error, 0, 0, 0);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(snackbarView, "alpha", 0f, 1f);
+        fadeIn.setDuration(500);
+        fadeIn.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                snackbarView.setVisibility(View.VISIBLE);
+                snackbarView.setAlpha(0);
+                mySnackbar.show();
+            }
+        });
+        fadeIn.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        ConstraintLayout mLayout = (ConstraintLayout) findViewById(R.id.signup_cl);
+        mLayout = (ConstraintLayout) findViewById(R.id.signup_cl);
         AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
         animationDrawable.setEnterFadeDuration(1000);
         animationDrawable.setExitFadeDuration(1000);
@@ -74,9 +108,7 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(SignupActivity.this, "Account created Successfully.",
-                                                Toast.LENGTH_SHORT).show();
-
+                                        showCustomSnakeBar(getResources().getString(R.string.account_created));
                                         FirebaseDatabase database =  FirebaseDatabase.getInstance();
                                         FirebaseUser c_user =  mAuth.getCurrentUser();
                                         String userId = c_user.getUid();
