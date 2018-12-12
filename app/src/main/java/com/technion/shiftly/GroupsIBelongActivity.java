@@ -12,10 +12,12 @@ public class GroupsIBelongActivity extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
 //    private TextView count;
     private String[] mockupDataSet = {"freddie", "john", "brian", "roger", "yakir", "oshri" , "gal", "ron", "shaul" , "dan" ,"irad"};
-//    private String[] mockupNumInGroup = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+    private String[] mockupNumInGroup = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
 //    private Drawable photo = getResources().getDrawable(R.drawable.baseline_face_white_18);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
@@ -25,7 +27,19 @@ public class GroupsIBelongActivity extends Fragment {
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyAdapter(mockupDataSet);
+        mAdapter = new MyAdapter(getContext(), mockupDataSet, mockupNumInGroup);
+        MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ViewGroup viewGroup = (ViewGroup) view;
+                for (int i = 0; i < viewGroup .getChildCount(); i++) {
+                    View child = viewGroup.getChildAt(i);
+                    child.setPressed(true);
+                }
+                return;
+            }
+        };
+        ((MyAdapter) mAdapter).setClickListener(listener);
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }

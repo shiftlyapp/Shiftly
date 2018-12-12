@@ -7,8 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:orientation="vertical"
     android:background="@drawable/first_bg_layer"
-    tools:context=".GroupsIBelongActivity">
+    tools:context=".GroupsIManageActivity">
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,9 +19,6 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".GroupsIBelongActivity"/>
-    <TextView android:id="@+id/list_count"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:gravity="bottom"/>
+        tools:context=".GroupsIManageActivity"/>
+
 </android.support.constraint.ConstraintLayout>
