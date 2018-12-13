@@ -34,4 +34,7 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="account_created">Accout created successfuly!</string>
+    <!--Group lists -->
+    <string name="groups_i_belong">GROUPS I BELONG</string>
+    <string name="groups_i_manage">GROUPS I MANAGE</string>
 </resources>

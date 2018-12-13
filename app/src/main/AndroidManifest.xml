@@ -16,12 +16,29 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.technion.shiftly.LoginActivity">
+
         </activity>
         <activity
             android:name="com.technion.shiftly.SignupActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name="com.technion.shiftly.GroupCreationActivity"></activity>
         <activity android:name="com.technion.shiftly.TimeslotsConfigActivity"></activity>
+        <activity android:name="com.technion.shiftly.SignupActivity">
+        </activity>
+        <activity android:name="com.technion.shiftly.GroupCreationActivity">
+        </activity>
+        <activity android:name="com.technion.shiftly.TimeslotsConfigActivity">
+        </activity>
+
+        <activity android:name=".GroupListsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
     <supports-screens android:largeScreens="true"
         android:normalScreens="true" android:smallScreens="true"
