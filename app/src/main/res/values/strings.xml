@@ -34,4 +34,8 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="account_created">Accout created successfuly!</string>
+    <string name="title_activity_schedule_view">View schedules</string>
+    <string name="title_home">Daily</string>
+    <string name="title_dashboard">Weekly</string>
+    <string name="title_notifications">Agenda</string>
 </resources>

@@ -10,4 +10,10 @@
     <color name="orange_color">#BF360C</color>
     <color name="dark_orange_color">#691d06</color>
     <color name="text_shadow">#e1000000</color>
+    <color name="yellow">#ffe100</color>
+    <color name="blue">#0011ff</color>
+    <color name="green">#008700</color>
+    <color name="orange">#ff6a00</color>
+    <color name="pink">#f700ff</color>
+
 </resources>
