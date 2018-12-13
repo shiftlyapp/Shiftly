@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Shiftly</string>
-    <string name="welcome_msg">Welcome to Shiftly.</string>
+    <string name="welcome_msg">Welcome to</string>
     <string name="user_img">User</string>
     <string name="signup_img">Signup</string>
     <string name="email_edittext_hint">EMAIL ADDRESS</string>
     <string name="password_edittext_hint">PASSWORD</string>
     <string name="login_txt">LOGIN</string>
     <string name="signup_txt">SIGN UP</string>
-    <string name="forgot_password_txt">Forgot Password?</string>
+    <string name="forgot_password_txt">Forgot Password\u0020</string>
     <string name="new_txt">New to our app? <b>Sign Up</b></string>
     <string name="signup_header">Register your new\n Shiftly account.</string>
     <string name="firstname_edittext_hint">FIRST NAME</string>
@@ -17,6 +17,23 @@
     <string name="group_code">Group Code</string>
     <string name="share_code">Share Code</string>
     <string name="continue_text">Continue</string>
+    <string name="err_firstname">Please enter a vaild name</string>
+    <string name="err_lastname">Please enter a valid name</string>
+    <string name="err_email">Please enter a vaild mail address</string>
+    <string name="err_password">Invalid Password (No spaces allowed. Minimum length: 6) </string>
+    <string name="err_password_confirmation">Password does not match</string>
+    <string name="err_login_email">Please enter a vaild mail address</string>
+    <string name="err_login_password">Please enter a valid password </string>
+    <string name="err_invalid_email">Error: Email does  not exist</string>
+    <string name="err_invalid_pass">Error: Invalid password</string>
+    <string name="err_login_attempts">Error: Too many logins attempts.</string>
+    <string name="login_err_password">Please type in a Password</string>
+    <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
+    <string name="reset_pass_title">Password Reset</string>
+    <string name="reset_email_sent">Password reset mail sent successfuly.</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="account_created">Accout created successfuly!</string>
     <!--Group lists -->
     <string name="groups_i_belong">GROUPS I BELONG</string>
     <string name="groups_i_manage">GROUPS I MANAGE</string>
