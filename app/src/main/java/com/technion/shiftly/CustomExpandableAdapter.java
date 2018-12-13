@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -14,12 +15,14 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> groups;
-    private HashMap<String, List<String>> children;
+    private HashMap<String, List<CheckBox>> children;
+    private List<List<Boolean>> checked_items;
 
-    public CustomExpandableAdapter(Context context, List<String> groups, HashMap<String, List<String>> children) {
+    public CustomExpandableAdapter(Context context, List<String> groups, HashMap<String, List<CheckBox>> children, List<List<Boolean>> checked_items) {
         this.context = context;
         this.groups = groups;
         this.children = children;
+        this.checked_items = checked_items;
     }
 
     @Override
@@ -57,6 +60,7 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String parent_group = (String)getGroup(groupPosition);
@@ -69,11 +73,25 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String child_group = (String)getChild(groupPosition, childPosition);
+
+        // Get the checkbox text
+        CheckBox child = ((CheckBox)getChild(groupPosition, childPosition));
+        String child_text = (String)child.getText();
+
+        // Set the layout of the convertView
         LayoutInflater child_inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = child_inflater.inflate(R.layout.child_items_layout, null);
-        TextView child_text = convertView.findViewById(R.id.expandable_child_items);
-        child_text.setText(child_group);
+
+        // Get the layout of the child
+        TextView child_view = convertView.findViewById(R.id.expandable_child_items);
+        child_view.setText(child_text);
+
+        if (!checked_items.get(groupPosition).get(childPosition)) {
+            ((CheckBox)child_view).setChecked(false);
+        } else {
+            ((CheckBox) child_view).setChecked(true);
+        }
+
         return convertView;
     }
 

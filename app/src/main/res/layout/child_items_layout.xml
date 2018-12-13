@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="false"
     android:layout_gravity="center"
     android:background="@drawable/first_bg_layer"
-    tools:context=".GroupCreationActivity">
+    tools:context=".TimeslotsConfigActivity">
 
     <CheckBox
         android:id="@+id/expandable_child_items"
@@ -15,6 +14,7 @@
         android:layout_height="64dp"
         android:textSize="24dp"
         android:textColor="@color/text_color_primary"
+        android:checked="false"
         />
 
 </android.support.constraint.ConstraintLayout>
