@@ -15,8 +15,11 @@
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
     <string name="group_name_edittext_hint">Group Name</string>
     <string name="group_code">Group Code</string>
-    <string name="share_code">Share Code</string>
-    <string name="continue_text">Continue</string>
+    <string name="share_code">C</string>
+    <string name="create_text">Create</string>
+    <string name="configure_text">Configure</string>
+    <string name="group_create">Create Group</string>
+    <string name="timeslots_configure">Configure Timeslots</string>
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
     <string name="err_email">Please enter a vaild mail address</string>

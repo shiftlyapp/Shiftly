@@ -62,4 +62,11 @@
         <item name="android:textSize">18sp</item>
         <!--<item name="android:elevation">4dp</item>-->
     </style>
+    <style name="CustomToolBar">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    <style name="CustomImageButton">
+        <item name="android:background">@null</item>
+    </style>
 </resources>

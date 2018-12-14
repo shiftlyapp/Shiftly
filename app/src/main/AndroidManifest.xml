@@ -8,6 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.technion.shiftly.LoginActivity">
         android:theme="@style/AppTheme">
         <activity
             android:name="com.technion.shiftly.LoginActivity"
@@ -27,9 +29,14 @@
         <activity android:name="com.technion.shiftly.TimeslotsConfigActivity"></activity>
         <activity android:name="com.technion.shiftly.SignupActivity">
         </activity>
-        <activity android:name="com.technion.shiftly.GroupCreationActivity">
+        <activity android:label="@string/group_create" android:name="com.technion.shiftly.GroupCreationActivity">
         </activity>
         <activity android:name="com.technion.shiftly.TimeslotsConfigActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".GroupListsActivity">
