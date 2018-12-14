@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/first_bg_layer"
-    tools:context=".ScheduleViewActivity"
-    tools:layout_editor_absoluteY="25dp">
+    tools:context=".ScheduleViewActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/schedule_view_toolbar"
@@ -38,7 +37,8 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@null"
+        android:elevation="4dp"
+        android:background="@android:color/white"
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
         app:layout_constraintBottom_toBottomOf="parent"

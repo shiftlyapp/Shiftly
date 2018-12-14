@@ -10,10 +10,12 @@
     <color name="orange_color">#BF360C</color>
     <color name="dark_orange_color">#691d06</color>
     <color name="text_shadow">#e1000000</color>
-    <color name="yellow">#ffe100</color>
-    <color name="blue">#0011ff</color>
-    <color name="green">#008700</color>
-    <color name="orange">#ff6a00</color>
-    <color name="pink">#f700ff</color>
-
+    <color name="seperator_color">#6400363a</color>
+    <color name="calendar_cyan">#00838f</color>
+    <color name="calendar_green">#43a047</color>
+    <color name="calendar_yellow">#ffdd00</color>
+    <color name="calendar_purple">#3949ab</color>
+    <color name="calendar_pink">#f06292</color>
+    <color name="btv_selected">#00363a</color>
+    <color name="btv_not_selected">#9100363a</color>
 </resources>

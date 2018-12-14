@@ -38,4 +38,8 @@
     <string name="title_home">Daily</string>
     <string name="title_dashboard">Weekly</string>
     <string name="title_notifications">Agenda</string>
+    <string name="daily_label">Daily schedule</string>
+    <string name="weekly_label">Weekly schedule</string>
+    <string name="agenda_label">Agenda schedule</string>
+
 </resources>

@@ -1,10 +1,14 @@
 package com.technion.shiftly;
 
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,24 +21,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.support.constraint.solver.widgets.ConstraintTableLayout.ALIGN_CENTER;
+
 public class DailyViewFragment extends Fragment {
 
-    private WeekView mWeekView;
-
     protected String getEventTitle(Calendar time) {
-        return String.format("Daniel Levy 08:00 - 12:00", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
+        return "XXX";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Get a reference for the week view in the layout.
         View v = inflater.inflate(R.layout.fragment_daily_view, container, false);
-        mWeekView = (WeekView) container.findViewById(R.id.dayView);
+        WeekView mWeekView = (WeekView)v.findViewById(R.id.dayView);
         // Get a reference for the week view in the layout.
-        mWeekView = (WeekView) v.findViewById(R.id.dayView);
-
-// Set an action when any event is clicked.
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.daily_label));
+// Set an action when any event is clicked.)
         WeekView.EventClickListener mEventClickListener = new WeekView.EventClickListener() {
             @Override
             public void onEventClick(WeekViewEvent event, RectF eventRect) {
@@ -60,7 +64,31 @@ public class DailyViewFragment extends Fragment {
                 endTime.add(Calendar.HOUR, 3);
                 endTime.set(Calendar.MONTH, newMonth - 1);
                 WeekViewEvent event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.orange_color));
+                event.setColor(getResources().getColor(R.color.calendar_pink));
+                events.add(event);
+
+                startTime = Calendar.getInstance();
+                startTime.set(Calendar.HOUR_OF_DAY, 12);
+                startTime.set(Calendar.MINUTE, 0);
+                startTime.set(Calendar.MONTH, newMonth - 1);
+                startTime.set(Calendar.YEAR, newYear);
+                endTime = (Calendar) startTime.clone();
+                endTime.add(Calendar.HOUR, 3);
+                endTime.set(Calendar.MONTH, newMonth - 1);
+                event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
+                event.setColor(getResources().getColor(R.color.calendar_green));
+                events.add(event);
+
+                startTime = Calendar.getInstance();
+                startTime.set(Calendar.HOUR_OF_DAY, 15);
+                startTime.set(Calendar.MINUTE, 0);
+                startTime.set(Calendar.MONTH, newMonth - 1);
+                startTime.set(Calendar.YEAR, newYear);
+                endTime = (Calendar) startTime.clone();
+                endTime.add(Calendar.HOUR, 6);
+                endTime.set(Calendar.MONTH, newMonth - 1);
+                event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
+                event.setColor(getResources().getColor(R.color.calendar_purple));
                 events.add(event);
                 return events;
             }

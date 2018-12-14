@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -19,10 +21,9 @@ import java.util.List;
 
 public class WeeklyViewFragment extends Fragment {
 
-    private WeekView mWeekView;
 
     protected String getEventTitle(Calendar time) {
-        return String.format("Kaka", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
+        return String.format("Kaka");
     }
 
     @Nullable
@@ -30,9 +31,8 @@ public class WeeklyViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Get a reference for the week view in the layout.
         View v = inflater.inflate(R.layout.fragment_weekly_view, container, false);
-        mWeekView = (WeekView) container.findViewById(R.id.weekView);
-        // Get a reference for the week view in the layout.
-        mWeekView = (WeekView) v.findViewById(R.id.weekView);
+        WeekView mWeekView = (WeekView)v.findViewById(R.id.weekView);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
 
 // Set an action when any event is clicked.
         WeekView.EventClickListener mEventClickListener = new WeekView.EventClickListener() {
@@ -73,7 +73,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime.set(Calendar.MINUTE, 30);
                 endTime.set(Calendar.MONTH, newMonth - 1);
                 event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.pink));
+                event.setColor(getResources().getColor(R.color.calendar_pink));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -85,7 +85,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime.set(Calendar.HOUR_OF_DAY, 5);
                 endTime.set(Calendar.MINUTE, 0);
                 event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.blue));
+                event.setColor(getResources().getColor(R.color.calendar_cyan));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -97,7 +97,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime.add(Calendar.HOUR_OF_DAY, 2);
                 endTime.set(Calendar.MONTH, newMonth - 1);
                 event = new WeekViewEvent(2, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.green));
+                event.setColor(getResources().getColor(R.color.calendar_green));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -110,7 +110,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime.add(Calendar.HOUR_OF_DAY, 3);
                 endTime.set(Calendar.MONTH, newMonth - 1);
                 event = new WeekViewEvent(3, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.orange));
+                event.setColor(getResources().getColor(R.color.calendar_yellow));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -122,7 +122,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime = (Calendar) startTime.clone();
                 endTime.add(Calendar.HOUR_OF_DAY, 3);
                 event = new WeekViewEvent(4, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.green));
+                event.setColor(getResources().getColor(R.color.calendar_green));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -134,7 +134,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime = (Calendar) startTime.clone();
                 endTime.add(Calendar.HOUR_OF_DAY, 3);
                 event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.green));
+                event.setColor(getResources().getColor(R.color.calendar_green));
                 events.add(event);
 
                 startTime = Calendar.getInstance();
@@ -146,7 +146,7 @@ public class WeeklyViewFragment extends Fragment {
                 endTime = (Calendar) startTime.clone();
                 endTime.add(Calendar.HOUR_OF_DAY, 3);
                 event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.green));
+                event.setColor(getResources().getColor(R.color.calendar_green));
                 events.add(event);
 
                 return events;
