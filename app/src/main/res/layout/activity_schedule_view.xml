@@ -6,43 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/first_bg_layer"
-    tools:context=".ScheduleViewActivity">
+    tools:context=".ScheduleViewActivity"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/schedule_view_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:theme="@style/CustomToolBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="?actionBarSize"
+        android:theme="@style/CustomToolBar" />
+
 
     <FrameLayout
         android:id="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@id/schedule_view_toolbar"
+        app:layout_constraintBottom_toTopOf="@id/tt2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_view_toolbar" />
+        android:background="?android:attr/windowBackground" />
+
+    <View
+        android:id="@+id/tt2"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
+        android:background="@drawable/shadow_btt" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:elevation="4dp"
-        android:background="@android:color/white"
+        android:layout_height="50dp"
+        android:background="@drawable/btb_bg"
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
+        app:layout_constraintTop_toBottomOf="@id/tt2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation" />
 </android.support.constraint.ConstraintLayout>

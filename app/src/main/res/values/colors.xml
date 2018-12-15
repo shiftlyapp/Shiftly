@@ -17,5 +17,6 @@
     <color name="calendar_purple">#3949ab</color>
     <color name="calendar_pink">#f06292</color>
     <color name="btv_selected">#00363a</color>
-    <color name="btv_not_selected">#9100363a</color>
+    <color name="btv_not_selected">#7800363a</color>
+    <color name="silver_color">#cacaca</color>
 </resources>
