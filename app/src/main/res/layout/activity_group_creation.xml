@@ -114,6 +114,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:src="@drawable/share"
+        android:onClick="share_code"
         />
 
     <ImageView
@@ -149,6 +150,7 @@
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
         android:text="@string/create_text"
+        android:onClick="share_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

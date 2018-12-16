@@ -36,8 +36,8 @@ public class GroupListsActivity extends FragmentActivity {
     }
 
     private void setIcons(TabLayout tabLayout) {
-        tabLayout.getTabAt(0).setIcon(R.drawable.sharp_sentiment_very_satisfied_white_18);
-        tabLayout.getTabAt(1).setIcon(R.drawable.sharp_sentiment_very_satisfied_white_18);
+        tabLayout.getTabAt(0).setIcon(R.drawable.common_google_signin_btn_icon_dark);
+        tabLayout.getTabAt(1).setIcon(R.drawable.common_google_signin_btn_icon_dark);
 
     }
 }

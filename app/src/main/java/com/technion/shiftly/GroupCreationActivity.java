@@ -1,5 +1,6 @@
 package com.technion.shiftly;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GroupCreationActivity extends AppCompatActivity {
 
@@ -31,5 +34,16 @@ public class GroupCreationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void share_code(View view) {
+        EditText share_text = findViewById(R.id.group_code);
+        String code = share_text.getText().toString();
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, code);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Send to: "));
     }
 }
