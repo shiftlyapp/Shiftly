@@ -39,10 +39,11 @@ public class GroupCreationActivity extends AppCompatActivity {
     public void share_code(View view) {
         EditText share_text = findViewById(R.id.group_code);
         String code = share_text.getText().toString();
+        String sharing_message = "You have been invited to use Shiftly! Enter this code in the app: " + code + " and join the group!";
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, code);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, sharing_message);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, "Send to: "));
     }
