@@ -34,7 +34,10 @@
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:shadowColor">@color/text_shadow</item>
+    </style>
+    <style name="CustomToolBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">@color/colorPrimaryDark</item>
