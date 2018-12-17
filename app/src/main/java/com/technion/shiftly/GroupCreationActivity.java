@@ -36,6 +36,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
                 startActivity(intent);
+
             }
         });
     }
