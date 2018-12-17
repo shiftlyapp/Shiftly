@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 public class GroupCreationActivity extends AppCompatActivity {
 
     @Override
@@ -24,7 +26,9 @@ public class GroupCreationActivity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create));
 
-
+        TextView uuid = findViewById(R.id.group_code);
+        String code_without_hyphens = remove_hyphens_from_string(UUID.randomUUID().toString()); 
+        uuid.setText(code_without_hyphens);
 
         Button create_button = findViewById(R.id.create_button);
         create_button.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +38,10 @@ public class GroupCreationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private String remove_hyphens_from_string(String s) {
+        return s.replace("-", "");
     }
 
     public void share_code(View view) {
