@@ -47,4 +47,29 @@
         <item name="android:typeface">normal</item>
         <item name="android:background">#FFFFFF</item>
     </style>
+    <style name="CustomListView" parent="@android:style/Widget.ListView">
+        <item name="android:gravity">left</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:elevation">4dp</item>-->
+    </style>
+    <style name="CustomListView" parent="@android:style/Widget.ListView">
+        <item name="android:gravity">left</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:elevation">4dp</item>-->
+    </style>
+    <style name="CustomToolBar">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    <style name="CustomImageButton">
+        <item name="android:background">@null</item>
+    </style>
 </resources>
