@@ -1,10 +1,15 @@
 package com.technion.shiftly;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
 
     private String firstname;
     private String lastname;
     private String email;
+    private int groups_count;
+    private HashSet<String> groups;
 
     public User() {
     }
@@ -13,6 +18,8 @@ public class User {
         this.firstname = firstname_p;
         this.lastname = lastname_p;
         this.email = email_p;
+        this.groups_count = 0;
+        this.groups = new HashSet<>();
     }
 
     public String getFirstname() {
@@ -37,5 +44,13 @@ public class User {
 
     public void setEmail(String ea) {
         this.email = ea;
+    }
+
+    public int getGroups_count() {
+        return groups_count;
+    }
+
+    public HashSet<String> getGroups() {
+        return groups;
     }
 }

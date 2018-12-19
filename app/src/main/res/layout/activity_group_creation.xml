@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:layout_gravity="center"
-    android:background="@drawable/first_bg_layer"
+    android:background="@drawable/gradient_bg"
     tools:context=".GroupCreationActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/group_creation_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:theme="@style/CustomToolBar" />
 
     <ImageView
@@ -31,7 +31,7 @@
     <EditText
         android:id="@+id/group_name_edittext"
         style="@style/CustomEditText"
-        android:layout_width="250dp"
+        android:layout_width="275dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -102,34 +102,20 @@
     <ImageView
         android:id="@+id/share_image"
         style="@style/CustomImageButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_code"
+        android:layout_width="118dp"
+        android:layout_height="118dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:src="@drawable/share"
-        />
-
-    <ImageView
-        android:id="@+id/share_group_code"
-        style="@style/CustomImageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/copy"
+        android:src="@drawable/share"
+        app:layout_constraintBottom_toTopOf="@+id/create_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_code_text"/>
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_code" />
 
     <Button
         android:id="@+id/create_button"

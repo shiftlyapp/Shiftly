@@ -36,6 +36,7 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
     private String sbError;
@@ -69,7 +70,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent(LoginActivity.this, GroupListsActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -155,8 +161,10 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        currentUser = mAuth.getCurrentUser();
+                                        finish();
+                                        startActivity(new Intent(getApplicationContext(),
+                                                GroupListsActivity.class));
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         try {

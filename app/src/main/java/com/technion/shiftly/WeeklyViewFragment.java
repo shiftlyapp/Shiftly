@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
@@ -23,7 +22,7 @@ public class WeeklyViewFragment extends Fragment {
 
 
     protected String getEventTitle(Calendar time) {
-        return String.format("Kaka");
+        return String.format("Tal");
     }
 
     @Nullable

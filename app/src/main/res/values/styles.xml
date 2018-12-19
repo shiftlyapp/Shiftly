@@ -1,6 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-
+<resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layoutDirection">ltr</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/CustomButton</item>
         <item name="windowActionBar">false</item>
@@ -21,7 +21,6 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
         <item name="android:textColorHighlight">@color/colorPrimary</item>
-        <!--<item name="android:elevation">4dp</item>-->
     </style>
     <style name="CustomButton">
         <item name="android:gravity">center</item>
@@ -29,7 +28,7 @@
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">22sp</item>
-        <!--<item name="android:elevation">4dp</item>-->
+        <item name="android:elevation">4dp</item>
     </style>
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-condensed</item>
@@ -41,7 +40,6 @@
     </style>
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
         <item name="android:headerDividersEnabled">false</item>
         <item name="android:typeface">normal</item>
@@ -54,20 +52,7 @@
         <item name="android:background">#FFFFFF</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textSize">18sp</item>
-        <!--<item name="android:elevation">4dp</item>-->
-    </style>
-    <style name="CustomListView" parent="@android:style/Widget.ListView">
-        <item name="android:gravity">left</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:background">#FFFFFF</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">18sp</item>
-        <!--<item name="android:elevation">4dp</item>-->
-    </style>
-    <style name="CustomToolBar">
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:elevation">4dp</item>
     </style>
     <style name="CustomImageButton">
         <item name="android:background">@null</item>
