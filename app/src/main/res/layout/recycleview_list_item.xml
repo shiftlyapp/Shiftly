@@ -6,8 +6,6 @@
     android:layout_height="70dp"
     android:background="@drawable/custom_ripple"
     android:clickable="true"
-
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <ImageView
