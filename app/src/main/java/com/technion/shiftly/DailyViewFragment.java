@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.support.constraint.solver.widgets.ConstraintTableLayout.ALIGN_CENTER;
 
 public class DailyViewFragment extends Fragment {
 
     protected String getEventTitle(Calendar time) {
-        return "XXX";
+        return "";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)

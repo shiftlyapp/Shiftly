@@ -35,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         String name = mNames[position];
         String count = mCounts[position];
         holder.myNameView.setText(name);
-        holder.myCountView.setText(count);
+        holder.myCountView.setText(String.format("%s Members",count));
     }
 
     // total number of rows
