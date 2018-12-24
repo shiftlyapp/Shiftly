@@ -7,7 +7,7 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
-    private String groups_count;
+    private int groups_count;
     private HashSet<String> groups;
 
     public User() {
