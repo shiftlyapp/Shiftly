@@ -4,5 +4,5 @@
 
 Shiftly provides an easy and interactive way for both employers and employees to manage scheduling at work.
 By engaging in groups, employers can set time slots for shifts, receive scheduling options from their employees
-and Shiflty will automatically create a shift schedule for the upcoming week, thus saving precious time and hassle.
+and Shiftly will automatically create a shift schedule for the upcoming week, thus saving precious time and hassle.
 Additionally, Shiftly allows you to view, export and share your schedule with others.
