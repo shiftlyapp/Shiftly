@@ -10,7 +10,7 @@ public class Group {
     private String admin;
     private String group_name;
     private Map<String, Boolean> members;
-    private Long member_count;
+    private Long members_count;
     private ArrayList<ArrayList<HashMap<String, Boolean>>> options;
 
     private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
@@ -22,7 +22,7 @@ public class Group {
     public Group(String admin, String group_name, Long member_count) {
         this.admin = admin;
         this.group_name = group_name;
-        this.member_count = member_count;
+        this.members_count = member_count;
     }
 
     public String getAdmin() {
@@ -37,8 +37,8 @@ public class Group {
         return members;
     }
 
-    public Long getMember_count() {
-        return member_count;
+    public Long getMembers_count() {
+        return members_count;
     }
 
     public ArrayList<ArrayList<HashMap<String, Boolean>>> getOptions() {
@@ -61,8 +61,8 @@ public class Group {
         this.members = members;
     }
 
-    public void setMember_count(Long member_count) {
-        this.member_count = member_count;
+    public void setMembers_count(Long member_count) {
+        this.members_count = member_count;
     }
 
     public void setOptions(ArrayList<ArrayList<HashMap<String, Boolean>>> options) {
@@ -115,7 +115,7 @@ public class Group {
                 "group_name: '" + group_name + "'\n" +
                 "admin: '" + admin + "'\n" +
                 "members: " + members + "\n" +
-                "member_count: " + member_count + "\n" +
+                "member_count: " + members_count + "\n" +
                 "\nOptions: \n" + opts + "\n" +
                 "Schedule: \n" + sched + "\n" +
                 "timeslots: \n" + slots + "\n";
