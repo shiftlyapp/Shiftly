@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS;
 
 
 public class TimeslotsConfigActivity extends AppCompatActivity {
@@ -24,8 +24,8 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-    private List<String> days_data;
-    private HashMap<String, List<CheckBox>> timeslots_data;
+    List<String> days_data;
+    List<Map<String, CheckBox>> timeslots_data;
     List<String> days;
     List<Map<String,Boolean>> checked_items;
 
@@ -44,6 +44,7 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
         days = Arrays.asList(getResources().getStringArray(R.array.week_days));
         ExpandableListView expandableListView = findViewById(R.id.ts_config_list);
+        expandableListView.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
         populate_data_into_lists();
         CustomExpandableAdapter expandableListAdapter = new CustomExpandableAdapter(this, days_data, timeslots_data, checked_items);
         expandableListView.setAdapter(expandableListAdapter);
@@ -65,14 +66,13 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                TextView child = v.findViewById(R.id.expandable_child_items);
-
-                boolean child_is_checked = ((CheckBox)child).isChecked();
+                CheckBox child = v.findViewById(R.id.expandable_child_items);
+                boolean child_is_checked = child.isChecked();
 
                 if (child_is_checked) {
-                    checked_items.get(groupPosition).put(days.get(groupPosition) + "_" + (char)(childPosition + (int)('a')), true);
+                    checked_items.get(groupPosition).put(getShiftDayAndLetter(groupPosition,childPosition), true);
                 } else {
-                    checked_items.get(groupPosition).put(days.get(groupPosition) + "_" + (char)(childPosition + (int)('a')), false);
+                    checked_items.get(groupPosition).put(getShiftDayAndLetter(groupPosition,childPosition), false);
                 }
                 return false;
             }
@@ -95,32 +95,55 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
     private void populate_data_into_lists() {
 
-        days_data = new ArrayList<>(days);
-        timeslots_data = new HashMap<>();
+        days_data = new ArrayList<>(days); // 7 days array
+        timeslots_data = new ArrayList<>();
         checked_items = new ArrayList<>();
 
         for (int i = 0; i < days_data.size(); i++) {
-            List<CheckBox> shifts = new ArrayList<>();
-
+            Map<String,CheckBox> m = new HashMap<>();
             CheckBox cb = new CheckBox(getApplicationContext());
-            cb.setText("00:00 - 8:00");
+            //cb.setText("00:00 - 8:00");
+            cb.setFocusable(false);
+            cb.setClickable(false);
+            m.put(getShiftDayAndLetter(i,0),cb);
             CheckBox cb2 = new CheckBox(getApplicationContext());
-            cb2.setText("8:00 - 16:00");
+           // cb2.setText("8:00 - 16:00");
+            cb2.setFocusable(false);
+            cb2.setClickable(false);
+            m.put(getShiftDayAndLetter(i,1),cb2);
             CheckBox cb3 = new CheckBox(getApplicationContext());
-            cb3.setText("16:00 - 00:00");
-            shifts.add(cb);
-            shifts.add(cb2);
-            shifts.add(cb3);
-
-            timeslots_data.put(days_data.get(i), shifts);
+           // cb3.setText("16:00 - 00:00");
+            cb3.setFocusable(false);
+            cb3.setClickable(false);
+            m.put(getShiftDayAndLetter(i,2),cb3);
+            timeslots_data.add(m);
 
             Map<String,Boolean> shifts_init = new HashMap<>();
             for (int j = 0; j < 3; j++) {
-                shifts_init.put(days.get(i) + "_" + (char)(j + (int)('a')), false);
+                shifts_init.put(getShiftDayAndLetter(i,j), false);
             }
             checked_items.add(shifts_init);
         }
 
+    }
+
+    private String getShiftDayAndLetter(int group_position, int child_position) {
+        String day = null,letter = null;
+        switch (group_position) {
+            case 0: day = "Sunday_"; break;
+            case 1: day = "Monday_"; break;
+            case 2: day = "Tuesday_"; break;
+            case 3: day = "Wednesday_"; break;
+            case 4: day = "Thursday_"; break;
+            case 5: day = "Friday_"; break;
+            case 6: day = "Saturday_"; break;
+        }
+        switch (child_position) {
+            case 0: letter = "a"; break;
+            case 1: letter = "b"; break;
+            case 2: letter = "c"; break;
+        }
+        return day + letter;
     }
 
 }

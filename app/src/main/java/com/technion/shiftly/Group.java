@@ -12,17 +12,24 @@ public class Group {
     private Map<String, Boolean> members;
     private Long members_count;
     private ArrayList<ArrayList<HashMap<String, Boolean>>> options;
-
     private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
     private List<Map<String, Boolean>> timeslots;
 
     public Group() {
     }
 
-    public Group(String admin, String group_name, Long member_count) {
+    public ArrayList<ArrayList<HashMap<String, Boolean>>> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
+        this.schedule = schedule;
+    }
+
+    public Group(String admin, String group_name, Long members_count) {
         this.admin = admin;
         this.group_name = group_name;
-        this.members_count = member_count;
+        this.members_count = members_count;
     }
 
     public String getAdmin() {
@@ -71,14 +78,6 @@ public class Group {
 
     public void setTimeslots(List<Map<String, Boolean>> timeslots) {
         this.timeslots = timeslots;
-    }
-
-    public ArrayList<ArrayList<HashMap<String, Boolean>>> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
-        this.schedule = schedule;
     }
 
     @Override

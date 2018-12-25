@@ -40,6 +40,7 @@ public class GroupCreationActivityConfirm extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+        startActivity(new Intent(this,GroupListsActivity.class));
     }
 
     @Override
@@ -53,13 +54,13 @@ public class GroupCreationActivityConfirm extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         @SuppressWarnings("unchecked")
-        List<Map<String, Boolean>> timeslots = (List<Map<String, Boolean>>)getIntent().getSerializableExtra("TIMESLOTS_ARRAY");
+        List<Map<String, Boolean>> timeslots = (List<Map<String, Boolean>>) getIntent().getSerializableExtra("TIMESLOTS_ARRAY");
 
         Bundle extras = getIntent().getExtras();
         String group_name = extras.getString("GROUP_NAME");
         TextView signup_text = findViewById(R.id.signup_header);
         Resources res = getResources();
-        signup_text.setText(String.format(res.getString(R.string.group_create_succeed),group_name));
+        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
 
         ImageView success = findViewById(R.id.success_img);
         ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

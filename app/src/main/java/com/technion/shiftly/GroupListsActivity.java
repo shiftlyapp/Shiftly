@@ -1,5 +1,6 @@
 package com.technion.shiftly;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
@@ -9,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 public class GroupListsActivity extends AppCompatActivity {
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,6 @@ public class GroupListsActivity extends AppCompatActivity {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new GroupsIBelongActivity(), getString(R.string.groups_i_belong));
         adapter.addFragment(new GroupsIManageActivity(), getString(R.string.groups_i_manage));
-
         viewPager.setAdapter(adapter);
     }
 
