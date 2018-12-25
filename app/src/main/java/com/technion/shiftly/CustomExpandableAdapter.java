@@ -67,6 +67,7 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
         String parent_group = (String)getGroup(groupPosition);
         LayoutInflater parent_inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = parent_inflater.inflate(R.layout.group_items_layout, null);
+        convertView.setClickable(false);
         TextView parent_text = convertView.findViewById(R.id.expandable_group_items);
         parent_text.setText(parent_group);
         return convertView;
@@ -82,6 +83,7 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
         // Set the layout of the convertView
         LayoutInflater child_inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = child_inflater.inflate(R.layout.child_items_layout, null);
+        convertView.setClickable(false);
 
         // Get the layout of the child
         TextView child_view = convertView.findViewById(R.id.expandable_child_items);

@@ -27,7 +27,6 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/group_image"
             android:layout_toRightOf="@id/group_image"
-            android:text="Doctors"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -39,7 +38,6 @@
             android:layout_marginLeft="12dp"
             android:layout_toEndOf="@id/group_image"
             android:layout_toRightOf="@id/group_image"
-            android:text="7 Members"
             android:textColor="@color/members_color" />
     <View
         android:id="@+id/divider"
