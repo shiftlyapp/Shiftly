@@ -46,10 +46,10 @@ public class GroupCreationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.group_create));
-        TextView uuid = findViewById(R.id.group_code);
-        UUID_code = UUID.randomUUID().toString().replace("-", "");
-        uuid.setText(UUID_code);
+        getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mRef = database.getReference().child(("Users"));
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -63,19 +63,6 @@ public class GroupCreationActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-        ImageView share = findViewById(R.id.share_image);
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String group_name = findViewById(R.id.group_name_edittext).toString();
-                Intent sendIntent = new Intent();
-                sendIntent.setAction((Intent.ACTION_SEND));
-                String inv_str = "Hi!" + user_first_name + " " + user_last_name + " would like to invite you to use Shiftly! - The best app for managing your shifts at work.\n\nGroup name: " + group_name + ".\nYour unique code to join the group is: " + UUID_code + "\n\nWe hope to see you there!";
-                sendIntent.putExtra(Intent.EXTRA_TEXT, inv_str);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
             }
         });
 

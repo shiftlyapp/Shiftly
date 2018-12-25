@@ -1,14 +1,15 @@
 package com.technion.shiftly;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
 
     private String firstname;
     private String lastname;
     private String email;
-    private String groups_count;
-    private HashSet<String> groups;
+    private Long groups_count;
+    private Map<String,Boolean> groups;
 
     public User() {
     }
@@ -17,39 +18,49 @@ public class User {
         this.firstname = firstname_p;
         this.lastname = lastname_p;
         this.email = email_p;
-        this.groups_count = 0;
-        this.groups = new HashSet<>();
+        this.groups_count = 0L;
+        this.groups = new HashMap<String,Boolean>() {{
+            put(" ", false);
+        }};
     }
 
     public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname(String fn) {
-        this.firstname = fn;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(String ln) {
-        this.lastname = ln;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String ea) {
-        this.email = ea;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getGroups_count() {
+    public Long getGroups_count() {
         return groups_count;
     }
 
-    public HashSet<String> getGroups() {
+    public void setGroups_count(Long groups_count) {
+        this.groups_count = groups_count;
+    }
+
+    public Map<String, Boolean> getGroups() {
         return groups;
+    }
+
+    public void setGroups(Map<String, Boolean> groups) {
+        this.groups = groups;
     }
 }
