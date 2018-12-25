@@ -74,7 +74,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TimeslotsConfigActivity.class);
-                intent.putExtra("group_code", "");
+                intent.putExtra("GROUP_NAME", "");
                 startActivity(intent);
             }
         });

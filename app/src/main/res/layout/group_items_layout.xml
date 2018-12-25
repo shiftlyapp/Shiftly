@@ -19,7 +19,6 @@
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
         android:textColor="@color/colorPrimaryDark"
-        android:focusable="false"
         android:textSize="22sp" />
 
 </android.support.constraint.ConstraintLayout>

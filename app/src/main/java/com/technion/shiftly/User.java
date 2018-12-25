@@ -1,6 +1,9 @@
 package com.technion.shiftly;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class User {
 
@@ -8,7 +11,7 @@ public class User {
     private String lastname;
     private String email;
     private Long groups_count;
-    private HashSet<String> groups;
+    private List<String> groups;
 
     public User() {
     }
@@ -18,7 +21,7 @@ public class User {
         this.lastname = lastname_p;
         this.email = email_p;
         this.groups_count = 0L;
-        this.groups = new HashSet<>();
+        this.groups = new ArrayList<>();
     }
 
     public String getFirstname() {
@@ -49,7 +52,7 @@ public class User {
         return groups_count;
     }
 
-    public HashSet<String> getGroups() {
+    public List<String> getGroups() {
         return groups;
     }
 }

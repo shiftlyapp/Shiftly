@@ -82,10 +82,15 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class); //TODO: change to GroupCreationConfirmActivity
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                intent.putExtra("GROUP_NAME", group_name);
-                intent.putExtra("TIMESLOTS_ARRAY", (ArrayList<Map<String,Boolean>>)checked_items);
+
+                Intent intent;
+                if (group_name.isEmpty()) {
+                    intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class);
+                    intent.putExtra("GROUP_NAME", group_name);
+                }
                 startActivity(intent);
                 finish();
             }
@@ -102,17 +107,17 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
         for (int i = 0; i < days_data.size(); i++) {
             Map<String,CheckBox> m = new HashMap<>();
             CheckBox cb = new CheckBox(getApplicationContext());
-            //cb.setText("00:00 - 8:00");
+            cb.setText("00:00 - 8:00");
             cb.setFocusable(false);
             cb.setClickable(false);
             m.put(getShiftDayAndLetter(i,0),cb);
             CheckBox cb2 = new CheckBox(getApplicationContext());
-           // cb2.setText("8:00 - 16:00");
+            cb2.setText("8:00 - 16:00");
             cb2.setFocusable(false);
             cb2.setClickable(false);
             m.put(getShiftDayAndLetter(i,1),cb2);
             CheckBox cb3 = new CheckBox(getApplicationContext());
-           // cb3.setText("16:00 - 00:00");
+            cb3.setText("16:00 - 00:00");
             cb3.setFocusable(false);
             cb3.setClickable(false);
             m.put(getShiftDayAndLetter(i,2),cb3);
