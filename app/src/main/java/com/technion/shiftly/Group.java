@@ -12,6 +12,8 @@ public class Group {
     private Map<String, Boolean> members;
     private Long member_count;
     private ArrayList<ArrayList<HashMap<String, Boolean>>> options;
+
+    private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
     private List<Map<String, Boolean>> timeslots;
 
     public Group() {
@@ -69,5 +71,13 @@ public class Group {
 
     public void setTimeslots(List<Map<String, Boolean>> timeslots) {
         this.timeslots = timeslots;
+    }
+
+    public ArrayList<ArrayList<HashMap<String, Boolean>>> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
+        this.schedule = schedule;
     }
 }

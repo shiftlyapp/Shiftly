@@ -41,7 +41,12 @@ public class ShiftSolverTest {
 
         // setting up solver
         ShiftSolver solver = new ShiftSolver(group);
-        System.out.println(solver.solve().toString());
+        group.setSchedule(solver.solve());
+
+        System.out.println("----------------------Sanity Test----------------------");
+        System.out.println("Solver result:");
         System.out.println(solver.toString());
+        System.out.println("Group sched result:");
+        System.out.println(group.getSchedule());
     }
 }
