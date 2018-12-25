@@ -1,7 +1,6 @@
 package com.technion.shiftly;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 public class User {
 
@@ -9,7 +8,7 @@ public class User {
     private String lastname;
     private String email;
     private Long groups_count;
-    private Map<String,Boolean> groups;
+    private HashSet<String> groups;
 
     public User() {
     }
@@ -19,48 +18,38 @@ public class User {
         this.lastname = lastname_p;
         this.email = email_p;
         this.groups_count = 0L;
-        this.groups = new HashMap<String,Boolean>() {{
-            put(" ", false);
-        }};
+        this.groups = new HashSet<>();
     }
 
     public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstname(String fn) {
+        this.firstname = fn;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastname(String ln) {
+        this.lastname = ln;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String ea) {
+        this.email = ea;
     }
 
     public Long getGroups_count() {
         return groups_count;
     }
 
-    public void setGroups_count(Long groups_count) {
-        this.groups_count = groups_count;
-    }
-
-    public Map<String, Boolean> getGroups() {
+    public HashSet<String> getGroups() {
         return groups;
-    }
-
-    public void setGroups(Map<String, Boolean> groups) {
-        this.groups = groups;
     }
 }
