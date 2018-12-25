@@ -7,7 +7,7 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
-    private String groups_count;
+    private Long groups_count;
     private HashSet<String> groups;
 
     public User() {
@@ -17,7 +17,7 @@ public class User {
         this.firstname = firstname_p;
         this.lastname = lastname_p;
         this.email = email_p;
-        this.groups_count = 0;
+        this.groups_count = 0L;
         this.groups = new HashSet<>();
     }
 
@@ -45,7 +45,7 @@ public class User {
         this.email = ea;
     }
 
-    public int getGroups_count() {
+    public Long getGroups_count() {
         return groups_count;
     }
 

@@ -48,4 +48,5 @@ dependencies {
     //#####################################################################
     implementation 'com.basgeekball:awesome-validation:4.2'
     implementation 'com.github.alamkanak:android-week-view:1.2.6'
+
 }

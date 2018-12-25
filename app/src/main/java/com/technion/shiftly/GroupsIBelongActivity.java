@@ -4,24 +4,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupsIBelongActivity extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    //    private TextView count;
-    private String[] mockupDataSet = {"Doctors", "Cleaners", "Pilots", "Teachers", "Policemen"};
-    private String[] mockupNumInGroup = {"7", "12","4","8","6"};
-//    private Drawable photo = getResources().getDrawable(R.drawable.baseline_face_white_18);
+    private List<String> groupNames;
+    private List<Long> groupMembersNum;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,15 +46,33 @@ public class GroupsIBelongActivity extends Fragment {
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyAdapter(getContext(), mockupDataSet, mockupNumInGroup);
-        MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+        groupNames = new ArrayList<>();
+        groupMembersNum = new ArrayList<>();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
-                startActivity(intent);            }
-        };
-        ((MyAdapter) mAdapter).setClickListener(listener);
-        mRecyclerView.setAdapter(mAdapter);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    groupNames.add(snapshot.child("group_name").getValue(String.class));
+                    groupMembersNum.add(snapshot.child("members_count").getValue(Long.class));
+                }
+                mAdapter = new MyAdapter(getContext(), groupNames, groupMembersNum);
+                MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
+                        startActivity(intent);            }
+                };
+                ((MyAdapter) mAdapter).setClickListener(listener);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         return view;
     }
 }

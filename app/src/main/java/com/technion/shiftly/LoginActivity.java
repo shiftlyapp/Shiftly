@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email_edt, password_edt;
     private String sbError;
 
-    private void showCustomSnakeBar(String error) {
+    private void showCustomSnackBar(String error) {
         final Snackbar mySnackbar = Snackbar.make(mLayout, error, Snackbar.LENGTH_SHORT);
         final View snackbarView = mySnackbar.getView();
         final TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                             } else {
                                                 sbError = getResources().getString(R.string.err_invalid_email);
                                             }
-                                            showCustomSnakeBar(sbError);
+                                            showCustomSnackBar(sbError);
                                         }
                                     });
                         }
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } catch (Exception e) {
                                             sbError = task.getException().getMessage();
                                         }
-                                        showCustomSnakeBar(sbError);
+                                        showCustomSnackBar(sbError);
                                     }
                                 }
                             });
