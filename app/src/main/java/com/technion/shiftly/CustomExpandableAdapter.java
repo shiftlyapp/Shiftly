@@ -86,11 +86,11 @@ public class CustomExpandableAdapter extends BaseExpandableListAdapter {
         TextView child_view = convertView.findViewById(R.id.expandable_child_items);
         child_view.setText(child_text);
 
-        if (!checked_items.get(groupPosition).get(childPosition)) {
-            ((CheckBox)child_view).setChecked(false);
-        } else {
-            ((CheckBox) child_view).setChecked(true);
-        }
+//        if (!checked_items.get(groupPosition).get(childPosition)) {
+//            ((CheckBox)child_view).setChecked(false);
+//        } else {
+//            ((CheckBox) child_view).setChecked(true);
+//        }
 
         return convertView;
     }

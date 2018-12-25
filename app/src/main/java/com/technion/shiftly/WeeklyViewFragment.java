@@ -1,9 +1,11 @@
 package com.technion.shiftly;
 
+import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -41,6 +43,15 @@ public class WeeklyViewFragment extends Fragment {
             }
         };
         mWeekView.setOnEventClickListener(mEventClickListener);
+
+        FloatingActionButton fab = v.findViewById(R.id.timeslots_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), TimeslotsConfigActivity.class);
+                startActivity(intent);
+            }
+        });
 
 // The week view has infinite scrolling horizontally. We have to provide the events of a
 // month every time the month changes on the week view.
