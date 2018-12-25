@@ -1,51 +1,65 @@
 package com.technion.shiftly;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroupCreationActivityConfirm extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-    private String user_first_name, user_last_name;
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_creation_confirm);
-        mAuth = FirebaseAuth.getInstance();
         Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        TextView uuid = findViewById(R.id.group_code);
-        String UUID_code = UUID.randomUUID().toString().replace("-", "");
-        uuid.setText(UUID_code);
-        uuid.setFocusable(false);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Boolean>> timeslots = (List<Map<String, Boolean>>)getIntent().getSerializableExtra("TIMESLOTS_ARRAY");
+
+        Bundle extras = getIntent().getExtras();
+        String group_name = extras.getString("GROUP_NAME");
+        TextView signup_text = findViewById(R.id.signup_header);
+        Resources res = getResources();
+        signup_text.setText(String.format(res.getString(R.string.group_create_succeed),group_name));
 
         ImageView success = findViewById(R.id.success_img);
         ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -53,21 +67,23 @@ public class GroupCreationActivityConfirm extends AppCompatActivity {
         t.setRepeatCount(0);
         success.startAnimation(t);
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String admin_UID = currentUser.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = database.getReference().child(("Users"));
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
-                user_first_name = user.getFirstname();
-                user_last_name = user.getLastname();
-            }
+        DatabaseReference mGroupRef = database.getReference().child(("Groups"));
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        String group_UID = mGroupRef.push().getKey();
+        Group group = new Group(admin_UID, group_name, 0L);
+        ArrayList<ArrayList<HashMap<String, Boolean>>> options = null;
+        ArrayList<ArrayList<HashMap<String, Boolean>>> schedule = null;
+        group.setTimeslots(timeslots);
+        group.setOptions(options);
+        group.setSchedule(schedule);
+        mGroupRef.child(group_UID).setValue(group);
 
-            }
-        });
+        EditText group_code_edittext = findViewById(R.id.group_code);
+        group_code_edittext.setText(group_UID);
 
         ImageView whatsapp_share = findViewById(R.id.whatsapp_share);
         whatsapp_share.setOnClickListener(new View.OnClickListener() {

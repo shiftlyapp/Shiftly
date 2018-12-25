@@ -17,6 +17,7 @@ public class GroupListsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_group_lists);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
         final DrawerLayout mDrawer = (DrawerLayout)findViewById(R.id.drawer_layout);

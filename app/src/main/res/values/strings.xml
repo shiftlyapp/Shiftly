@@ -23,8 +23,8 @@
     <string name="group_share_hint">Share this code with your friends\n to invite them to your group: </string>
     <string name="timeslots_configure">Configure Timeslots</string>
     <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
-    <string name="group_pic_hint">Select an icon for your Group:</string>
-    <string name="group_name_hint">Select a name for your Group:</string>
+    <string name="group_pic_hint">1. Select an icon for your Group:</string>
+    <string name="group_name_hint">2. Type a name for your Group:</string>
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
     <string name="err_email">Please enter a vaild mail address</string>
@@ -35,6 +35,7 @@
     <string name="err_invalid_email">Error: Email does  not exist</string>
     <string name="err_invalid_pass">Error: Invalid password</string>
     <string name="err_login_attempts">Error: Too many logins attempts.</string>
+    <string name="err_groupname">Invalid group name - no spaces allowed!</string>
     <string name="login_err_password">Please type in a Password</string>
     <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
     <string name="reset_pass_title">Password Reset</string>

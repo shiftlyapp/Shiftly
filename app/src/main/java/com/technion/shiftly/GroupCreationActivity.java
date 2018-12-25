@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,12 +24,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
+import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
+
 public class GroupCreationActivity extends AppCompatActivity {
 
-    private String UUID_code;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private String user_first_name, user_last_name;
 
     @Override
     public void onStart() {
@@ -35,8 +37,14 @@ public class GroupCreationActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             finish();
-            startActivity(new Intent(GroupCreationActivity.this, LoginActivity.class));
+            startActivity(new Intent(this,LoginActivity.class));
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -56,8 +64,6 @@ public class GroupCreationActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
-                user_first_name = user.getFirstname();
-                user_last_name = user.getLastname();
             }
 
             @Override
@@ -65,13 +71,21 @@ public class GroupCreationActivity extends AppCompatActivity {
 
             }
         });
+        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
+        final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
+        mAwesomeValidation.addValidation(GroupCreationActivity.this, R.id.group_name_edittext, "[a-zA-Z0-9]+", R.string.err_groupname);
 
         Button create_button = findViewById(R.id.create_button);
         create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
-                startActivity(intent);
+                if (mAwesomeValidation.validate()) {
+                    Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
+                    String group_name = group_name_edittext.getText().toString();
+                    intent.putExtra("GROUP_NAME", group_name);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

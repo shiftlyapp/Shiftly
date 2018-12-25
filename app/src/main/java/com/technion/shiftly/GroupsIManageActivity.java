@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 public class GroupsIManageActivity extends Fragment {
 
-    //    private TextView count;
     private String[] mockupDataSet = {"Doctors", "Gardeners", "Cleaners"};
     private String[] mockupNumInGroup = {"7", "4", "12"};
 
@@ -22,7 +21,6 @@ public class GroupsIManageActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
 
-        // Replace 'android.R.id.list' with the 'id' of your RecyclerView
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);

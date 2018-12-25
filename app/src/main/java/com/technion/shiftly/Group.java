@@ -10,7 +10,7 @@ public class Group {
     private String admin;
     private String group_name;
     private Map<String, Boolean> members;
-    private Long member_count;
+    private Long members_count;
     private ArrayList<ArrayList<HashMap<String, Boolean>>> options;
     private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
     private List<Map<String, Boolean>> timeslots;
@@ -18,10 +18,18 @@ public class Group {
     public Group() {
     }
 
-    public Group(String admin, String group_name, Long member_count) {
+    public ArrayList<ArrayList<HashMap<String, Boolean>>> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
+        this.schedule = schedule;
+    }
+
+    public Group(String admin, String group_name, Long members_count) {
         this.admin = admin;
         this.group_name = group_name;
-        this.member_count = member_count;
+        this.members_count = members_count;
     }
 
     public String getAdmin() {
@@ -36,8 +44,8 @@ public class Group {
         return members;
     }
 
-    public Long getMember_count() {
-        return member_count;
+    public Long getMembers_count() {
+        return members_count;
     }
 
     public ArrayList<ArrayList<HashMap<String, Boolean>>> getOptions() {
@@ -60,8 +68,8 @@ public class Group {
         this.members = members;
     }
 
-    public void setMember_count(Long member_count) {
-        this.member_count = member_count;
+    public void setMembers_count(Long member_count) {
+        this.members_count = member_count;
     }
 
     public void setOptions(ArrayList<ArrayList<HashMap<String, Boolean>>> options) {

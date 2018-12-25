@@ -2,7 +2,6 @@ package com.technion.shiftly;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,23 +19,22 @@ import java.util.Map;
 
 public class TimeslotsConfigActivity extends AppCompatActivity {
 
-    public enum Day{
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
-
-
-    // Private fields of TimeslotsConfigActivity
-
     private List<String> days_data;
     private HashMap<String, List<CheckBox>> timeslots_data;
     List<String> days;
-
     List<Map<String,Boolean>> checked_items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeslots_config);
+        Bundle extras = getIntent().getExtras();
+        String group_name = extras.getString("GROUP_NAME");
 
         Toolbar mainToolbar = findViewById(R.id.timeslot_toolbar);
         setSupportActionBar(mainToolbar);
@@ -80,19 +78,16 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
             }
         });
 
-        Button create_button = findViewById(R.id.configure_button);
-        create_button.setOnClickListener(new View.OnClickListener() {
+        Button confirm_button = findViewById(R.id.configure_button);
+        confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String group_name = getIntent().getExtras().getString("group_code");
                 Intent intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class); //TODO: change to GroupCreationConfirmActivity
-                intent.putExtra("group_name", group_name);
-
-                Bundle b = new Bundle();
-                b.putParcelable("timeslots", (Parcelable) checked_items);
-                intent.putExtras(b);
+                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                intent.putExtra("GROUP_NAME", group_name);
+                intent.putExtra("TIMESLOTS_ARRAY", (ArrayList<Map<String,Boolean>>)checked_items);
                 startActivity(intent);
-
+                finish();
             }
         });
 
