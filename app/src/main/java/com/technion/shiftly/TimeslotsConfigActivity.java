@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
