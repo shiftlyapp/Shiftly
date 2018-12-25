@@ -91,14 +91,11 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
                 String group_name = getIntent().getExtras().getString("group_code");
 
                 Intent intent;
-                if (group_name == "") {
+                if (group_name.isEmpty()) {
                     intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class);
                     intent.putExtra("group_name", group_name);
-                    Bundle b = new Bundle();
-                    b.putParcelable("timeslots", (Parcelable) checked_items);
-                    intent.putExtras(b);
                 }
                 startActivity(intent);
 
