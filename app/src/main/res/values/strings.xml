@@ -53,4 +53,6 @@
     <!--Group lists -->
     <string name="groups_i_belong">GROUPS I BELONG</string>
     <string name="groups_i_manage">GROUPS I MANAGE</string>
+    <string name="schedule_generated">A new schedule has been generated!</string>
+    <string name="confirm_schedule">CONFIRM</string>
 </resources>
