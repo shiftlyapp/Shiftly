@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/first_bg_layer"
-    tools:context=".TimeslotsConfigActivity">
+    android:focusable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/gradient_bg">
 
     <CheckBox
         android:id="@+id/expandable_child_items"
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:textSize="24dp"
-        android:textColor="@color/text_color_primary"
-        android:checked="false"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="22sp"
+        android:focusable="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@drawable/list_item_bg"
         />
 
 </android.support.constraint.ConstraintLayout>

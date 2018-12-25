@@ -34,11 +34,12 @@
     <ExpandableListView
         android:id="@+id/ts_config_list"
         android:layout_width="match_parent"
+        android:descendantFocusability="blocksDescendants"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:divider="@color/silver_color"
         android:dividerHeight="1dp"
-        android:focusable="true"
+        android:childDivider="@color/silver_color"
         android:groupIndicator="@drawable/custom_expandable"
         app:layout_constraintBottom_toTopOf="@+id/configure_button"
         app:layout_constraintEnd_toEndOf="parent"
