@@ -35,7 +35,7 @@ public class ShiftSolverTest {
         for (int i = 0; i < 5; i++) {
             assert (members.keySet().contains(Integer.toString(i)));
         }
-        group.setMember_count(5L);
+        group.setMembers_count(5L);
         // Setting up options
         ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
         for (int k=0 ; k<5 ; k++) {
@@ -66,7 +66,7 @@ public class ShiftSolverTest {
         for (int i = 0; i < 5; i++) {
             assert (members.keySet().contains(Integer.toString(i)));
         }
-        group.setMember_count(5L);
+        group.setMembers_count(5L);
         // Setting up options
         ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
         for (int k=0 ; k<5 ; k++) {
@@ -97,7 +97,7 @@ public class ShiftSolverTest {
         for (int i = 0; i < 5; i++) {
             assert (members.keySet().contains(Integer.toString(i)));
         }
-        group.setMember_count(5L);
+        group.setMembers_count(5L);
         // Setting up options
         ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
         for (int k=0 ; k<5 ; k++) {
@@ -128,7 +128,7 @@ public class ShiftSolverTest {
         for (int i = 0; i < 5; i++) {
             assert (members.keySet().contains(Integer.toString(i)));
         }
-        group.setMember_count(5L);
+        group.setMembers_count(5L);
         // Setting up options
         ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
 
@@ -156,7 +156,7 @@ public class ShiftSolverTest {
         for (int i = 0; i < 5; i++) {
             assert (members.keySet().contains(Integer.toString(i)));
         }
-        group.setMember_count(5L);
+        group.setMembers_count(5L);
         // Setting up options
         ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
         // Removing worker #0 from days: 1,3,5,7

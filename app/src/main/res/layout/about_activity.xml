@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@drawable/gradient_bg"
-    tools:context=".TimeslotsConfigActivity"
-    tools:layout_editor_absoluteY="25dp">
+    tools:context=".AboutActiviy"
+    tools:layout_editor_absoluteY="25dp"
+    android:id="@+id/about" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/timeslot_toolbar"

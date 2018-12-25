@@ -34,5 +34,7 @@
         </activity>
         <activity android:name="com.technion.shiftly.ScheduleViewActivity"/>
         <activity android:name="com.technion.shiftly.GroupCreationActivityConfirm"/>
+        <activity android:name="com.technion.shiftly.AboutActiviy"/>
+
     </application>
 </manifest>
