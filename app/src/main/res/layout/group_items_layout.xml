@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@drawable/first_bg_layer"
+    android:background="@drawable/list_item_bg"
     tools:context=".TimeslotsConfigActivity">
 
     <TextView
         android:id="@+id/expandable_group_items"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:textSize="24dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
         android:gravity="center_vertical"
         android:paddingStart="12dp"
-        android:paddingLeft="100dp"
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
-        android:layout_marginLeft="24dp"
-
-        />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp" />
 
 </android.support.constraint.ConstraintLayout>

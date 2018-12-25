@@ -10,15 +10,16 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomExpandableAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> groups;
     private HashMap<String, List<CheckBox>> children;
-    private List<List<Boolean>> checked_items;
+    private List<Map<String,Boolean>> checked_items;
 
-    public CustomExpandableAdapter(Context context, List<String> groups, HashMap<String, List<CheckBox>> children, List<List<Boolean>> checked_items) {
+    public CustomExpandableAdapter(Context context, List<String> groups, HashMap<String, List<CheckBox>> children, List<Map<String,Boolean>> checked_items) {
         this.context = context;
         this.groups = groups;
         this.children = children;
