@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,7 +25,6 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
     public enum Day{
 
     }
-
 
     // Private fields of TimeslotsConfigActivity
 
@@ -56,8 +56,10 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     if (parent.isGroupExpanded(groupPosition)) {
                         parent.collapseGroup(groupPosition);
+                        Log.v("GROUP COLLAPSE", "A");
                     } else {
                         parent.expandGroup(groupPosition);
+                        Log.v("GROUP EXPAND", "A");
                     }
                     return true;
             }
@@ -65,7 +67,6 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
         // TODO: bug - this doesn't get called when a child is being clicked on
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 TextView child = v.findViewById(R.id.expandable_child_items);
@@ -74,10 +75,12 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
 
                 if (child_is_checked) {
                     checked_items.get(groupPosition).put(days.get(groupPosition) + "_" + (char)(childPosition + (int)('a')), true);
+                    Log.v("CHILD PUT TRUE", "A");
                 } else {
                     checked_items.get(groupPosition).put(days.get(groupPosition) + "_" + (char)(childPosition + (int)('a')), false);
+                    Log.v("CHILD PUT FALSE", "A");
                 }
-                return false;
+                return true;
             }
         });
 
@@ -86,12 +89,17 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String group_name = getIntent().getExtras().getString("group_code");
-                Intent intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class); //TODO: change to GroupCreationConfirmActivity
-                intent.putExtra("group_name", group_name);
 
-                Bundle b = new Bundle();
-                b.putParcelable("timeslots", (Parcelable) checked_items);
-                intent.putExtras(b);
+                Intent intent;
+                if (group_name == "") {
+                    intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class);
+                    intent.putExtra("group_name", group_name);
+                    Bundle b = new Bundle();
+                    b.putParcelable("timeslots", (Parcelable) checked_items);
+                    intent.putExtras(b);
+                }
                 startActivity(intent);
 
             }

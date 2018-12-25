@@ -16,6 +16,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:checked="false"
         android:background="@drawable/list_item_bg"
+        android:focusable="false"
         />
 
 </android.support.constraint.ConstraintLayout>

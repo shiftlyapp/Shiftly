@@ -41,7 +41,7 @@ public class ShiftSolver {
 
         members = new HashMap<>(group.getMembers());
 
-        numOfMembers = group.getMember_count();
+        numOfMembers = group.getMembers_count();
 
         numOfShiftForEmployee = new HashMap<>();
         updateNumOfShiftForEmployee();
