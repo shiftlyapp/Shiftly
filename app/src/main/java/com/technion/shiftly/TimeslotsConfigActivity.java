@@ -97,13 +97,10 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivity(intent);
     }
 
     private void populate_data_into_lists() {
 
-        List<String> days = Arrays.asList(getResources().getStringArray(R.array.week_days));
         days_data = new ArrayList<>(days);
         timeslots_data = new HashMap<>();
         checked_items = new ArrayList<>();
