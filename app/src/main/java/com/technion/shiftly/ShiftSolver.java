@@ -67,7 +67,7 @@ public class ShiftSolver {
             updateNumOfShiftForEmployee();
             for (int i = 0; i < minimized.size(); ++i) {
                 for (int j = 0; j < minimized.get(i).size(); ++j) {
-                    if (minimized.get(i).get(j).size() == 0) {
+                    if ((minimized.get(i).get(j)).size() == 0) {
                         // "0" means no valid schedule is available
                         return null;
                     }
@@ -145,7 +145,7 @@ public class ShiftSolver {
         // Removes the first worker with the minimal amount of shifts
         Map.Entry<String, Integer> minWorker = null;
         for (Map.Entry<String, Integer> worker : numOfShiftForEmployee.entrySet()) {
-            if (minWorker == null || worker.getValue() < minWorker.getValue()) {
+            if ((toRemove.containsKey(worker.getKey()) && minWorker == null) || (toRemove.containsKey(worker.getKey()) && (worker.getValue() < minWorker.getValue()))) {
                 minWorker = worker;
             }
         }
@@ -183,10 +183,12 @@ public class ShiftSolver {
             System.out.println("2");
             return schedule;
         } else { // Failure, try another route
-            location = findMinimalUnassignedShift(); // TODO: check for infinite loops
+//            TODO:
+            return null;
+//            location = findMinimalUnassignedShift(); // TODO: check for infinite loops
         }
-        System.out.println("3");
-        return null; // this triggers backtracking
+//        System.out.println("3");
+//        return null; // this triggers backtracking
     }
 
     @Override
