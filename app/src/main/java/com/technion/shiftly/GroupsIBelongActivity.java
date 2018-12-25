@@ -1,14 +1,19 @@
 package com.technion.shiftly;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +38,10 @@ public class GroupsIBelongActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
+//        Resources res = getResources();
+//        String text = String.format(res.getString(R.string.total_groups_txt), mockupDataSet.length);
 
+        // Replace 'android.R.id.list' with the 'id' of your RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_belong);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -54,8 +62,7 @@ public class GroupsIBelongActivity extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
-                        startActivity(intent);
-                    }
+                        startActivity(intent);            }
                 };
                 ((MyAdapter) mAdapter).setClickListener(listener);
                 mRecyclerView.setAdapter(mAdapter);

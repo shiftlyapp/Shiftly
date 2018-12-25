@@ -8,11 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +27,7 @@ public class GroupsIManageActivity extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
     private List<String> groupNames;
     private List<Long> groupMembersNum;
     private FirebaseAuth mAuth;
@@ -38,6 +37,7 @@ public class GroupsIManageActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
 
+        // Replace 'android.R.id.list' with the 'id' of your RecyclerView
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -47,9 +47,23 @@ public class GroupsIManageActivity extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GroupCreationActivity.class);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
+//        mAdapter = new MyAdapter(getContext(), groupNames, groupMembersNum);
+//        MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                ViewGroup viewGroup = (ViewGroup) view;
+//                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+//                    View child = viewGroup.getChildAt(i);
+//                    child.setPressed(true);
+//                }
+//                return;
+//            }
+//        };
+//        ((MyAdapter) mAdapter).setClickListener(listener);
+//        mRecyclerView.setAdapter(mAdapter);
+
 
         groupNames = new ArrayList<>();
         groupMembersNum = new ArrayList<>();

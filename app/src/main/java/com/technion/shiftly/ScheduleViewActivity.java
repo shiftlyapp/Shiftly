@@ -24,7 +24,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ScheduleViewActivity extends AppCompatActivity {
+
 
     private ConstraintLayout mLayout;
     private FirebaseAuth mAuth;
@@ -69,35 +74,52 @@ public class ScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TimeslotsConfigActivity.class);
-                intent.putExtra("GROUP_NAME","");
+                intent.putExtra("group_code", "");
                 startActivity(intent);
             }
         });
 
-      //  mDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-       // currentUser = mAuth.getCurrentUser();
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups");
+//        currentUser = mAuth.getCurrentUser();
 
-
-        if (true) { //TODO: change
-            FloatingActionButton schedule_fab = findViewById(R.id.schedule_fab);
-            schedule_fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 1. Get all the info for the algorithm from the DB
-                    Group group = new Group();
-                  //  group.setAdmin(currentUser.getUid());
-//                    group.setGroup_name();
-
-
-                    // 2. call the solver and get the results back
-                    // Create a new parameter group
-//                    ShiftSolver solver = new ShiftSolver();
-                    // 3. Display the results in the calendar view
-
-                    showScheduleSnackBar();
+        FloatingActionButton schedule_fab = findViewById(R.id.schedule_fab);
+        schedule_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 1. Get all the info for the algorithm from the DB
+                Group group = new Group("admin", "security", 1L);
+                HashMap<String, Boolean> members = new HashMap<>();
+                for (int i = 0; i < 5; i++) {
+                    members.put(Integer.toString(i), true);
                 }
-            });
-        }
+                group.setMembers(members);
+
+                for (int i = 0; i < 5; i++) {
+                    assert (members.keySet().contains(Integer.toString(i)));
+                }
+                group.setMembers_count(5L);
+                // Setting up options
+                ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
+                // Removing worker #0 from days: 1,3,5,7
+                for (int k=0 ; k<7 ; k+=2) {
+                    for (int j = 0; j < 3; j++) {
+                        assert (options.get(k).get(j).remove("0"));
+                    }
+                }
+                group.setOptions(options);
+
+                // 2. call the solver and get the results back
+                // Create a new parameter group
+                    ShiftSolver solver = new ShiftSolver(group);
+                    solver.solve();
+                    String result = solver.toString();
+                // 3. Display the results in the calendar view
+                    showScheduleSnackBar();
+                    Intent intent = new Intent(view.getContext(), PresentSchedule.class);
+                    intent.putExtra("RESULT", result);
+                    startActivity(intent);
+            }
+        });
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -147,5 +169,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         return true;
+    }
+
+    private ArrayList<ArrayList<HashMap<String, Boolean>>> makeFullSched() {
+        ArrayList<ArrayList<HashMap<String, Boolean>>> options = new ArrayList<>();
+        for (int k=0 ; k<7 ; k++) {
+            ArrayList<HashMap<String, Boolean>> day1 = new ArrayList<>();
+            for (int j = 0; j < 3; j++) {
+                HashMap<String, Boolean> shift1 = new HashMap<>();
+                for (int i = 0; i < 5; i++) {
+                    shift1.put(Integer.toString(i), true);
+                }
+                day1.add(shift1);
+            }
+            options.add(day1);
+        }
+        return options;
     }
 }
