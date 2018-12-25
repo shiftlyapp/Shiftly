@@ -20,8 +20,24 @@ public class ShiftSolver {
         }
     };
 
+    private ArrayList<ArrayList<HashMap<String, Boolean>>> deepCopyOptions(ArrayList<ArrayList<HashMap<String, Boolean>>> opt) {
+        ArrayList<ArrayList<HashMap<String, Boolean>>> sched = new ArrayList<>();
+        for (int k=0 ; k < opt.size() ; k++) {
+            ArrayList<HashMap<String, Boolean>> day = new ArrayList<>();
+            for (int j = 0; j < opt.get(k).size() ; j++) {
+                HashMap<String, Boolean> shift = new HashMap<>();
+                for (int i = 0; i < opt.get(k).get(j).size() ; i++) {
+                    shift.put(Integer.toString(i), true);
+                }
+                day.add(shift);
+            }
+            sched.add(day);
+        }
+        return sched;
+    }
+
     public ShiftSolver(Group group) {
-        schedule = new ArrayList<>(group.getOptions());
+        schedule = deepCopyOptions(group.getOptions());
 
         members = new HashMap<>(group.getMembers());
 
@@ -29,17 +45,7 @@ public class ShiftSolver {
 
         numOfShiftForEmployee = new HashMap<>();
         updateNumOfShiftForEmployee();
-//        for(String member: group.getMembers().keySet()) {
-//            numOfShiftForEmployee.put(member, 0);
-//        }
-//        this.sorted = schedule;
-        return;
     }
-
-//    // Sorting method
-//    public void sortBySize(ArrayList<ArrayList<HashMap<String, Boolean>>> toSort) {
-//        Collections.sort(toSort, compareBySize);
-//    }
 
     private void updateNumOfShiftForEmployee() {
         for(String member: members.keySet()) {
@@ -114,14 +120,12 @@ public class ShiftSolver {
         }
         return minimized;
     }
-    // TODO: add a chooser w.r.t numOfShiftForEmployee
-    // TODO: Implement solver algorithm
-    private int[] findMinimalUnassignedShift() {
-        int[] indices = {0,0,0};
+
+    private int[] findNextMinimalUnassignedShift(int[] indices) {
         Map<String, Boolean> firstMinimal = schedule.get(indices[0]).get(indices[1]);
         indices[2] = (int)numOfMembers+1;
-        for (int i = 0; i < schedule.size(); ++i) {
-            for (int j = 0; j < schedule.get(i).size(); ++j) {
+        for (int i = indices[0]; i < schedule.size(); ++i) {
+            for (int j = indices[1]; j < schedule.get(i).size(); ++j) {
                 if (schedule.get(i).get(j).size() < indices[2] && schedule.get(i).get(j).size() > 1) {
                     firstMinimal = schedule.get(i).get(j);
                     indices[0] = i;
@@ -156,39 +160,41 @@ public class ShiftSolver {
     public ArrayList<ArrayList<HashMap<String, Boolean>>> solve() {
 
         if (minimizeSched() == null) {
-            System.out.println("0");
+//            System.out.println("0");
             return null;
         }
         // If there is no unassigned shift, we are done
-        if (findMinimalUnassignedShift()[2] == (int)numOfMembers+1) {
-            System.out.println("1");
+        int[] indices = {0,0,0};
+        if (findNextMinimalUnassignedShift(indices)[2] == (int)numOfMembers+1) {
+//            System.out.println("1");
             return schedule;
         }
         // make tentative assignment
-        int[] location = findMinimalUnassignedShift();
-        Map<String, Boolean> shift = schedule.get(location[0]).get(location[1]);
-        //TODO: leave only one worker with the least amount of shifts
-//        for (String m : members.keySet()) {
-//            if (schedule.get(location[0]).get(location[1]).size() > 1) {
-//                schedule.get(location[0]).get(location[1]).remove(m);
-//            }
-//        }
+        int[] location = {0,0,0};
+        while (location[0] != -1 || location[1] != -1) {
 
-        // Remove the excessive workers from the shift
-        for (Map.Entry<String, Boolean> toRemove : findWorkersToRemove(shift).entrySet()) {
-            schedule.get(location[0]).get(location[1]).remove(toRemove.getKey());
+            location = findNextMinimalUnassignedShift(location);
+            Map<String, Boolean> shift = schedule.get(location[0]).get(location[1]);
+
+            // Remove the excessive workers from the shift
+            for (Map.Entry<String, Boolean> toRemove : findWorkersToRemove(shift).entrySet()) {
+                schedule.get(location[0]).get(location[1]).remove(toRemove.getKey());
+            }
+            // If successful return the schedule
+            if(solve() != null) {
+//            System.out.println("2");
+                return schedule;
+            } else { // Failure, try another route
+                return null;
+//                location = findNextMinimalUnassignedShift(location);
+//                return null;
+            }
+
         }
-        // If successful return the schedule
-        if(solve() != null) {
-            System.out.println("2");
-            return schedule;
-        } else { // Failure, try another route
-//            TODO:
-            return null;
-//            location = findMinimalUnassignedShift(); // TODO: check for infinite loops
-        }
+
+
 //        System.out.println("3");
-//        return null; // this triggers backtracking
+        return null; // this triggers backtracking
     }
 
     @Override

@@ -80,4 +80,44 @@ public class Group {
     public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
         this.schedule = schedule;
     }
+
+    @Override
+    public String toString() {
+        String sched = "";
+        int i = 1;
+        if (schedule != null) {
+            for (ArrayList<HashMap<String, Boolean>> day : schedule) {
+                sched += ("day" + Integer.toString(i++) + ": " + day + "\n") ;
+            }
+        } else {
+            sched = "Unresolved";
+        }
+        String opts = "";
+        int j = 1;
+        if (options != null) {
+            for (ArrayList<HashMap<String, Boolean>> day : options) {
+                opts += ("day" + Integer.toString(j++) + ": " + day + "\n") ;
+            }
+        } else {
+            opts = "None Exist";
+        }
+        String slots = "";
+        int k = 1;
+        if (timeslots != null) {
+            for (Map<String, Boolean> shift : timeslots) {
+                slots += ("shift" + Integer.toString(j++) + ": " + shift + "\n") ;
+            }
+        } else {
+            slots = "None Exist";
+        }
+
+        return "-----Group----\n" +
+                "group_name: '" + group_name + "'\n" +
+                "admin: '" + admin + "'\n" +
+                "members: " + members + "\n" +
+                "member_count: " + member_count + "\n" +
+                "\nOptions: \n" + opts + "\n" +
+                "Schedule: \n" + sched + "\n" +
+                "timeslots: \n" + slots + "\n";
+    }
 }
