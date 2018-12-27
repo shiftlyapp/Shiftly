@@ -9,23 +9,19 @@
     android:background="@drawable/anim_bg"
     android:id="@+id/anim_bg"
     tools:context=".LoginActivity">
-    <TextView
-        android:id="@+id/welcome_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/welcome_msg"
-        android:textAlignment="center"
-        android:textSize="42sp"
+
+
+    <ImageView
+        android:id="@+id/shiftly_logo"
+        android:layout_width="154dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="64dp"
+        android:src="@drawable/shiftly_logo"
+        android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/user_pic"
@@ -33,7 +29,7 @@
         android:layout_height="192dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:contentDescription="@string/user_img"
@@ -41,12 +37,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_header" />
+        app:layout_constraintTop_toBottomOf="@+id/shiftly_logo" />
 
     <EditText
         android:id="@+id/email_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="310dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -77,7 +73,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
@@ -106,10 +102,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/forgot_password_txt"
+        android:drawableRight="@drawable/forgot_pass"
+        android:drawableEnd="@drawable/forgot_pass"
+        android:textSize="@dimen/forgot_pass_size"
         app:layout_constraintEnd_toEndOf="@id/password_edittext"
         app:layout_constraintTop_toBottomOf="@+id/password_edittext"
         tools:layout_editor_absoluteY="462dp" />
@@ -136,7 +136,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_edittext"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.45" />
 
     <TextView
         android:id="@+id/new_to_our_app"

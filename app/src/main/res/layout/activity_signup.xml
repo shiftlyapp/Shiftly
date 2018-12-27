@@ -10,12 +10,11 @@
     android:id="@+id/signup_cl"
     tools:layout_editor_absoluteY="25dp">
 
-
     <TextView
         android:id="@+id/signup_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:text="@string/signup_header"
         android:textAlignment="center"
         android:textSize="42sp"
@@ -27,8 +26,8 @@
 
     <ImageView
         android:id="@+id/signup_pic"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/signup_img"
         android:src="@drawable/signup_symbol"
@@ -41,7 +40,7 @@
     <EditText
         android:id="@+id/signup_firstname_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -64,7 +63,7 @@
     <EditText
         android:id="@+id/signup_lastname_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -87,7 +86,7 @@
     <EditText
         android:id="@+id/signup_email_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
@@ -110,7 +109,7 @@
     <EditText
         android:id="@+id/signup_password_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:autofillHints="false"
@@ -135,7 +134,7 @@
     <EditText
         android:id="@+id/signup_confirm_password_edittext"
         style="@style/CustomEditText"
-        android:layout_width="275dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="17dp"
         android:autofillHints="false"
