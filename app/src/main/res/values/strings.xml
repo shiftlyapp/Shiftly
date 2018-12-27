@@ -32,9 +32,14 @@
     <string name="err_password_confirmation">Password does not match</string>
     <string name="err_login_email">Please enter a vaild mail address</string>
     <string name="err_login_password">Please enter a valid password </string>
-    <string name="err_invalid_email">Error: Email does  not exist</string>
+    <string name="err_invalid_email">Error: Email does  not exist!</string>
+    <string name="err_invalid_email_2">Error: Invalid Email format</string>
     <string name="err_invalid_pass">Error: Invalid password</string>
     <string name="err_login_attempts">Error: Too many logins attempts.</string>
+    <string name="login_success">Loggged in Successfully!</string>
+    <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">792989287718195</string>
+    <string name="fb_login_protocol_scheme">fb792989287718195</string>
     <string name="err_groupname">Invalid group name - no spaces allowed!</string>
     <string name="login_err_password">Please type in a Password</string>
     <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
@@ -42,7 +47,7 @@
     <string name="reset_email_sent">Password reset mail sent successfully.</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
-    <string name="account_created">Account created successfully!</string>
+    <string name="account_created">Account created! Logging you in...</string>
     <string name="title_activity_schedule_view">View schedules</string>
     <string name="title_home">Daily</string>
     <string name="title_dashboard">Weekly</string>

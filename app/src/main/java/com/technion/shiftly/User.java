@@ -1,8 +1,6 @@
 package com.technion.shiftly;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class User {

@@ -1,19 +1,14 @@
 package com.technion.shiftly;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,14 +17,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
@@ -37,45 +39,74 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private GoogleSignInClient mGoogleSignInClient;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
-    private String sbError;
-
-    private void showCustomSnackBar(String error) {
-        final Snackbar mySnackbar = Snackbar.make(mLayout, error, Snackbar.LENGTH_SHORT);
-        final View snackbarView = mySnackbar.getView();
-        final TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        } else {
-            tv.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
-        snackbarView.setBackgroundColor(getResources().getColor(R.color.text_color_primary));
-        tv.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        tv.setTextSize(22);
-        tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.snackbar_error, 0, 0, 0);
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(snackbarView, "alpha", 0f, 1f);
-        fadeIn.setDuration(500);
-        fadeIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                snackbarView.setVisibility(View.VISIBLE);
-                snackbarView.setAlpha(0);
-                mySnackbar.show();
-            }
-        });
-        fadeIn.start();
-    }
+    private CustomSnackbar snackbar;
 
     @Override
     public void onStart() {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (currentUser != null || account != null) {
             Intent intent = new Intent(LoginActivity.this, GroupListsActivity.class);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == Constants.GOOGLE_LOGIN_SUCCESS) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately// ...
+            }
+        }
+    }
+
+    private void updateUI() {
+        finish();
+        startActivity(new Intent(getApplicationContext(), GroupListsActivity.class));
+    }
+
+    private void signInWithGoogle() {
+        Intent signInWithGoogleIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInWithGoogleIntent, Constants.GOOGLE_LOGIN_SUCCESS);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 0);
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateUI();
+                                }
+                            }, Constants.REDIRECTION_DELAY);
+                        } else {
+                            return;
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     @Override
@@ -84,16 +115,31 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        mLayout = (ConstraintLayout)findViewById(R.id.anim_bg);
+        mLayout = (ConstraintLayout) findViewById(R.id.anim_bg);
+        snackbar = new CustomSnackbar(18);
         ImageView logo = (ImageView) findViewById(R.id.shiftly_logo);
         AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(1000);
-        animationDrawable.setExitFadeDuration(1000);
+        animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
+        animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.start();
         ImageView user_pic = (ImageView) findViewById(R.id.user_pic);
         TextView signup_txt = (TextView) findViewById(R.id.new_to_our_app);
+        findViewById(R.id.sign_in_google).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signInWithGoogle();
+            }
+        });
         email_edt = findViewById(R.id.email_edittext);
         password_edt = findViewById(R.id.password_edittext);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Animation bounce_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce_anim);
         logo.startAnimation(bounce_anim);
@@ -120,11 +166,10 @@ public class LoginActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                sbError = getResources().getString(R.string.reset_email_sent);
+                                                snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.reset_email_sent), 1);
                                             } else {
-                                                sbError = getResources().getString(R.string.err_invalid_email);
+                                                snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.err_invalid_email), 0);
                                             }
-                                            showCustomSnackBar(sbError);
                                         }
                                     });
                         }
@@ -162,11 +207,16 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         currentUser = mAuth.getCurrentUser();
-                                        finish();
-                                        startActivity(new Intent(getApplicationContext(),
-                                                GroupListsActivity.class));
+                                        snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 0);
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateUI();
+                                            }
+                                        }, Constants.REDIRECTION_DELAY);
                                     } else {
-                                        // If sign in fails, display a message to the user.
+                                        String sbError;
                                         try {
                                             throw task.getException();
                                         } catch (FirebaseAuthInvalidUserException e) {
@@ -180,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } catch (Exception e) {
                                             sbError = task.getException().getMessage();
                                         }
-                                        showCustomSnackBar(sbError);
+                                        snackbar.show(LoginActivity.this, mLayout, sbError, 0);
                                     }
                                 }
                             });
