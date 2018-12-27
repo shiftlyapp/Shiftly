@@ -207,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         currentUser = mAuth.getCurrentUser();
-                                        snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 0);
+                                        snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 1);
                                         Handler handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override

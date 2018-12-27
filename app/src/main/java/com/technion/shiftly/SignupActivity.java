@@ -18,7 +18,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,29 +45,33 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), GroupListsActivity.class));
     }
 
+    private void runAnimation() {
+        AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
+        animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
+        animationDrawable.start();
+        ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        t.setDuration((long) Constants.ANIM_DURATION);
+        t.setRepeatCount(0);
+        ImageView signup_img = (ImageView) findViewById(R.id.signup_pic);
+        signup_img.startAnimation(t);
+        findViewById(R.id.signup_header).startAnimation(t);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mLayout = (ConstraintLayout) findViewById(R.id.signup_cl);
-        AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
-        animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
-        animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
-        animationDrawable.start();
-        ImageView signup_img = (ImageView) findViewById(R.id.signup_pic);
-        ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        t.setDuration((long) Constants.ANIM_DURATION);
-        t.setRepeatCount(0);
-        signup_img.startAnimation(t);
-        findViewById(R.id.signup_header).startAnimation(t);
+        runAnimation();
 
         mAuth = FirebaseAuth.getInstance();
 
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
+        String regexPassword = "^(?!.*\\s).{6,14}$";
         mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_firstname_edittext, "[a-zA-Z]+[[\\s][a-zA-Z]+]*", R.string.err_firstname);
         mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_lastname_edittext, "[a-zA-Z]+[[\\s][a-zA-Z]+]*", R.string.err_lastname);
         mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-        String regexPassword = "^(?!.*\\s).{6,14}$";
         mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_password_edittext, regexPassword, R.string.err_password);
         mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_confirm_password_edittext, R.id.signup_password_edittext, R.string.err_password_confirmation);
 
@@ -91,7 +94,7 @@ public class SignupActivity extends AppCompatActivity {
                                     CustomSnackbar snackbar = new CustomSnackbar(18);
                                     if (task.isSuccessful()) {
                                         pushUserIntoDatabase(firstname, lastname, email);
-                                        snackbar.show(SignupActivity.this,mLayout,getResources().getString(R.string.account_created),1);
+                                        snackbar.show(SignupActivity.this, mLayout, getResources().getString(R.string.account_created), 1);
                                         Handler handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
@@ -103,9 +106,9 @@ public class SignupActivity extends AppCompatActivity {
                                         try {
                                             throw task.getException();
                                         } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            snackbar.show(SignupActivity.this,mLayout,getResources().getString(R.string.err_invalid_email_2),0);
+                                            snackbar.show(SignupActivity.this, mLayout, getResources().getString(R.string.err_invalid_email_2), 0);
                                         } catch (Exception e) {
-                                            snackbar.show(SignupActivity.this,mLayout,task.getException().toString(),0);
+                                            snackbar.show(SignupActivity.this, mLayout, task.getException().toString(), 0);
                                         }
                                     }
                                 }

@@ -8,7 +8,7 @@
     android:background="@drawable/gradient_bg"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".GroupsIManageActivity">
+    tools:context=".GroupsIManageFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/groups_i_manage"

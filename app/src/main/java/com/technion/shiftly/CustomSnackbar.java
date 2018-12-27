@@ -35,11 +35,11 @@ public class CustomSnackbar {
         tv.setTextSize(text_size);
         tv.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         switch (type) {
-            case 0:
+            case 0: // Failure
                 tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.snackbar_error, 0, 0, 0);
                 break;
-            case 1:
-                tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.snackbar_error, 0, 0, 0);
+            case 1: // Success
+                tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.v, 0, 0, 0);
                 break;
         }
         snackbar.show();

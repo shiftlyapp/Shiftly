@@ -90,8 +90,8 @@ public class GroupListsActivity extends AppCompatActivity {
     }
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new GroupsIBelongActivity(), getString(R.string.groups_i_belong));
-        adapter.addFragment(new GroupsIManageActivity(), getString(R.string.groups_i_manage));
+        adapter.addFragment(new GroupsIBelongFragment(), getString(R.string.groups_i_belong));
+        adapter.addFragment(new GroupsIManageFragment(), getString(R.string.groups_i_manage));
 
         viewPager.setAdapter(adapter);
     }
