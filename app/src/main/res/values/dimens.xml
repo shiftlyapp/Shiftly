@@ -3,4 +3,9 @@
     <dimen name="forgot_pass_size">18sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Button -->
+    <dimen name="button_left_padding">16dp</dimen>
+    <dimen name="button_right_padding">16dp</dimen>
+    <dimen name="button_left_margin">8dp</dimen>
+    <dimen name="button_margin">8dp</dimen>
 </resources>

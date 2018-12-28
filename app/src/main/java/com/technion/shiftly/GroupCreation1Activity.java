@@ -10,8 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,11 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.UUID;
-
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
-public class GroupCreationActivity extends AppCompatActivity {
+public class GroupCreation1Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -37,14 +35,14 @@ public class GroupCreationActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
     @Override
     public void onBackPressed() {
         finish();
-        startActivity(new Intent(this,GroupListsActivity.class));
+        startActivity(new Intent(this, GroupListsActivity.class));
     }
 
     @Override
@@ -56,37 +54,24 @@ public class GroupCreationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_creation);
+        setContentView(R.layout.activity_group_creation_1);
         mAuth = FirebaseAuth.getInstance();
-        Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar);
+        Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_1);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = database.getReference().child(("Users"));
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
-        mAwesomeValidation.addValidation(GroupCreationActivity.this, R.id.group_name_edittext, "[a-zA-Z0-9]+", R.string.err_groupname);
+        mAwesomeValidation.addValidation(GroupCreation1Activity.this, R.id.group_name_edittext, "[a-zA-Z0-9]+", R.string.err_groupname);
 
         Button create_button = findViewById(R.id.create_button);
         create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate()) {
-                    Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), GroupCreation2Activity.class);
                     String group_name = group_name_edittext.getText().toString();
                     intent.putExtra("GROUP_NAME", group_name);
                     startActivity(intent);

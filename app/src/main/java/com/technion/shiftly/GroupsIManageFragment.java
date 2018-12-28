@@ -45,7 +45,7 @@ public class GroupsIManageFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), GroupCreationActivity.class);
+                Intent intent = new Intent(view.getContext(), GroupCreation1Activity.class);
                 startActivity(intent);
             }
         });

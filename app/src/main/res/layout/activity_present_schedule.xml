@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     android:layout_gravity="center"
     android:background="@drawable/gradient_bg"
-    tools:context=".GroupCreationActivity">
+    tools:context=".GroupCreation1Activity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/schedule_toolbar"

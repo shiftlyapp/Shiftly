@@ -88,7 +88,7 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
                 if (group_name.isEmpty()) {
                     intent = new Intent(getApplicationContext(), ScheduleViewActivity.class);
                 } else {
-                    intent = new Intent(getApplicationContext(), GroupCreationActivityConfirm.class);
+                    intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
                     intent.putExtra("GROUP_NAME", group_name);
                 }
                 startActivity(intent);

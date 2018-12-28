@@ -13,9 +13,10 @@
     <string name="firstname_edittext_hint">FIRST NAME</string>
     <string name="lastname_edittext_hint">LAST NAME</string>
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
-    <string name="group_name_edittext_hint">GROUP NAME</string>
     <string name="share_code">C</string>
     <string name="continue_text">CONTINUE</string>
+    <string name="apply_text">APPLY</string>
+    <string name="skip_text">SKIP</string>
     <string name="configure_text">Configure</string>
     <string name="group_create_label">Group Creation</string>
     <string name="group_create">CREATE</string>
@@ -23,8 +24,9 @@
     <string name="group_share_hint">Share this code with your friends\n to invite them to your group: </string>
     <string name="timeslots_configure">Configure Timeslots</string>
     <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
-    <string name="group_pic_hint">1. Select an icon for your Group:</string>
-    <string name="group_name_hint">2. Type a name for your Group:</string>
+    <string name="group_pic_hint">Now, upload your Group picture:</string>
+    <string name="group_name_hint">First, name your Group:</string>
+    <string name="group_name_edittext_hint">GROUP NAME</string>
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
     <string name="err_email">Please enter a vaild mail address</string>
@@ -34,7 +36,7 @@
     <string name="err_login_password">Please enter a valid password </string>
     <string name="err_invalid_email">Error: Email does  not exist!</string>
     <string name="err_invalid_email_2">Error: Invalid Email format</string>
-    <string name="err_invalid_pass">Error: Invalid password</string>
+    <string name="err_invalid_pass">Error: Invalid Password.</string>
     <string name="err_login_attempts">Error: Too many logins attempts.</string>
     <string name="login_success">Loggged in Successfully!</string>
     <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>

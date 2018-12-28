@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,12 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GroupCreationActivityConfirm extends AppCompatActivity {
+public class GroupCreation3Activity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -46,7 +44,7 @@ public class GroupCreationActivityConfirm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_creation_confirm);
+        setContentView(R.layout.activity_group_creation_3);
         Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));

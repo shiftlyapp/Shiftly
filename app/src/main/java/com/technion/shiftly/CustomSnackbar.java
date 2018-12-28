@@ -31,7 +31,7 @@ public class CustomSnackbar {
         } else {
             tv.setGravity(Gravity.CENTER_HORIZONTAL);
         }
-        snackbarView.setBackgroundColor(context.getResources().getColor(R.color.text_color_primary));
+        snackbarView.setBackgroundColor(context.getResources().getColor(R.color.snackbar_bg));
         tv.setTextSize(text_size);
         tv.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         switch (type) {
