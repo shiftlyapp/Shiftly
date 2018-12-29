@@ -3,6 +3,7 @@ package com.technion.shiftly;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -45,26 +47,23 @@ public class GroupCreation3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_creation_3);
-        Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar);
+        Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        @SuppressWarnings("unchecked")
-        List<Map<String, Boolean>> timeslots = (List<Map<String, Boolean>>) getIntent().getSerializableExtra("TIMESLOTS_ARRAY");
 
         Bundle extras = getIntent().getExtras();
         String group_name = extras.getString("GROUP_NAME");
         TextView signup_text = findViewById(R.id.signup_header);
         Resources res = getResources();
         signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
+        MediaPlayer success_sound = MediaPlayer.create(this, R.raw.success);
+        success_sound.start();
 
-        ImageView success = findViewById(R.id.success_img);
-        ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        t.setDuration((long) 750);
-        t.setRepeatCount(0);
-        success.startAnimation(t);
+        LottieAnimationView done_animation = findViewById(R.id.success_img);
+        done_animation.setSpeed(0.5f);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -74,11 +73,6 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
         String group_UID = mGroupRef.push().getKey();
         Group group = new Group(admin_UID, group_name, 0L);
-        ArrayList<ArrayList<HashMap<String, Boolean>>> options = null;
-        ArrayList<ArrayList<HashMap<String, Boolean>>> schedule = null;
-        group.setTimeslots(timeslots);
-        group.setOptions(options);
-        group.setSchedule(schedule);
         mGroupRef.child(group_UID).setValue(group);
 
         EditText group_code_edittext = findViewById(R.id.group_code);

@@ -2,8 +2,8 @@ package com.technion.shiftly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,23 +11,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.rahimlis.badgedtablayout.BadgedTabLayout;
 
 public class GroupListsActivity extends AppCompatActivity {
-    private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
-    private DrawerLayout mDrawerLayout;
-    private Button aboutButton;
-    private Button signOutButton;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private GoogleSignInAccount mGoogleSignInAccount;
+    private GoogleSignInClient mGoogleSignInClient;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (currentUser == null) {
+            if (mGoogleSignInAccount == null) {
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lists);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
-        final DrawerLayout mDrawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+        final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -38,15 +60,21 @@ public class GroupListsActivity extends AppCompatActivity {
             }
         });
 
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SectionsPageAdapter mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.groups);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        BadgedTabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        tabLayout.setBadgeText(1, "1");
         setIcons(tabLayout);
 
         // Drawer menu
@@ -62,10 +90,15 @@ public class GroupListsActivity extends AppCompatActivity {
                                 break;
                             }
                             case R.id.drawer_signout_button: {
-                                FirebaseAuth.getInstance().signOut();
-                                finish();
+                                mAuth.signOut(); // Firebase Sign-out
+                                mGoogleSignInClient.signOut()
+                                        .addOnCompleteListener(GroupListsActivity.this, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                gotoLogin();
+                                            }
+                                        });
                                 gotoLogin();
-
                                 break;
                             }
                         }
@@ -79,6 +112,7 @@ public class GroupListsActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public void gotoAbout() {
         Intent intent = new Intent(this, AboutActiviy.class);
         startActivity(intent);
@@ -86,8 +120,10 @@ public class GroupListsActivity extends AppCompatActivity {
 
     public void gotoLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
+        finish();
         startActivity(intent);
     }
+
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new GroupsIBelongFragment(), getString(R.string.groups_i_belong));
@@ -96,9 +132,9 @@ public class GroupListsActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    private void setIcons(TabLayout tabLayout) {
-        tabLayout.getTabAt(0).setIcon(R.drawable.groups_belong);
-        tabLayout.getTabAt(1).setIcon(R.drawable.groups_managed);
+    private void setIcons(BadgedTabLayout tabLayout) {
+        tabLayout.setIcon(0, R.drawable.ic_favorite); // 0 is the position of tab where icon should be added
+        tabLayout.setIcon(1, R.drawable.ic_shopping);
 
     }
 }

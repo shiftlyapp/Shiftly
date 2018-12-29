@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.basgeekball:awesome-validation:4.2'
     implementation 'com.github.alamkanak:android-week-view:1.2.6'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
+    implementation 'com.github.rahimlis:badgedtablayout:v1.2'
     implementation ('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'support-v4'

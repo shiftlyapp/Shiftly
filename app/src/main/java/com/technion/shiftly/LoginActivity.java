@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 0);
+                            snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 1);
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -122,6 +123,11 @@ public class LoginActivity extends AppCompatActivity {
         animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.start();
+
+        LottieAnimationView clock_anim = findViewById(R.id.clock_anim);
+        clock_anim.setSpeed(0.5f);
+        clock_anim.setScale(0.6f);
+
         ImageView user_pic = (ImageView) findViewById(R.id.user_pic);
         TextView signup_txt = (TextView) findViewById(R.id.new_to_our_app);
         findViewById(R.id.sign_in_google).setOnClickListener(new View.OnClickListener() {

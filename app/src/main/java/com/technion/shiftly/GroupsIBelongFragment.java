@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +46,9 @@ public class GroupsIBelongFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_belong);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setVisibility(View.GONE); // Hide the recycler view until recycler is loaded
+        final LottieAnimationView loading_icon = view.findViewById(R.id.loading_icon);
+        loading_icon.setScale(0.2f);
 
         groupNames = new ArrayList<>();
         groupMembersNum = new ArrayList<>();
@@ -53,6 +57,9 @@ public class GroupsIBelongFragment extends Fragment {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    loading_icon.setVisibility(View.GONE);
+                }
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     groupNames.add(snapshot.child("group_name").getValue(String.class));
                     groupMembersNum.add(snapshot.child("members_count").getValue(Long.class));
@@ -66,6 +73,7 @@ public class GroupsIBelongFragment extends Fragment {
                 };
                 ((MyAdapter) mAdapter).setClickListener(listener);
                 mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
 
             @Override

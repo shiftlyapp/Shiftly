@@ -9,15 +9,30 @@
     android:focusableInTouchMode="true"
     android:background="@drawable/gradient_bg"
     tools:context=".GroupsIManageFragment">
+<FrameLayout
+    android:id="@+id/recycler_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/groups_i_belong"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+ />
+</FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/join_fab"

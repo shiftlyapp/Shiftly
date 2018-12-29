@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/group_lists"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -22,43 +21,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
+                android:elevation="8dp"
                 app:layout_constraintBottom_toTopOf="@id/tabs"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/Theme.AppCompat.Light">
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <TextView
+                        android:id="@+id/toolbar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="26sp"
-                        android:text="@string/app_name"
                         android:layout_gravity="start"
                         android:paddingTop="8dp"
-                        android:id="@+id/toolbar_title" />
+                        android:text="@string/app_name"
+                        android:textSize="26sp" />
 
                     <SearchView
                         android:id="@+id/menu_search"
-                        android:layout_gravity="end|top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="end|top"
                         android:maxWidth="250dp"
-                        android:paddingTop="8dp"/>
+                        android:paddingTop="8dp" />
                 </FrameLayout>
             </android.support.v7.widget.Toolbar>
 
-            <android.support.design.widget.TabLayout
+            <com.rahimlis.badgedtablayout.BadgedTabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gradient_bg_linear"
-                android:layout_gravity="fill"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:elevation="8dp"
                 app:layout_constraintBottom_toTopOf="@id/shadow_tablayout"
                 app:layout_constraintTop_toBottomOf="@id/group_list_toolbar"
                 app:tabIndicatorColor="@color/orange_color"
                 app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed" />
+
             <View
                 android:id="@+id/shadow_tablayout"
                 android:layout_width="match_parent"
@@ -66,8 +69,8 @@
                 android:background="@drawable/shadow"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabs"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
             <android.support.v4.view.ViewPager
                 android:id="@+id/groups"
                 android:layout_width="match_parent"
@@ -83,8 +86,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_menu"
-        app:headerLayout="@layout/drawer_header_activity"/>
+        app:headerLayout="@layout/drawer_header_activity"
+        app:menu="@menu/drawer_menu" />
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/anim_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
     android:background="@drawable/anim_bg"
-    android:id="@+id/anim_bg"
+    android:focusableInTouchMode="true"
     tools:context=".LoginActivity">
 
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="336dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <ImageView
-        android:id="@+id/shiftly_logo"
-        android:layout_width="154dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="64dp"
-        android:src="@drawable/shiftly_logo"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/clock_anim"
+            android:layout_width="wrap_content"
+            android:alpha="0.1"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/clock" />
 
-    <ImageView
-        android:id="@+id/user_pic"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:contentDescription="@string/user_img"
-        android:src="@drawable/user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shiftly_logo" />
+        <ImageView
+            android:id="@+id/shiftly_logo"
+            android:layout_width="154dp"
+            android:layout_height="88dp"
+            android:layout_above="@id/user_pic"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/shiftly_logo" />
+
+        <ImageView
+            android:id="@+id/user_pic"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/user_img"
+            android:src="@drawable/user" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/email_edittext"
@@ -46,7 +55,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:autofillHints="true"
@@ -61,9 +70,9 @@
         android:paddingRight="12dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_pic"
+        app:layout_constraintTop_toBottomOf="@+id/relativelayout"
         tools:targetApi="O" />
 
     <EditText
@@ -101,18 +110,14 @@
         android:id="@+id/forgot_pass_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/forgot_password_txt"
-        android:drawableRight="@drawable/forgot_pass"
+        android:layout_marginTop="4dp"
         android:drawableEnd="@drawable/forgot_pass"
+        android:drawableRight="@drawable/forgot_pass"
+        android:text="@string/forgot_password_txt"
+        android:textAlignment="viewEnd"
         android:textSize="@dimen/forgot_pass_size"
         app:layout_constraintEnd_toEndOf="@id/password_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext"
-        tools:layout_editor_absoluteY="462dp" />
+        app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
 
     <Button
         android:id="@+id/login_button"
@@ -124,25 +129,10 @@
         android:text="@string/login_txt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_edittext"
         app:layout_constraintVertical_bias="0.33" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app" />
 
     <TextView
         android:id="@+id/new_to_our_app"
@@ -157,11 +147,29 @@
         android:drawableEnd="@drawable/in"
         android:drawableRight="@drawable/in"
         android:text="@string/new_txt"
+        android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+        app:layout_constraintVertical_bias="0.85" />
 
 </android.support.constraint.ConstraintLayout>

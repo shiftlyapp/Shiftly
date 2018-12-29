@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="@drawable/custom_ripple"
-    android:clickable="true"
+    android:background="@android:color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <ImageView
@@ -39,11 +38,4 @@
             android:layout_toEndOf="@id/group_image"
             android:layout_toRightOf="@id/group_image"
             android:textColor="@color/members_color" />
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/shadow"
-        android:layout_alignParentBottom="true"
-        />
     </RelativeLayout>

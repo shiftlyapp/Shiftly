@@ -20,8 +20,8 @@
     <string name="configure_text">Configure</string>
     <string name="group_create_label">Group Creation</string>
     <string name="group_create">CREATE</string>
-    <string name="group_create_succeed">%1$s\nwas created successfully! </string>
-    <string name="group_share_hint">Share this code with your friends\n to invite them to your group: </string>
+    <string name="group_create_succeed">%1$s was created successfully! </string>
+    <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
     <string name="timeslots_configure">Configure Timeslots</string>
     <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
     <string name="group_pic_hint">Now, upload your Group picture:</string>

@@ -1,8 +1,9 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:fontFamily">@font/helvetica_neue</item>
         <item name="android:layoutDirection">ltr</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="android:buttonStyle">@style/CustomButton</item>
+        <item name="buttonStyle">@style/CustomButton</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -18,6 +19,8 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
     <style name="CustomEditText">
+        <item name="android:typeface">sans</item>
+        <item name="android:fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryLight</item>
         <item name="android:textColorHighlight">@color/colorPrimary</item>
@@ -27,7 +30,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">@drawable/rounded_button</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/helvetica_neue</item>
         <item name="android:textSize">22sp</item>
         <item name="android:elevation">4dp</item>
         <item name="android:paddingStart">@dimen/button_left_padding</item>
@@ -37,13 +40,15 @@
         <item name="android:layout_margin">8dp</item>
     </style>
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">@font/helvetica_neue</item>
     </style>
     <style name="CustomToolBar">
         <item name="android:background">@null</item>
+        <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
         <item name="android:headerDividersEnabled">false</item>
