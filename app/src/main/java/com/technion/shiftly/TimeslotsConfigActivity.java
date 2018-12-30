@@ -78,7 +78,7 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
             }
         });
 
-        Button confirm_button = findViewById(R.id.configure_button);
+        final Button confirm_button = findViewById(R.id.configure_button);
         confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +93,7 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
                 }
                 startActivity(intent);
                 finish();
+                confirm_button.setEnabled(false);
             }
         });
 
