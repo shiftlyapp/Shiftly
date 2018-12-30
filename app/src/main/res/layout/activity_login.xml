@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/anim_bg"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/anim_bg"
-    android:focusableInTouchMode="true"
-    tools:context=".LoginActivity">
+    android:background="@drawable/anim_bg">
 
     <RelativeLayout
         android:id="@+id/relativelayout"
         android:layout_width="match_parent"
-        android:layout_height="336dp"
+        android:layout_height="330dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -20,11 +20,11 @@
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/clock_anim"
             android:layout_width="wrap_content"
-            android:alpha="0.1"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:alpha="0.075"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/clock" />
@@ -110,6 +110,7 @@
         android:id="@+id/forgot_pass_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:layout_marginTop="4dp"
         android:drawableEnd="@drawable/forgot_pass"
         android:drawableRight="@drawable/forgot_pass"
@@ -129,10 +130,10 @@
         android:text="@string/login_txt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_edittext"
-        app:layout_constraintVertical_bias="0.33" />
+        app:layout_constraintVertical_bias="0.18" />
 
     <TextView
         android:id="@+id/new_to_our_app"
@@ -140,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
@@ -156,20 +157,56 @@
         app:layout_constraintTop_toBottomOf="@+id/login_button"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/hidden_fb_button"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/google_login_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/google"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/login_button"
+        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintStart_toStartOf="@+id/login_button"
         app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.8" />
+
+    <ImageButton
+        android:id="@+id/facebook_login_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:background="@drawable/facebook"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/login_button"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="@+id/login_button"
+        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Sign In with:"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/facebook_login_button"
+        app:layout_constraintEnd_toEndOf="@+id/login_button"
+        app:layout_constraintStart_toStartOf="@+id/login_button"
+        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

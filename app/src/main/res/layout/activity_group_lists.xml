@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/group_lists"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -25,51 +24,23 @@
                 app:layout_constraintBottom_toTopOf="@id/tabs"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.AppCompat.Light">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/toolbar_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:paddingTop="8dp"
-                        android:text="@string/app_name"
-                        android:textSize="26sp" />
-
-                    <SearchView
-                        android:id="@+id/menu_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|top"
-                        android:maxWidth="250dp"
-                        android:paddingTop="8dp" />
-                </FrameLayout>
-            </android.support.v7.widget.Toolbar>
-
-            <com.rahimlis.badgedtablayout.BadgedTabLayout
+                app:popupTheme="@style/Theme.AppCompat.Light"/>
+            <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 android:elevation="8dp"
-                app:layout_constraintBottom_toTopOf="@id/shadow_tablayout"
+                app:tabMaxWidth="0dp"
+                app:tabPaddingStart="0dp"
+                app:tabPaddingEnd="0dp"
+                app:layout_constraintBottom_toTopOf="@id/groups"
                 app:layout_constraintTop_toBottomOf="@id/group_list_toolbar"
                 app:tabIndicatorColor="@color/orange_color"
+                app:tabGravity="fill"
                 app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed" />
-
-            <View
-                android:id="@+id/shadow_tablayout"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@drawable/shadow"
-                app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/groups"
@@ -79,7 +50,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tabs" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
-
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -88,6 +58,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header_activity"
         app:menu="@menu/drawer_menu" />
-
 
 </android.support.v4.widget.DrawerLayout>

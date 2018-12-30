@@ -7,6 +7,7 @@
     <color name="text_color_primary">#ffffff</color>
     <color name="snackbar_bg">#e1ffffff</color>
     <color name="background_color">#006064</color>
+    <color name="loading_bg">#5affffff</color>
     <color name="text_color_secondary">#ffffff</color>
     <color name="secondary_text_material_dark">#ffffff</color>
     <color name="members_color">#007105</color>
@@ -24,7 +25,8 @@
     <color name="btv_selected">#00363a</color>
     <color name="btv_not_selected">#7800363a</color>
     <color name="silver_color">#cacaca</color>
-    <color name="silver_color_dark">#c2c2c2</color>
+    <color name="div_color">#e4e4e4</color>
+    <color name="silver_color_dark">#e2e2e2</color>
     <color name="silver_color_darker">#5c5c5c</color>
     <color name="shadow_gradient">#1e000000</color>
 </resources>

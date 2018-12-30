@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +17,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.rahimlis.badgedtablayout.BadgedTabLayout;
 
 public class GroupListsActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private GoogleSignInAccount mGoogleSignInAccount;
+    private TabLayout mTabLayout;
+    private ViewPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -66,18 +67,12 @@ public class GroupListsActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        SectionsPageAdapter mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.groups);
         setupViewPager(mViewPager);
 
-        BadgedTabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setBadgeText(1, "1");
-        setIcons(tabLayout);
-
-        // Drawer menu
+        mTabLayout = findViewById(R.id.tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
+        setupTabIcons(mPagerAdapter);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -124,17 +119,19 @@ public class GroupListsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new GroupsIBelongFragment(), getString(R.string.groups_i_belong));
-        adapter.addFragment(new GroupsIManageFragment(), getString(R.string.groups_i_manage));
-
-        viewPager.setAdapter(adapter);
+    private void setupTabIcons(ViewPagerAdapter pagerAdapter) {
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(pagerAdapter.getTabView(i));
+            }
+        }
     }
 
-    private void setIcons(BadgedTabLayout tabLayout) {
-        tabLayout.setIcon(0, R.drawable.ic_favorite); // 0 is the position of tab where icon should be added
-        tabLayout.setIcon(1, R.drawable.ic_shopping);
-
+    private void setupViewPager(ViewPager viewPager) {
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+        mPagerAdapter.addFragment(new GroupsIBelongFragment(), getString(R.string.groups_i_belong));
+        mPagerAdapter.addFragment(new GroupsIManageFragment(), getString(R.string.groups_i_manage));
+        viewPager.setAdapter(mPagerAdapter);
     }
 }

@@ -57,7 +57,7 @@
     <string name="daily_label">Daily schedule</string>
     <string name="weekly_label">Weekly schedule</string>
     <string name="agenda_label">Agenda schedule</string>
-
+    <string name="facebook_button_txt">Sign In</string>
     <!--Group lists -->
     <string name="groups_i_belong">GROUPS I BELONG</string>
     <string name="groups_i_manage">GROUPS I MANAGE</string>

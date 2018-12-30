@@ -2,37 +2,49 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    tools:context=".GroupsIManageFragment">
+    android:background="@drawable/gradient_bg">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/groups_i_manage"
+    <FrameLayout
+        android:id="@+id/recycler_wrapper_manage"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scrollbars="vertical"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_icon_manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/groups_i_manage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycler_bg"
+            android:elevation="16dp"
+            android:scrollbars="vertical" />
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_fab"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:backgroundTint="@color/orange_color"
-        android:tint="@android:color/white"
-        app:srcCompat="@drawable/ic_fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:tint="@android:color/white"
+        app:backgroundTint="@color/orange_color"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:focusable="true" />
+        app:srcCompat="@drawable/ic_fab_add" />
 
 </android.support.constraint.ConstraintLayout>

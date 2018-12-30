@@ -9,15 +9,25 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,11 +38,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Arrays;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
@@ -44,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
     private CustomSnackbar snackbar;
+    private CallbackManager mCallbackManager;
 
     @Override
     public void onStart() {
@@ -60,8 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GOOGLE_LOGIN_SUCCESS) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -84,6 +97,31 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInWithGoogleIntent, Constants.GOOGLE_LOGIN_SUCCESS);
     }
 
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("TAG", "handleFacebookAccessToken:" + token);
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI();
+                        }
+                        // ...
+                    }
+                });
+    }
+
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -102,10 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }, Constants.REDIRECTION_DELAY);
                         } else {
-                            return;
                         }
-
-                        // ...
                     }
                 });
     }
@@ -123,19 +158,47 @@ public class LoginActivity extends AppCompatActivity {
         animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.start();
+        final LottieAnimationView clock_anim = findViewById(R.id.clock_anim);
+        clock_anim.setSpeed(0.6f);
+        clock_anim.setScale(0.55f);
+        ImageButton fb_login = findViewById(R.id.facebook_login_button);
+        mCallbackManager = CallbackManager.Factory.create();
+        final LoginButton fb_button_hidden = findViewById(R.id.hidden_fb_button);
+        fb_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fb_button_hidden.performClick();
+            }
+        });
+        fb_button_hidden.setReadPermissions(Arrays.asList("email", "public_profile"));
+        fb_button_hidden.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
 
-        LottieAnimationView clock_anim = findViewById(R.id.clock_anim);
-        clock_anim.setSpeed(0.5f);
-        clock_anim.setScale(0.6f);
+            @Override
+            public void onCancel() {
+                //
+            }
 
-        ImageView user_pic = (ImageView) findViewById(R.id.user_pic);
-        TextView signup_txt = (TextView) findViewById(R.id.new_to_our_app);
-        findViewById(R.id.sign_in_google).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this, error.toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        fb_button_hidden.setSoundEffectsEnabled(false);
+        ImageButton google_login = findViewById(R.id.google_login_button);
+        google_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signInWithGoogle();
             }
         });
+
+        ImageView user_pic = (ImageView) findViewById(R.id.user_pic);
+        TextView signup_txt = (TextView) findViewById(R.id.new_to_our_app);
         email_edt = findViewById(R.id.email_edittext);
         password_edt = findViewById(R.id.password_edittext);
 

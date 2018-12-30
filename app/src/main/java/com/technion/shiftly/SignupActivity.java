@@ -13,6 +13,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,7 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         t.setDuration((long) Constants.ANIM_DURATION);
         t.setRepeatCount(0);
-        ImageView signup_img = (ImageView) findViewById(R.id.signup_pic);
+        LottieAnimationView signup_img = (LottieAnimationView) findViewById(R.id.signup_pic);
         signup_img.startAnimation(t);
         findViewById(R.id.signup_header).startAnimation(t);
     }
