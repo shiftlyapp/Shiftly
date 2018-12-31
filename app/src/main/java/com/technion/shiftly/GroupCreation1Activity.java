@@ -34,15 +34,14 @@ public class GroupCreation1Activity extends AppCompatActivity {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            finish();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 
     @Override
     public void onBackPressed() {
         finish();
-        startActivity(new Intent(this, GroupListsActivity.class));
     }
 
     @Override
@@ -64,7 +63,7 @@ public class GroupCreation1Activity extends AppCompatActivity {
 
         final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
-        mAwesomeValidation.addValidation(GroupCreation1Activity.this, R.id.group_name_edittext, "[a-zA-Z0-9]+", R.string.err_groupname);
+        mAwesomeValidation.addValidation(GroupCreation1Activity.this, R.id.group_name_edittext, "^[a-zA-Z0-9\u0590-\u05fe][a-zA-Z0-9\u0590-\u05fe\\s]*$", R.string.err_groupname);
 
         Button create_button = findViewById(R.id.create_button);
         create_button.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +74,6 @@ public class GroupCreation1Activity extends AppCompatActivity {
                     String group_name = group_name_edittext.getText().toString();
                     intent.putExtra("GROUP_NAME", group_name);
                     startActivity(intent);
-                    finish();
                 }
             }
         });

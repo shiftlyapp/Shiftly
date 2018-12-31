@@ -102,10 +102,13 @@ public class GroupListsActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
-
                         return true;
                     }
                 });
+        int intentFragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
+        if (intentFragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
+        }
     }
 
     public void gotoAbout() {

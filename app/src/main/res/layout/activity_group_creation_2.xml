@@ -28,49 +28,41 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_creation_toolbar_2"
-        app:layout_constraintVertical_bias="0.206" />
+        app:layout_constraintVertical_bias="0.205" />
 
     <RelativeLayout
         android:id="@+id/pick_image_layout"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_pic_text"
         app:layout_constraintVertical_bias="0.0">
 
-        <ImageButton
-            android:id="@+id/add_photo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/add_group_pic_button" />
+        <com.github.abdularis.civ.CircleImageView
+            android:id="@+id/group_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/upload_bg"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="4dp" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/group_image_card_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            android:elevation="12dp"
-            android:layout_marginTop="24dp"
-            android:thicknessRatio="1.9"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            app:cardCornerRadius="100dp">
-
-            <ImageView
-                android:id="@+id/group_image"
-                android:layout_width="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_height="200dp"
-                android:src="@drawable/gmail" />
-        </android.support.v7.widget.CardView>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/upload_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:lottie_autoPlay="true"
+            app:lottie_colorFilter="@color/colorPrimaryDark"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/upload" />
 
     </RelativeLayout>
 

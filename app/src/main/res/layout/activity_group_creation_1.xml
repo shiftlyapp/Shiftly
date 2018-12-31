@@ -46,7 +46,6 @@
         android:layout_marginBottom="8dp"
         android:autofillHints="true"
         android:background="@drawable/rounded_edittext"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
         android:ems="10"
         android:hint="@string/group_name_edittext_hint"
         android:inputType="text"

@@ -2,31 +2,40 @@ package com.technion.shiftly;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.airbnb.lottie.LottieAnimationView;
+import com.github.abdularis.civ.CircleImageView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
 public class GroupCreation2Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
+    private UploadTask uploadTask;
+    private Uri mImageUri;
+    private CircleImageView circleImageView;
+    private byte[] compressed_data;
 
     @Override
     public void onStart() {
@@ -41,7 +50,6 @@ public class GroupCreation2Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        startActivity(new Intent(this, GroupListsActivity.class));
     }
 
     @Override
@@ -61,15 +69,44 @@ public class GroupCreation2Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
+            LottieAnimationView upload_anim = findViewById(R.id.upload_anim);
+            upload_anim.setVisibility(View.GONE);
+            mImageUri = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
                 ImageView group_pic_baseline = (ImageView) findViewById(R.id.group_image);
                 group_pic_baseline.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void compressImage() {
+        circleImageView.setDrawingCacheEnabled(true);
+        circleImageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) circleImageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+        compressed_data = baos.toByteArray();
+    }
+
+    private void uploadToStorage() {
+        uploadTask = mStorageRef.putBytes(compressed_data);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+               // mCustomSnackbar.show(getApplicationContext(),view,"Upload fail",0);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+            }
+        });
     }
 
     @Override
@@ -83,9 +120,11 @@ public class GroupCreation2Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ImageButton pick_image = findViewById(R.id.add_photo);
-        pick_image.bringToFront();
-        pick_image.setOnClickListener(new View.OnClickListener() {
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference().child("/group_pic/");
+
+        circleImageView = findViewById(R.id.group_image);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
@@ -96,10 +135,13 @@ public class GroupCreation2Activity extends AppCompatActivity {
         apply_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mImageUri != null) {
+                    compressImage();
+                    uploadToStorage();
+                }
                 Intent intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 intent.putExtra("GROUP_NAME", group_name);
-                //intent.putExtra("GROUP_PIC", group_pic);
                 startActivity(intent);
                 finish();
             }

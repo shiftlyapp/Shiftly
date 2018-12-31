@@ -119,7 +119,8 @@ public class GroupsIManageFragment extends Fragment {
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), GroupCreation1Activity.class));
+                Intent intent = new Intent(view.getContext(),GroupCreation1Activity.class);
+                startActivity(intent);
             }
         });
         groupsIdMap = new HashMap<>();

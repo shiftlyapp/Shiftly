@@ -37,6 +37,9 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    //#####################################################################
+    //          Tests
+    //#####################################################################
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -52,6 +55,7 @@ dependencies {
     //#####################################################################
     implementation 'com.basgeekball:awesome-validation:4.2'
     implementation 'com.github.alamkanak:android-week-view:1.2.6'
+    implementation 'com.github.abdularis:CircularImageView:v1.2'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
     implementation ('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'

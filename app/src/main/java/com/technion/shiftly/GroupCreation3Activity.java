@@ -39,7 +39,10 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("FRAGMENT_TO_LOAD",Constants.GROUPS_I_MANAGE_FRAGMENT);
+        startActivity(intent);
     }
 
     @Override
