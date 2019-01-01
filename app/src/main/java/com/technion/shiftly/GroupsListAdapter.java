@@ -8,25 +8,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.airbnb.lottie.LottieProperty.COLOR;
-
-
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+// An adapter for "Group I belong" and "Groups I manage" lists
+public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.ViewHolder> {
 
     private List<String> mNames;
     private List<Long> mCounts;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private boolean isChildLongPressed;
 
     // data is passed into the constructor
-    MyAdapter(Context context, List<String> names, List<Long> counts) {
+    GroupsListAdapter(Context context, List<String> names, List<Long> counts) {
         this.mInflater = LayoutInflater.from(context);
         this.mNames = names;
         this.mCounts = counts;
@@ -46,11 +41,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         String count = Long.toString(mCounts.get(position));
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format("%s Members",count));
-        isChildLongPressed = false;
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                isChildLongPressed = true;
                 return false;
             }
         });
@@ -79,7 +72,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         if (mNames == null) return 0;
         return mNames.size();
     }
-
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -2,9 +2,9 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item"
+    style="@style/ListItemView"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="@android:color/transparent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
@@ -14,37 +14,36 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="@dimen/list_item_image_left_margin"
+        android:layout_marginLeft="@dimen/list_item_image_left_margin"
         android:src="@drawable/group" />
 
     <TextView
         android:id="@+id/group_name"
+        style="@style/ListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/list_item_text_margin_top"
         android:layout_toEndOf="@id/group_image"
         android:layout_toRightOf="@id/group_image"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp" />
+        android:textSize="@dimen/text_title_size" />
 
     <TextView
         android:id="@+id/group_count"
+        style="@style/ListTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/group_name"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_toEndOf="@id/group_image"
         android:layout_toRightOf="@id/group_image"
         android:textColor="@color/members_color"
-        android:textSize="16sp" />
+        android:textSize="@dimen/text_size" />
+
     <View
-        android:id="@+id/div"
+        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/list_divider_size"
         android:background="@color/div_color" />
 </RelativeLayout>

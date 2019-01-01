@@ -17,35 +17,31 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/group_list_toolbar"
+                style="@style/MainToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:elevation="8dp"
                 app:layout_constraintBottom_toTopOf="@id/tabs"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.AppCompat.Light"/>
+                app:layout_scrollFlags="scroll|enterAlways" />
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
+                style="@style/TabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:elevation="8dp"
-                app:tabMaxWidth="0dp"
-                app:tabPaddingStart="0dp"
-                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="@dimen/tab_padding"
+                app:tabPaddingEnd="@dimen/tab_padding"
+                app:tabIndicatorHeight="@dimen/tab_indicator_height"
                 app:layout_constraintBottom_toTopOf="@id/groups"
                 app:layout_constraintTop_toBottomOf="@id/group_list_toolbar"
                 app:tabIndicatorColor="@color/orange_color"
                 app:tabGravity="fill"
-                app:tabIndicatorHeight="4dp"
                 app:tabMode="fixed" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/groups"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="@dimen/pager_height"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tabs" />
         </android.support.constraint.ConstraintLayout>

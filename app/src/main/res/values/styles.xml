@@ -66,4 +66,52 @@
     <style name="CustomImageButton">
         <item name="android:background">@null</item>
     </style>
+
+    <style name="CustomTextViewTitle">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:layout_marginTop">@dimen/text_marginTop</item>
+        <item name="android:layout_marginBottom">@dimen/text_marginBottom</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_title_size</item>
+    </style>
+
+    <style name="CustomTextView">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:layout_marginTop">@dimen/text_marginTop</item>
+        <item name="android:layout_marginBottom">@dimen/text_marginBottom</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="ListTextView">
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+
+    </style>
+
+    <style name="ListItemView">
+        <item name="android:paddingBottom">@dimen/list_item_padding</item>
+        <item name="android:paddingTop">@dimen/list_item_padding</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="MainToolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:elevation">@dimen/toolbar_elevation_size</item>
+    </style>
+
+    <style name="TabLayout">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:elevation">@dimen/tab_elevation_size</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_marginEnd">@dimen/fab_margin_size</item>
+        <item name="android:layout_marginRight">@dimen/fab_margin_size</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin_size</item>
+        <item name="android:tint">@android:color/white</item>
+
+    </style>
 </resources>

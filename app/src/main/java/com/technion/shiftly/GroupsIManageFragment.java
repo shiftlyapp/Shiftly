@@ -119,6 +119,7 @@ public class GroupsIManageFragment extends Fragment {
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Go to a group settings Activity in a certain group
                 Intent intent = new Intent(view.getContext(),GroupCreation1Activity.class);
                 startActivity(intent);
             }
@@ -127,15 +128,15 @@ public class GroupsIManageFragment extends Fragment {
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
         loadRecyclerViewData();
-        mAdapter = new MyAdapter(getContext(), groupsName, groupsMembersCount);
-        MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+        mAdapter = new GroupsListAdapter(getContext(), groupsName, groupsMembersCount);
+        GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
                 startActivity(intent);
             }
         };
-        ((MyAdapter) mAdapter).setClickListener(listener);
+        ((GroupsListAdapter) mAdapter).setClickListener(listener);
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }

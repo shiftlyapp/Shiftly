@@ -9,4 +9,15 @@
         <item>Friday</item>
         <item>Saturday</item>
     </string-array>
+
+    <string-array name="credits_list">
+
+        <item>Vitaly Gorbachev</item>
+        <item>Icongeek26</item>
+        <item>Dave Gandy</item>
+        <item>Freepik</item>
+        <item>srip</item>
+        <item>too12_a</item>
+
+    </string-array>
 </resources>

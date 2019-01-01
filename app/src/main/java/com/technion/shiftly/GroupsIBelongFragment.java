@@ -130,15 +130,16 @@ public class GroupsIBelongFragment extends Fragment {
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
         loadRecyclerViewData();
-        mAdapter = new MyAdapter(getContext(), groupsName, groupsMembersCount);
-        MyAdapter.ItemClickListener listener = new MyAdapter.ItemClickListener() {
+        mAdapter = new GroupsListAdapter(getContext(), groupsName, groupsMembersCount);
+        GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                // Go to a weekly schedule on a certain group
                 Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
                 startActivity(intent);
             }
         };
-        ((MyAdapter) mAdapter).setClickListener(listener);
+        ((GroupsListAdapter) mAdapter).setClickListener(listener);
         mRecyclerView.setAdapter(mAdapter);
         runLayoutAnimation(mRecyclerView);
         return view;

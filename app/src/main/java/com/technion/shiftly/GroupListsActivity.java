@@ -61,19 +61,23 @@ public class GroupListsActivity extends AppCompatActivity {
             }
         });
 
+        // Fetch groups from DB
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        // Set tab layout
         mViewPager = (ViewPager) findViewById(R.id.groups);
         setupViewPager(mViewPager);
 
+        // Tab layout
         mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         setupTabIcons(mPagerAdapter);
 
+        // Drawer layout
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -97,11 +101,6 @@ public class GroupListsActivity extends AppCompatActivity {
                                 break;
                             }
                         }
-                        // close drawer when item is tapped
-                        // mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
                         return true;
                     }
                 });
@@ -112,7 +111,7 @@ public class GroupListsActivity extends AppCompatActivity {
     }
 
     public void gotoAbout() {
-        Intent intent = new Intent(this, AboutActiviy.class);
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 
