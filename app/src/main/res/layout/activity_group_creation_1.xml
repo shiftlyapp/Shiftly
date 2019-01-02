@@ -69,6 +69,7 @@
         android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
         android:drawableLeft="@drawable/round_arrow_forward_ios_white_18"
         android:text="@string/continue_text"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

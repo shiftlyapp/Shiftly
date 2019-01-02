@@ -140,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }, Constants.REDIRECTION_DELAY);
                         } else {
+                            mSnackbar.show(LoginActivity.this, mLayout, task.getException().toString(), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+
                         }
                     }
                 });
