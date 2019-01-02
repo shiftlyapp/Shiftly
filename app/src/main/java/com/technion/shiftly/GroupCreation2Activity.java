@@ -87,7 +87,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
         circleImageView.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) circleImageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, Constants.COMPRESSION_QUALITY, baos);
         compressed_data = baos.toByteArray();
     }
 

@@ -125,7 +125,7 @@ public class GroupsIBelongFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setVisibility(View.GONE); // Hide the recycler view until recycler is loaded
         loading_icon = view.findViewById(R.id.loading_icon_belong);
-        loading_icon.setScale(0.2f);
+        loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
         groupsIdMap = new HashMap<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();

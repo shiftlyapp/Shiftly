@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
-    private CustomSnackbar snackbar;
+    private CustomSnackbar mSnackbar;
     private CallbackManager mCallbackManager;
 
     @Override
@@ -130,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 1);
+                            mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -151,15 +152,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         mLayout = (ConstraintLayout) findViewById(R.id.anim_bg);
-        snackbar = new CustomSnackbar(18);
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         ImageView logo = (ImageView) findViewById(R.id.shiftly_logo);
         AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
         animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.start();
         final LottieAnimationView clock_anim = findViewById(R.id.clock_anim);
-        clock_anim.setSpeed(0.6f);
-        clock_anim.setScale(0.55f);
+        clock_anim.setSpeed(Constants.CLOCK_ANIM_SPEED);
+        clock_anim.setScale(Constants.CLOCK_ANIM_SCALE);
         ImageButton fb_login = findViewById(R.id.facebook_login_button);
         mCallbackManager = CallbackManager.Factory.create();
         final LoginButton fb_button_hidden = findViewById(R.id.hidden_fb_button);
@@ -234,9 +235,9 @@ public class LoginActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.reset_email_sent), 1);
+                                                mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.reset_email_sent), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
                                             } else {
-                                                snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.err_invalid_email), 0);
+                                                mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.err_invalid_email), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
                                             }
                                         }
                                     });
@@ -249,7 +250,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                     String b_message = getResources().getString(R.string.reset_pass_text) + email_edt.getText().toString();
-                    ;
                     builder.setMessage(b_message)
                             .setTitle(R.string.reset_pass_title);
 
@@ -275,7 +275,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         currentUser = mAuth.getCurrentUser();
-                                        snackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), 1);
+                                        mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
                                         Handler handler = new Handler();
                                         handler.postDelayed(new Runnable() {
                                             @Override
@@ -298,7 +298,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } catch (Exception e) {
                                             sbError = task.getException().getMessage();
                                         }
-                                        snackbar.show(LoginActivity.this, mLayout, sbError, 0);
+                                        mSnackbar.show(LoginActivity.this, mLayout, sbError, CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
                                     }
                                 }
                             });

@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:fontFamily">@font/helvetica_neue</item>
-        <item name="android:layoutDirection">ltr</item>
+        <item name="android:layoutDirection" tools:ignore="NewApi">ltr</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="buttonStyle">@style/CustomButton</item>
         <item name="windowActionBar">false</item>
@@ -21,30 +21,46 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="CustomEditText">
+    <style name="CustomEditText" parent="@android:style/Widget.EditText">
         <item name="android:typeface">sans</item>
+        <item name="android:layout_height">@dimen/edittext_height</item>
         <item name="android:fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryLight</item>
         <item name="android:textColorHighlight">@color/colorPrimary</item>
-        <item name="android:elevation">4dp</item>
+        <item name="android:background">@drawable/rounded_edittext</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/edittext_elevation</item>
+        <item name="android:textAlignment" tools:ignore="NewApi"> center</item>
+        <item name="android:layout_margin">@dimen/edittext_margin</item>
+        <item name="android:layout_marginStart">@dimen/edittext_margin</item>
+        <item name="android:layout_marginLeft">@dimen/edittext_margin</item>
+        <item name="android:layout_marginTop">@dimen/edittext_margin</item>
+        <item name="android:layout_marginEnd">@dimen/edittext_margin</item>
+        <item name="android:layout_marginRight">@dimen/edittext_margin</item>
+        <item name="android:layout_marginBottom">@dimen/edittext_margin</item>
+        <item name="android:paddingStart">@dimen/edittext_padding_left</item>
+        <item name="android:paddingLeft">@dimen/edittext_padding_left</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_right</item>
+        <item name="android:paddingEnd">@dimen/edittext_padding_right</item>
+        <item name="android:ems">@integer/edittxt_ems</item>
     </style>
 
-    <style name="CustomButton">
+    <style name="CustomButton" parent="@android:style/Widget.Button">
         <item name="android:gravity">center</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:fontFamily">@font/helvetica_neue</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:elevation">4dp</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/button_elevation</item>
         <item name="android:paddingStart">@dimen/button_left_padding</item>
         <item name="android:paddingLeft">@dimen/button_left_padding</item>
         <item name="android:paddingEnd">@dimen/button_right_padding</item>
         <item name="android:paddingRight">@dimen/button_right_padding</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">@dimen/button_width</item>
     </style>
 
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+    <style name="RobotoTextViewStyle" parent="@android:style/Widget.TextView">
         <item name="android:fontFamily">@font/helvetica_neue</item>
     </style>
 
@@ -70,18 +86,18 @@
     <style name="CustomTextViewTitle">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
-        <item name="android:layout_marginTop">@dimen/text_marginTop</item>
-        <item name="android:layout_marginBottom">@dimen/text_marginBottom</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">@dimen/text_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/text_margin_bottom</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">center</item>
         <item name="android:textSize">@dimen/text_title_size</item>
     </style>
 
     <style name="CustomTextView">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
-        <item name="android:layout_marginTop">@dimen/text_marginTop</item>
-        <item name="android:layout_marginBottom">@dimen/text_marginBottom</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:layout_marginTop">@dimen/text_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/text_margin_bottom</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">center</item>
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
@@ -99,12 +115,12 @@
 
     <style name="MainToolbar">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:elevation">@dimen/toolbar_elevation_size</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/toolbar_elevation_size</item>
     </style>
 
     <style name="TabLayout">
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:elevation">@dimen/tab_elevation_size</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/tab_elevation_size</item>
     </style>
 
     <style name="FAB">
@@ -112,6 +128,5 @@
         <item name="android:layout_marginRight">@dimen/fab_margin_size</item>
         <item name="android:layout_marginBottom">@dimen/fab_margin_size</item>
         <item name="android:tint">@android:color/white</item>
-
     </style>
 </resources>

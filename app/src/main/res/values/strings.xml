@@ -24,6 +24,7 @@
     <string name="firstname_edittext_hint">FIRST NAME</string>
     <string name="lastname_edittext_hint">LAST NAME</string>
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
+    <string name="login_clock_animation_alpha">0.075</string>
 
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
@@ -42,6 +43,8 @@
     <string name="facebook_app_id">792989287718195</string>
     <string name="fb_login_protocol_scheme">fb792989287718195</string>
     <string name="facebook_button_txt">Sign In</string>
+    <string name="sign_in_with">Sign In with:</string>
+
     <string name="login_err_password">Please type in a Password</string>
     <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
     <string name="reset_pass_title">Password Reset</string>

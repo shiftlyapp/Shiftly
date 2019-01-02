@@ -8,8 +8,20 @@ import android.view.View;
 import android.widget.TextView;
 
 public class CustomSnackbar {
-    private Snackbar snackbar;
+    public static final int SNACKBAR_ERROR = 0;
+    public static final int SNACKBAR_SUCCESS = 1;
+    public static final int SNACKBAR_DEFAULT_TEXT_SIZE = 18;
+
     private int text_size;
+    private int length;
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 
     public int getText_size() {
         return text_size;
@@ -19,11 +31,11 @@ public class CustomSnackbar {
         this.text_size = text_size;
     }
 
-    public CustomSnackbar(int text_size) {
+    CustomSnackbar(int text_size) {
         this.text_size = text_size;
     }
-    public void show(Context context, View v, String msg, int type) {
-        this.snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_SHORT);
+    public void show(Context context, View v, String msg, int type, int length) {
+        Snackbar snackbar = Snackbar.make(v, msg, length);
         View snackbarView = snackbar.getView();
         TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

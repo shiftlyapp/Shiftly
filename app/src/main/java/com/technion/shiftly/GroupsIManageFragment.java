@@ -114,7 +114,7 @@ public class GroupsIManageFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setVisibility(View.GONE); // Hide the recycler view until recycler is loaded
         loading_icon = view.findViewById(R.id.loading_icon_manage);
-        loading_icon.setScale(0.2f);
+        loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
         FloatingActionButton add_fab = view.findViewById(R.id.add_fab);
         add_fab.setOnClickListener(new View.OnClickListener() {
             @Override
