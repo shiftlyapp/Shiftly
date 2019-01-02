@@ -49,12 +49,12 @@ public class GroupListsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lists);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
+        Toolbar group_toolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
         final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setSupportActionBar(myToolbar);
+        setSupportActionBar(group_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        group_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawer.openDrawer(Gravity.LEFT);
@@ -104,21 +104,21 @@ public class GroupListsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        int intentFragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
-        if (intentFragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
+        int intent_fragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
+        if (intent_fragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
             mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
         }
     }
 
     public void gotoAbout() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
+        Intent about_intent = new Intent(this, AboutActivity.class);
+        startActivity(about_intent);
     }
 
     public void gotoLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent login_intent = new Intent(this, LoginActivity.class);
         finish();
-        startActivity(intent);
+        startActivity(login_intent);
     }
 
     private void setupTabIcons(ViewPagerAdapter pagerAdapter) {

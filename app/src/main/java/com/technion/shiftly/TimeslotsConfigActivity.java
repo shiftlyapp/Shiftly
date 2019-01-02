@@ -17,6 +17,7 @@ import java.util.Map;
 import static android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS;
 
 
+// An activity for the form of creating a schedule
 public class TimeslotsConfigActivity extends AppCompatActivity {
 
     @Override
@@ -34,7 +35,7 @@ public class TimeslotsConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeslots_config);
         Bundle extras = getIntent().getExtras();
-        String group_name = extras.getString("GROUP_NAME");
+        String groupName = extras.getString("GROUP_NAME");
 
         Toolbar mainToolbar = findViewById(R.id.timeslot_toolbar);
         setSupportActionBar(mainToolbar);

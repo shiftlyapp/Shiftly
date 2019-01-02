@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
+// The first activity of the group creation process.
+// In this activity the future admin sets the group name.
+
 public class GroupCreation1Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -55,15 +58,15 @@ public class GroupCreation1Activity extends AppCompatActivity {
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
         mAwesomeValidation.addValidation(GroupCreation1Activity.this, R.id.group_name_edittext, "^[a-zA-Z0-9\u0590-\u05fe][a-zA-Z0-9\u0590-\u05fe\\s]*$", R.string.err_groupname);
 
-        Button create_button = findViewById(R.id.create_button);
-        create_button.setOnClickListener(new View.OnClickListener() {
+        Button createButton = findViewById(R.id.create_button);
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate()) {
-                    Intent intent = new Intent(getApplicationContext(), GroupCreation2Activity.class);
+                    Intent group_creation_2_intent = new Intent(getApplicationContext(), GroupCreation2Activity.class);
                     String group_name = group_name_edittext.getText().toString();
-                    intent.putExtra("GROUP_NAME", group_name);
-                    startActivity(intent);
+                    group_creation_2_intent.putExtra("GROUP_NAME", group_name);
+                    startActivity(group_creation_2_intent);
                 }
             }
         });

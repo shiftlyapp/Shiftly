@@ -14,6 +14,10 @@
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_marginTop">8dp</dimen>
     <dimen name="text_marginBottom">8dp</dimen>
+    <!-- EditText -->
+    <dimen name="edittext_margin">8dp</dimen>
+    <!-- ImageView -->
+    <dimen name="image_margin">8dp</dimen>
     <!-- List item -->
     <dimen name="list_item_padding">4dp</dimen>
     <dimen name="list_item_image_left_margin">8dp</dimen>
@@ -26,6 +30,7 @@
     <dimen name="tab_max_width">0dp</dimen>
     <dimen name="tab_padding">0dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
+    <dimen name="tab_margin">5dp</dimen>
     <!-- Pager -->
     <dimen name="pager_height">0dp</dimen>
     <!-- FAB -->

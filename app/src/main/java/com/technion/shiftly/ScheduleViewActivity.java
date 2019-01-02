@@ -61,8 +61,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.schedule_view_toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar schedule_view_toolbar = (Toolbar) findViewById(R.id.schedule_view_toolbar);
+        setSupportActionBar(schedule_view_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLayout = (ConstraintLayout) findViewById(R.id.container);
@@ -113,7 +113,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     String result = solver.toString();
                 // 3. Display the results in the calendar view
                     showScheduleSnackBar();
-                    Intent intent = new Intent(view.getContext(), PresentSchedule.class);
+                    Intent intent = new Intent(view.getContext(), PresentScheduleActivity.class);
                     intent.putExtra("RESULT", result);
                     startActivity(intent);
             }

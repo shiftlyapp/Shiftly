@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// A class that represents a group in the app.
+// This group syncs with the firebase database
+
 public class Group {
 
     private String admin;

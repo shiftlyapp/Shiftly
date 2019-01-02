@@ -3,6 +3,9 @@ package com.technion.shiftly;
 import java.util.ArrayList;
 import java.util.List;
 
+// A class that represents a user in the app
+// This group syncs with the firebase database
+
 public class User {
 
     private String firstname;

@@ -72,35 +72,38 @@ public class GroupCreation3Activity extends AppCompatActivity {
         EditText group_code_edittext = findViewById(R.id.group_code);
         group_code_edittext.setText(group_UID);
 
+        // Whatsapp sharing
         ImageView whatsapp_share = findViewById(R.id.whatsapp_share);
         whatsapp_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-                whatsappIntent.setType("text/plain");
-                whatsappIntent.setPackage("com.whatsapp");
-                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "The text you wanted to share");
+                Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
+                whatsapp_intent.setType("text/plain");
+                whatsapp_intent.setPackage("com.whatsapp");
+                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, "The text you wanted to share");
                 try {
-                    startActivity(whatsappIntent);
+                    startActivity(whatsapp_intent);
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(view.getContext(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        // Email sharing
         ImageView email_share = findViewById(R.id.email_share);
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent emailintent = new Intent(Intent.ACTION_SEND);
-                emailintent.setType("text/html");
-                emailintent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com");
-                emailintent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                emailintent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
-                startActivity(Intent.createChooser(emailintent, "Send Email"));
+                Intent email_intent = new Intent(Intent.ACTION_SEND);
+                email_intent.setType("text/html");
+                email_intent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com");
+                email_intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                email_intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+                startActivity(Intent.createChooser(email_intent, "Send Email"));
             }
         });
 
+        // Text message sharing
         ImageView sms_share = findViewById(R.id.sms_share);
         sms_share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +119,9 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 }
                 cursor.close();
                 Uri uri = Uri.parse("smsto:" + sms_number);
-                Intent smsintent = new Intent(Intent.ACTION_SENDTO, uri);
-                smsintent.putExtra("sms_body", "Here you can set the SMS text to be sent");
-                startActivity(smsintent);
+                Intent sms_intent = new Intent(Intent.ACTION_SENDTO, uri);
+                sms_intent.putExtra("sms_body", "Here you can set the SMS text to be sent");
+                startActivity(sms_intent);
             }
         });
     }

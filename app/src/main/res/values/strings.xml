@@ -1,7 +1,18 @@
 <resources>
+
+    <!-- General -->
     <string name="app_name">Shiftly</string>
     <string name="welcome_msg">Welcome to</string>
     <string name="user_img">User</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="apply_text">APPLY</string>
+    <string name="skip_text">SKIP</string>
+    <string name="configure_text">Configure</string>
+
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <!-- Signup and Login -->
     <string name="signup_img">Signup</string>
     <string name="email_edittext_hint">EMAIL ADDRESS</string>
     <string name="password_edittext_hint">PASSWORD</string>
@@ -13,20 +24,7 @@
     <string name="firstname_edittext_hint">FIRST NAME</string>
     <string name="lastname_edittext_hint">LAST NAME</string>
     <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
-    <string name="share_code">C</string>
-    <string name="continue_text">CONTINUE</string>
-    <string name="apply_text">APPLY</string>
-    <string name="skip_text">SKIP</string>
-    <string name="configure_text">Configure</string>
-    <string name="group_create_label">Group Creation</string>
-    <string name="group_create">CREATE</string>
-    <string name="group_create_succeed">%1$s was created successfully! </string>
-    <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
-    <string name="timeslots_configure">Configure Timeslots</string>
-    <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
-    <string name="group_pic_hint">Now, upload your Group picture:</string>
-    <string name="group_name_hint">First, name your Group:</string>
-    <string name="group_name_edittext_hint">GROUP NAME</string>
+
     <string name="err_firstname">Please enter a vaild name</string>
     <string name="err_lastname">Please enter a valid name</string>
     <string name="err_email">Please enter a vaild mail address</string>
@@ -38,18 +36,33 @@
     <string name="err_invalid_email_2">Error: Invalid Email format</string>
     <string name="err_invalid_pass">Error: Invalid Password.</string>
     <string name="err_login_attempts">Error: Too many logins attempts.</string>
+
     <string name="login_success">Loggged in Successfully!</string>
     <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
     <string name="facebook_app_id">792989287718195</string>
     <string name="fb_login_protocol_scheme">fb792989287718195</string>
-    <string name="err_groupname">Invalid group name!</string>
+    <string name="facebook_button_txt">Sign In</string>
     <string name="login_err_password">Please type in a Password</string>
     <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
     <string name="reset_pass_title">Password Reset</string>
     <string name="reset_email_sent">Password reset mail sent successfully.</string>
-    <string name="yes">YES</string>
-    <string name="no">NO</string>
     <string name="account_created">Account created! Logging you in…</string>
+
+    <!-- GroupCreation -->
+    <string name="group_create_label">Group Creation</string>
+    <string name="group_create">CREATE</string>
+    <string name="group_create_succeed">%1$s was created successfully! </string>
+    <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
+    <string name="timeslots_configure">Configure Timeslots</string>
+    <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
+    <string name="group_pic_hint">Now, upload your Group picture:</string>
+    <string name="group_name_hint">First, name your Group:</string>
+    <string name="group_name_edittext_hint">GROUP NAME</string>
+    <string name="share_code">C</string>
+
+    <string name="err_groupname">Invalid group name!</string>
+
+    <!-- Calendar -->
     <string name="title_activity_schedule_view">View schedules</string>
     <string name="title_home">Daily</string>
     <string name="title_dashboard">Weekly</string>
@@ -57,12 +70,13 @@
     <string name="daily_label">Daily schedule</string>
     <string name="weekly_label">Weekly schedule</string>
     <string name="agenda_label">Agenda schedule</string>
-    <string name="facebook_button_txt">Sign In</string>
+
     <!-- Group lists -->
     <string name="groups_i_belong">GROUPS I BELONG</string>
     <string name="groups_i_manage">GROUPS I MANAGE</string>
     <string name="schedule_generated">A new schedule has been generated!</string>
     <string name="confirm_schedule">CONFIRM</string>
+
     <!-- About -->
     <string name="title_contact_us">Contact us:</string>
     <string name="contact_us_email">course236503@gmail.com</string>

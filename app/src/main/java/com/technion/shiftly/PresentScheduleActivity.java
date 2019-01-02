@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-public class PresentSchedule extends AppCompatActivity {
+// An activity to show the presented schedule
+public class PresentScheduleActivity extends AppCompatActivity {
 
 
     @Override
