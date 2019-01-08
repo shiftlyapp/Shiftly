@@ -9,16 +9,16 @@
     <TextView
         android:id="@+id/expandable_group_items"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_height="@dimen/group_item_height"
+        android:layout_marginStart="@dimen/group_item_margin"
+        android:layout_marginLeft="@dimen/group_item_margin"
         android:gravity="center_vertical"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingRight="12dp"
+        android:paddingStart="@dimen/group_item_padding"
+        android:paddingEnd="@dimen/group_item_padding"
+        android:paddingRight="@dimen/group_item_padding"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="22sp" />
+        android:textSize="@dimen/group_item_text_size" />
 
 </android.support.constraint.ConstraintLayout>

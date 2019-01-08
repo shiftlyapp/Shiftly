@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/recycler_bg"
-            android:elevation="16dp"
+            android:elevation="@dimen/elevation"
             android:scrollbars="vertical" />
     </FrameLayout>
 

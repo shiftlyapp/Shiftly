@@ -25,7 +25,7 @@
             app:lottie_rawRes="@raw/loading" />
 
         <android.support.v7.widget.RecyclerView
-            android:elevation="16dp"
+            android:elevation="@dimen/elevation"
             android:id="@+id/groups_i_belong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
