@@ -71,7 +71,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         timeslots_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), TimeslotsConfigActivity.class);
+                Intent intent = new Intent(view.getContext(), GroupCreation1Activity.class);
                 intent.putExtra("GROUP_NAME", "");
                 startActivity(intent);
             }

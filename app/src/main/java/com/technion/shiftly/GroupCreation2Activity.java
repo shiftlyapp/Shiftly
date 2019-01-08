@@ -139,7 +139,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
                     compressImage();
                     uploadToStorage();
                 }
-                Intent timeslots_config_intent = new Intent(getApplicationContext(), TimeslotsConfigActivity.class);
+                Intent timeslots_config_intent = new Intent(getApplicationContext(), GroupCreation1Activity.class);
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 timeslots_config_intent.putExtra("GROUP_NAME", group_name);
                 startActivity(timeslots_config_intent);

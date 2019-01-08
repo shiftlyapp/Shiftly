@@ -49,7 +49,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.technion.shiftly.GroupCreation1Activity" />
         <activity android:name="com.technion.shiftly.GroupCreation2Activity" />
-        <activity android:name="com.technion.shiftly.TimeslotsConfigActivity" />
         <activity
             android:name="com.technion.shiftly.GroupListsActivity"
             android:configChanges="orientation|keyboardHidden" />
