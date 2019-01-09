@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/container_schedule_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScheduleViewActivity">
@@ -12,9 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:theme="@style/CustomToolBar"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fragment_container"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -42,36 +43,41 @@
         app:layout_constraintTop_toBottomOf="@id/tt"
         app:menu="@menu/navigation" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/timeslots_fab"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:backgroundTint="@color/orange_color"
-        app:srcCompat="@drawable/ic_edit_fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab_schedule_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/navigation"
-        app:layout_constraintEnd_toEndOf="@id/schedule_view_toolbar"
-        android:focusable="true" />
+        android:layout_marginBottom="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/schedule_fab"
-        android:clickable="true"
-        app:fabSize="normal"
-        app:backgroundTint="@color/orange_color"
-        app:srcCompat="@drawable/ic_schedule_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/timeslots_fab"
-        app:layout_constraintEnd_toEndOf="@id/schedule_view_toolbar"
-        android:focusable="true" />
+        fab:fab_addButtonColorNormal="@color/orange_color"
+        fab:fab_addButtonColorPressed="@color/dark_orange_color"
+        fab:fab_addButtonPlusIconColor="@android:color/white"
+        fab:fab_addButtonSize="normal"
+        fab:fab_labelStyle="@style/FabLabels"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/orange_color_light"
+            fab:fab_colorPressed="@color/dark_orange_color"
+            android:background="@android:color/white"
+            app:fab_icon="@drawable/ic_edit_timeslots_fab"
+            fab:fab_size="mini"
+            fab:fab_title="Edit time slots" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/orange_color_light"
+            fab:fab_colorPressed="@color/dark_orange_color"
+            app:fab_icon="@drawable/ic_generate_schedule_fab"
+            fab:fab_size="mini" fab:fab_title="Generate schedule" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.constraint.ConstraintLayout>

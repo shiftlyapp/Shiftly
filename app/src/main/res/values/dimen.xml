@@ -31,10 +31,9 @@
     <!-- ImageView -->
     <dimen name="image_margin">8dp</dimen>
     <!-- List item -->
-    <dimen name="list_item_padding">4dp</dimen>
+    <dimen name="list_item_padding">14dp</dimen>
     <dimen name="list_item_image_left_margin">8dp</dimen>
-    <dimen name="list_item_text_margin_top">10dp</dimen>
-    <dimen name="list_divider_size">1dp</dimen>
+    <dimen name="list_item_text_margin_top">0dp</dimen>
     <!-- Toolbar -->
     <dimen name="toolbar_elevation_size">8dp</dimen>
     <!-- Tabs -->

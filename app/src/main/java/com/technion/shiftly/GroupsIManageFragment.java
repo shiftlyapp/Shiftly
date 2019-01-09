@@ -5,8 +5,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,7 +34,6 @@ public class GroupsIManageFragment extends Fragment {
     private List<Long> groupsMembersCount;
     private Map<String, String> groupsIdMap;
     private LottieAnimationView loading_icon;
-    private Resources res;
 
     private void loadRecyclerViewData() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
@@ -92,7 +91,6 @@ public class GroupsIManageFragment extends Fragment {
                 }
                 if (getActivity() != null) {
                     mRecyclerView.setVisibility(View.VISIBLE);
-                    mRecyclerView.setBackground(res.getDrawable(R.drawable.recycler_bg));
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -108,22 +106,15 @@ public class GroupsIManageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
-        res = view.getResources();
+        Resources res = view.getResources();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setVisibility(View.GONE); // Hide the recycler view until recycler is loaded
+        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.recycler_divider));
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         loading_icon = view.findViewById(R.id.loading_icon_manage);
         loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
-        FloatingActionButton add_fab = view.findViewById(R.id.add_fab);
-        add_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Go to a group settings Activity in a certain group
-                Intent intent = new Intent(view.getContext(),GroupCreation1Activity.class);
-                startActivity(intent);
-            }
-        });
         groupsIdMap = new HashMap<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
@@ -132,6 +123,7 @@ public class GroupsIManageFragment extends Fragment {
         GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                // Go to a weekly schedule on a certain group
                 Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
                 startActivity(intent);
             }
@@ -141,4 +133,3 @@ public class GroupsIManageFragment extends Fragment {
         return view;
     }
 }
-

@@ -3,6 +3,7 @@ package com.technion.shiftly;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -42,6 +43,14 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         String count = Long.toString(mCounts.get(position));
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
+        if (position == 0) {
+            ViewGroup.MarginLayoutParams marginLayoutParams =
+                    (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+            marginLayoutParams.setMargins(0, 0, 0, 0);
+            holder.itemView.setLayoutParams(marginLayoutParams);
+        } else if (position == getItemCount() - 1) { //last item of RecyclerView
+            holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
+        }
     }
 
     // total number of rows

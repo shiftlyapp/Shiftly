@@ -101,6 +101,13 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
+    <style name="FabLabels">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:background">@color/silver_color_darker</item>
+    </style>
+
     <style name="ListTextView">
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:layout_marginLeft">12dp</item>
@@ -108,9 +115,10 @@
     </style>
 
     <style name="ListItemView">
-        <item name="android:paddingBottom">@dimen/list_item_padding</item>
+        <item name="android:background">@drawable/list_item_bg</item>
         <item name="android:paddingTop">@dimen/list_item_padding</item>
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingBottom">@dimen/list_item_padding</item>
+        <item name="android:layout_marginTop">1dp</item>
     </style>
 
     <style name="MainToolbar">

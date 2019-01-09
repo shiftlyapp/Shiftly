@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,19 +39,17 @@ public class GroupsIBelongFragment extends Fragment {
     private List<Long> groupsMembersCount;
     private Map<String, String> groupsIdMap;
     private LottieAnimationView loading_icon;
-    private Resources res;
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
         final Context context = recyclerView.getContext();
         final LayoutAnimationController controller =
                 AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
-
         recyclerView.setLayoutAnimation(controller);
         recyclerView.startLayoutAnimation();
     }
 
-    private void loadRecyclerViewData() {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
+    private void loadRecyclerViewData(FirebaseUser mUser) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
         ChildEventListener cl = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -103,7 +104,6 @@ public class GroupsIBelongFragment extends Fragment {
                 }
                 if (getActivity() != null) {
                     mRecyclerView.setVisibility(View.VISIBLE);
-                    mRecyclerView.setBackground(res.getDrawable(R.drawable.recycler_bg));
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -119,17 +119,20 @@ public class GroupsIBelongFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
-        res = view.getResources();
+        Resources res = view.getResources();
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_belong);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setVisibility(View.GONE); // Hide the recycler view until recycler is loaded
+        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.recycler_divider));
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         loading_icon = view.findViewById(R.id.loading_icon_belong);
         loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
         groupsIdMap = new HashMap<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        loadRecyclerViewData();
+        loadRecyclerViewData(mUser);
         mAdapter = new GroupsListAdapter(getContext(), groupsName, groupsMembersCount);
         GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
             @Override
