@@ -84,5 +84,6 @@
     <string name="title_contact_us">Contact us:</string>
     <string name="contact_us_email">course236503@gmail.com</string>
     <string name="credits_title">Credits:</string>
+    <string name="timeslots_toolbar_text">Configure Timeslots</string>
 
 </resources>

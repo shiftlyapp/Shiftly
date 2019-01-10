@@ -1,13 +1,10 @@
 package com.technion.shiftly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -31,7 +28,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recycleview_list_item, parent, false);
+        View view = mInflater.inflate(R.layout.groups_recycleview_list_item, parent, false);
         return new ViewHolder(view);
     }
 

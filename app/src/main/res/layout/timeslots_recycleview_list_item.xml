@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/ts_list_item"
+style="@style/ListItemView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<ImageView
+    android:id="@+id/timeslots_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:layout_marginStart="@dimen/list_item_image_left_margin"
+    android:layout_marginLeft="@dimen/list_item_image_left_margin"
+    app:srcCompat="@drawable/ic_more" />
+
+<TextView
+    android:id="@+id/timeslots_hour"
+    style="@style/ListTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="@dimen/list_item_text_margin_top"
+    android:layout_toEndOf="@id/timeslots_menu"
+    android:layout_toRightOf="@id/timeslots_menu"
+    android:textColor="@color/colorPrimaryDark"
+    android:textSize="@dimen/text_title_size" />
+
+<TextView
+    android:id="@+id/timeslot_day"
+    style="@style/ListTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/timeslots_hour"
+    android:layout_toEndOf="@id/timeslots_menu"
+    android:layout_toRightOf="@id/timeslots_menu"
+    android:textColor="@color/members_color"
+    android:textSize="@dimen/text_size" />
+
+</RelativeLayout>
