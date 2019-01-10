@@ -85,5 +85,8 @@
     <string name="contact_us_email">course236503@gmail.com</string>
     <string name="credits_title">Credits:</string>
     <string name="timeslots_toolbar_text">Configure Timeslots</string>
+    <string name="group_num_days_hint">Choose the number of days in a week:</string>
+    <string name="group_num_shifts_hint">Choose the number of shifts per day:</string>
+    <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
 
 </resources>
