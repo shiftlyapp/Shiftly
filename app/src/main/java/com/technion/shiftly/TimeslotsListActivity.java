@@ -61,6 +61,9 @@ public class TimeslotsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_timeslots);
         timeslots_recyclerview = findViewById(R.id.ts_recycler_view);
+        Toolbar timeslotsToolbar = findViewById(R.id.timeslots_toolbar);
+        timeslotsToolbar.setTitle(getResources().getString(R.string.timeslots_toolbar_text));
+        setSupportActionBar(timeslotsToolbar);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -73,7 +76,9 @@ public class TimeslotsListActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         List<Pair<String, String>> list = new ArrayList<>();
         Pair<String, String> p = new Pair<>("AAA", "BBB");
+        Pair<String, String> p2 = new Pair<>("CCC", "DDD");
         list.add(p);
+        list.add(p2);
         timeslots_adapter = new TimeslotsListAdapter(getApplicationContext(), list);
         timeslots_recyclerview.setAdapter(timeslots_adapter);
     }

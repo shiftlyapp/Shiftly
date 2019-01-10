@@ -25,8 +25,8 @@ public class TimeslotsListAdapter extends RecyclerView.Adapter<TimeslotsListAdap
 
         TimeslotsViewHolder(View itemView) {
             super(itemView);
-            day_textview = itemView.findViewById(R.id.timeslot_day);
-            hour_textview = itemView.findViewById(R.id.timeslots_hour);
+//            day_textview = itemView.findViewById(R.id.timeslot_day);
+//            hour_textview = itemView.findViewById(R.id.timeslots_hour);
             itemView.setOnClickListener(this);
         }
 
@@ -56,12 +56,12 @@ public class TimeslotsListAdapter extends RecyclerView.Adapter<TimeslotsListAdap
     public void onBindViewHolder(TimeslotsViewHolder holder, int position) {
 
         // - get element from dataset at this position
-        String day = timeslots.get(position).first;
-        String time = timeslots.get(position).second;
+//        String day = timeslots.get(position).first;
+//        String time = timeslots.get(position).second;
 
         // - replace the contents of the view with that element
-        holder.day_textview.setText(day);
-        holder.hour_textview.setText(time);
+//        holder.day_textview.setText(day);
+//        holder.hour_textview.setText(time);
 
     }
 

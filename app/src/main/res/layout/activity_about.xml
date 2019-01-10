@@ -11,7 +11,7 @@
     android:id="@+id/about" >
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/timeslot_toolbar"
+        android:id="@+id/about_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/CustomToolBar"
@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeslot_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/about_toolbar" />
     <TextView
         android:id="@+id/contact_email"
         style="@style/CustomTextView"
