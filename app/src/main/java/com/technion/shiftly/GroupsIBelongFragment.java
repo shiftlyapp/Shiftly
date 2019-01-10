@@ -2,10 +2,8 @@ package com.technion.shiftly;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +37,9 @@ public class GroupsIBelongFragment extends Fragment {
     private List<String> groupsName;
     private List<Long> groupsMembersCount;
     private Map<String, String> groupsIdMap;
-    private LottieAnimationView loading_icon;
+    private LottieAnimationView loading_icon, eye_anim;
+    private LinearLayout no_groups_container;
+    private FirebaseUser mUser;
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
         final Context context = recyclerView.getContext();
@@ -48,79 +49,92 @@ public class GroupsIBelongFragment extends Fragment {
         recyclerView.startLayoutAnimation();
     }
 
-    private void loadRecyclerViewData(FirebaseUser mUser) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid());
-        ChildEventListener cl = new ChildEventListener() {
+    private void loadRecyclerViewData() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users/" + mUser.getUid());
+        mDatabase.child("groups_count").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String group_name = dataSnapshot.child("group_name").getValue(String.class);
-                Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
-                groupsName.add(group_name);
-                groupsMembersCount.add(members_count);
-                groupsIdMap.put(dataSnapshot.getKey(), group_name);
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String changed_group_name = dataSnapshot.child("group_name").getValue(String.class);
-                String key = dataSnapshot.getKey(); // UID OF GROUP
-                String old_group_name = groupsIdMap.get(key);
-                if (changed_group_name != null) {
-                    int idx = groupsName.indexOf(old_group_name);
-                    groupsName.set(idx, changed_group_name);
-                    groupsIdMap.put(key, changed_group_name);
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                String removed_group_name = dataSnapshot.child("group_name").getValue(String.class);
-                String key = dataSnapshot.getKey(); // UID OF GROUP
-                if (removed_group_name != null) {
-                    groupsName.remove(removed_group_name);
-                    groupsIdMap.remove(key);
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        mDatabase.addChildEventListener(cl);
-
-        ValueEventListener val_li = new ValueEventListener() {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() > 0) {
-                    loading_icon.setVisibility(View.GONE);
-                }
-                if (getActivity() != null) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mAdapter.notifyDataSetChanged();
+                Long groups_count = dataSnapshot.getValue(Long.class);
+                if (groups_count.equals(0L)) {
+                    no_groups_container.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    loading_icon.setVisibility(View.INVISIBLE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
-        };
-        mDatabase.addListenerForSingleValueEvent(val_li);
+        });
+//        mDatabase.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                String group_name = dataSnapshot.child("group_name").getValue(String.class);
+//                Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
+//                groupsName.add(group_name);
+//                groupsMembersCount.add(members_count);
+//                groupsIdMap.put(dataSnapshot.getKey(), group_name);
+//                mAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                String changed_group_name = dataSnapshot.child("group_name").getValue(String.class);
+//                String key = dataSnapshot.getKey(); // UID OF GROUP
+//                String old_group_name = groupsIdMap.get(key);
+//                if (changed_group_name != null) {
+//                    int idx = groupsName.indexOf(old_group_name);
+//                    groupsName.set(idx, changed_group_name);
+//                    groupsIdMap.put(key, changed_group_name);
+//                }
+//                mAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//                String removed_group_name = dataSnapshot.child("group_name").getValue(String.class);
+//                String key = dataSnapshot.getKey(); // UID OF GROUP
+//                if (removed_group_name != null) {
+//                    groupsName.remove(removed_group_name);
+//                    groupsIdMap.remove(key);
+//                }
+//                mAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.getChildrenCount() > 0) {
+//                    loading_icon.setVisibility(View.GONE);
+//                }
+//                if (getActivity() != null) {
+//                    mRecyclerView.setVisibility(View.VISIBLE);
+//                    mAdapter.notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
-        Resources res = view.getResources();
-        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_belong);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -128,23 +142,28 @@ public class GroupsIBelongFragment extends Fragment {
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getContext(), R.drawable.recycler_divider));
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         loading_icon = view.findViewById(R.id.loading_icon_belong);
+        eye_anim = view.findViewById(R.id.eye_anim);
+        no_groups_container = view.findViewById(R.id.no_groups_container);
+        eye_anim.setScale(Constants.EYE_ANIM_SCALE);
         loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
         groupsIdMap = new HashMap<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        loadRecyclerViewData(mUser);
-        mAdapter = new GroupsListAdapter(getContext(), groupsName, groupsMembersCount);
-        GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // Go to a weekly schedule on a certain group
-                Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
-                startActivity(intent);
-            }
-        };
-        ((GroupsListAdapter) mAdapter).setClickListener(listener);
-        mRecyclerView.setAdapter(mAdapter);
-        runLayoutAnimation(mRecyclerView);
+        loadRecyclerViewData();
+        if (!groupsIdMap.isEmpty()) {
+            mAdapter = new GroupsListAdapter(getContext(), groupsName, groupsMembersCount);
+            GroupsListAdapter.ItemClickListener listener = new GroupsListAdapter.ItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    // Go to a weekly schedule on a certain group
+                    Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
+                    startActivity(intent);
+                }
+            };
+            ((GroupsListAdapter) mAdapter).setClickListener(listener);
+            mRecyclerView.setAdapter(mAdapter);
+            runLayoutAnimation(mRecyclerView);
+        }
         return view;
     }
 }

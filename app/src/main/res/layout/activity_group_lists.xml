@@ -35,6 +35,7 @@
                 app:layout_constraintBottom_toTopOf="@id/groups"
                 app:layout_constraintTop_toBottomOf="@id/group_list_toolbar"
                 app:tabIndicatorColor="@color/orange_color"
+                android:elevation="8dp"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 

@@ -7,8 +7,8 @@
                 android:gradientRadius="260dp"
                 android:startColor="@android:color/white"
                 android:endColor="@color/silver_color_darker" />
-            <corners android:bottomRightRadius="16dp"
-                android:bottomLeftRadius="16dp"
+            <corners android:bottomRightRadius="32dp"
+                android:bottomLeftRadius="32dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="0dp"/>
         </shape>
@@ -20,8 +20,8 @@
                 android:gradientRadius="260dp"
                 android:startColor="@android:color/white"
                 android:endColor="@color/silver_color_dark" />
-            <corners android:bottomRightRadius="16dp"
-                android:bottomLeftRadius="16dp"
+            <corners android:bottomRightRadius="32dp"
+                android:bottomLeftRadius="32dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="0dp"/>
         </shape>

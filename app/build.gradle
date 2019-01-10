@@ -64,7 +64,7 @@ dependencies {
     //          Extra Libraries
     //#####################################################################
     implementation 'com.basgeekball:awesome-validation:4.2'
-    implementation 'com.github.alamkanak:android-week-view:1.2.6'
+    implementation 'com.github.marcoscgdev:Android-Week-View:1.2.7'
     implementation 'com.github.abdularis:CircularImageView:v1.2'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
