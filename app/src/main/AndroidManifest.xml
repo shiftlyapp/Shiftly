@@ -56,6 +56,6 @@
         <activity android:name="com.technion.shiftly.GroupCreation3Activity" />
         <activity android:name="com.technion.shiftly.PresentScheduleActivity" />
         <activity android:name="com.technion.shiftly.AboutActivity" />
-        <activity android:name="com.technion.shiftly.TimeslotsListActivity"/>
+        <activity android:name="com.technion.shiftly.OptionsListActivity"/>
     </application>
 </manifest>

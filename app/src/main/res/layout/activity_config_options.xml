@@ -8,7 +8,7 @@
     android:layout_gravity="center"
     android:background="@drawable/gradient_bg"
     android:focusableInTouchMode="true"
-    tools:context=".TimeslotsListActivity"
+    tools:context=".OptionsListActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar

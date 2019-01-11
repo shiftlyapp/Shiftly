@@ -9,11 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,12 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
-
 // The first activity of the group creation process.
 // In this activity the future admin sets the group name.
 
-public class TimeslotsListActivity extends AppCompatActivity {
+public class OptionsListActivity extends AppCompatActivity {
 
     private RecyclerView timeslots_recyclerview;
     private RecyclerView.Adapter timeslots_adapter;
@@ -59,7 +53,7 @@ public class TimeslotsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config_timeslots);
+        setContentView(R.layout.activity_config_options);
         timeslots_recyclerview = findViewById(R.id.ts_recycler_view);
         Toolbar timeslotsToolbar = findViewById(R.id.timeslots_toolbar);
         timeslotsToolbar.setTitle(getResources().getString(R.string.timeslots_toolbar_text));
@@ -79,7 +73,7 @@ public class TimeslotsListActivity extends AppCompatActivity {
         Pair<String, String> p2 = new Pair<>("CCC", "DDD");
         list.add(p);
         list.add(p2);
-        timeslots_adapter = new TimeslotsListAdapter(getApplicationContext(), list);
+        timeslots_adapter = new OptionsListAdapter(getApplicationContext(), list);
         timeslots_recyclerview.setAdapter(timeslots_adapter);
     }
 

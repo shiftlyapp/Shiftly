@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
-public class TimeslotsListAdapter extends RecyclerView.Adapter<TimeslotsListAdapter.TimeslotsViewHolder> {
+public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.TimeslotsViewHolder> {
 
     private List<Pair<String, String>> timeslots; // First = day, Second = time
     private LayoutInflater ts_inflater;
@@ -37,16 +37,16 @@ public class TimeslotsListAdapter extends RecyclerView.Adapter<TimeslotsListAdap
         }
     }
 
-    public TimeslotsListAdapter(Context context, List<Pair<String, String>> timeslots) {
+    public OptionsListAdapter(Context context, List<Pair<String, String>> timeslots) {
         this.ts_inflater = LayoutInflater.from(context);
         this.timeslots = timeslots;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public TimeslotsListAdapter.TimeslotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OptionsListAdapter.TimeslotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View view = ts_inflater.inflate(R.layout.timeslots_recycleview_list_item, parent, false);
+        View view = ts_inflater.inflate(R.layout.options_recycleview_list_item, parent, false);
         return new TimeslotsViewHolder(view);
 
     }

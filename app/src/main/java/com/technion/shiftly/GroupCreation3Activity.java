@@ -66,7 +66,12 @@ public class GroupCreation3Activity extends AppCompatActivity {
         DatabaseReference mGroupRef = database.getReference().child(("Groups"));
 
         String group_UID = mGroupRef.push().getKey();
-        Group group = new Group(admin_UID, group_name, 0L);
+        Long days_num = extras.getLong("DAYS_NUM");
+        Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
+        Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
+
+        Group group = new Group(admin_UID, group_name, 0L,
+                days_num, shifts_per_day, employees_per_shift);
         mGroupRef.child(group_UID).setValue(group);
 
         EditText group_code_edittext = findViewById(R.id.group_code);
