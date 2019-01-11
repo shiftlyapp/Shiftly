@@ -2,6 +2,8 @@ package com.technion.shiftly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +11,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +32,17 @@ import java.util.List;
 
 public class OptionsListActivity extends AppCompatActivity {
 
-    private RecyclerView timeslots_recyclerview;
-    private RecyclerView.Adapter timeslots_adapter;
-    private RecyclerView.LayoutManager timeslots_layoutmanager;
+    private RecyclerView options_recyclerview;
+    private RecyclerView.Adapter options_adapter;
+    private RecyclerView.LayoutManager options_layoutmanager;
+
+    private List<Pair<String, String>> list;
+    private Long days_num_param;
+    private Long shifts_per_day_param;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private GoogleSignInAccount mGoogleSignInAccount;
-    private TabLayout mTabLayout;
-    private ViewPagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     public void onStart() {
@@ -50,33 +58,71 @@ public class OptionsListActivity extends AppCompatActivity {
         }
     }
 
+    private void loadRecyclerViewData() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
+//        mDatabase.child("aaa").
+        ChildEventListener cl = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                days_num_param = dataSnapshot.child("days_num").getValue(Long.class);
+                shifts_per_day_param = dataSnapshot.child("shifts_per_day").getValue(Long.class);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_options);
-        timeslots_recyclerview = findViewById(R.id.ts_recycler_view);
-        Toolbar timeslotsToolbar = findViewById(R.id.timeslots_toolbar);
-        timeslotsToolbar.setTitle(getResources().getString(R.string.timeslots_toolbar_text));
-        setSupportActionBar(timeslotsToolbar);
+        options_recyclerview = findViewById(R.id.ts_recycler_view);
+        Toolbar optionsToolbar = findViewById(R.id.options_toolbar);
+        optionsToolbar.setTitle(getResources().getString(R.string.timeslots_toolbar_text));
+        setSupportActionBar(optionsToolbar);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        timeslots_recyclerview.setHasFixedSize(true);
+        options_recyclerview.setHasFixedSize(true);
 
-        // use a linear layout manager
-        timeslots_layoutmanager = new LinearLayoutManager(this);
-        timeslots_recyclerview.setLayoutManager(timeslots_layoutmanager);
+        options_layoutmanager = new LinearLayoutManager(this);
+        options_recyclerview.setLayoutManager(options_layoutmanager);
 
-        // specify an adapter (see also next example)
-        List<Pair<String, String>> list = new ArrayList<>();
-        Pair<String, String> p = new Pair<>("AAA", "BBB");
-        Pair<String, String> p2 = new Pair<>("CCC", "DDD");
-        list.add(p);
-        list.add(p2);
-        timeslots_adapter = new OptionsListAdapter(getApplicationContext(), list);
-        timeslots_recyclerview.setAdapter(timeslots_adapter);
+        loadRecyclerViewData();
+        prepareStrings();
+        options_adapter = new OptionsListAdapter(getApplicationContext(), list);
+
+        OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // mark the current option as checked
+            }
+        };
+        ((OptionsListAdapter) options_adapter).setClickListener(listener);
+        options_recyclerview.setAdapter(options_adapter);
     }
 
-//    void onClickTimeslotsMenu
+    private void prepareStrings() {
+        for (int i = 1; i < days_num_param + 1; i++) {
+            for (int j = 1; j < shifts_per_day_param + 1; j++) {
+                Pair<String, String> p = new Pair<>("Day number: " + i, "Shift number: " + j);
+                list.add(p);
+            }
+        }
+    }
+
+//    void onClickOptionsMenu
 
 }

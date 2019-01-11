@@ -13,8 +13,13 @@ import java.util.List;
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.TimeslotsViewHolder> {
 
     private List<Pair<String, String>> timeslots; // First = day, Second = time
-    private LayoutInflater ts_inflater;
-    private ItemClickListener ts_clicklistener;
+    private LayoutInflater options_inflater;
+    private ItemClickListener options_clicklistener;
+
+
+    public void setClickListener(ItemClickListener listener) {
+        this.options_clicklistener = listener;
+    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -32,13 +37,13 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
 
         @Override
         public void onClick(View view) {
-            if (ts_clicklistener != null)
-                ts_clicklistener.onItemClick(view, getAdapterPosition());
+            if (options_clicklistener != null)
+                options_clicklistener.onItemClick(view, getAdapterPosition());
         }
     }
 
     public OptionsListAdapter(Context context, List<Pair<String, String>> timeslots) {
-        this.ts_inflater = LayoutInflater.from(context);
+        this.options_inflater = LayoutInflater.from(context);
         this.timeslots = timeslots;
     }
 
@@ -46,7 +51,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     @Override
     public OptionsListAdapter.TimeslotsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View view = ts_inflater.inflate(R.layout.options_recycleview_list_item, parent, false);
+        View view = options_inflater.inflate(R.layout.options_recycleview_list_item, parent, false);
         return new TimeslotsViewHolder(view);
 
     }
@@ -71,7 +76,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
         return timeslots.size();
     }
 
-    public class ItemClickListener {
+    public static class ItemClickListener {
         public void onItemClick(View view, int adapterPosition) {
             System.out.print("SUCCESS!!!");
         }
