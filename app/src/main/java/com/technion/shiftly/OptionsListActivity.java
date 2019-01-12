@@ -37,8 +37,8 @@ public class OptionsListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager options_layoutmanager;
 
     private List<Pair<String, String>> list;
-    private Long days_num_param;
-    private Long shifts_per_day_param;
+    private Long days_num_param = 1L;
+    private Long shifts_per_day_param = 1L;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -58,7 +58,7 @@ public class OptionsListActivity extends AppCompatActivity {
         }
     }
 
-    private void loadRecyclerViewData() {
+    private void loadRParamsFromDatabase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
 //        mDatabase.child("aaa").
         ChildEventListener cl = new ChildEventListener() {
@@ -90,18 +90,17 @@ public class OptionsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_options);
-        options_recyclerview = findViewById(R.id.ts_recycler_view);
+        options_recyclerview = findViewById(R.id.options_recycler_view);
         Toolbar optionsToolbar = findViewById(R.id.options_toolbar);
-        optionsToolbar.setTitle(getResources().getString(R.string.timeslots_toolbar_text));
+        optionsToolbar.setTitle(getResources().getString(R.string.options_toolbar_text));
         setSupportActionBar(optionsToolbar);
-
         options_recyclerview.setHasFixedSize(true);
 
         options_layoutmanager = new LinearLayoutManager(this);
         options_recyclerview.setLayoutManager(options_layoutmanager);
 
-        loadRecyclerViewData();
-        prepareStrings();
+        loadRParamsFromDatabase();
+        addShiftsToList();
         options_adapter = new OptionsListAdapter(getApplicationContext(), list);
 
         OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
@@ -114,10 +113,13 @@ public class OptionsListActivity extends AppCompatActivity {
         options_recyclerview.setAdapter(options_adapter);
     }
 
-    private void prepareStrings() {
+    private void addShiftsToList() {
+        list = new ArrayList<>();
         for (int i = 1; i < days_num_param + 1; i++) {
             for (int j = 1; j < shifts_per_day_param + 1; j++) {
-                Pair<String, String> p = new Pair<>("Day number: " + i, "Shift number: " + j);
+                String day_as_string = Integer.toString(i);
+                String shift_as_string = Integer.toString(j);
+                Pair<String, String> p = new Pair<>("Day number: " + day_as_string, "Shift number: " + shift_as_string);
                 list.add(p);
             }
         }
