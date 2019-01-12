@@ -65,7 +65,6 @@ public class OptionsListActivity extends AppCompatActivity {
 
     private void loadParamsFromDatabase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
-//        mDatabase.child("aaa").
         ChildEventListener cl = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -111,7 +110,6 @@ public class OptionsListActivity extends AppCompatActivity {
         char[] chars = new char[total_num_of_shifts];
         Arrays.fill(chars, '0');
         options = new String(chars);
-        Log.v("OPTIONS", options);
 
         options_adapter = new OptionsListAdapter(getApplicationContext(), list);
 
@@ -119,33 +117,20 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
 
-//                CheckBox cb = (CheckBox)findViewById(R.id.options_checkbox);
-
                 Character c = options.charAt(position);
                 Character newChar;
-//                Boolean new_cb_value;
 
                 if (c == '0') {
                     newChar = '1';
-//                    new_cb_value = true;
                 } else {
                     newChar = '0';
-//                    new_cb_value = false;
                 }
-//                cb.setChecked(new_cb_value);
-
-                // Change the character of the string "options" in index "position" to be 0/1
                 options = options.substring(0, position) + newChar + options.substring(position + 1);
-                Log.v("OPTIONS", options);
-
             }
         };
 
         ((OptionsListAdapter) options_adapter).setClickListener(listener);
         options_recyclerview.setAdapter(options_adapter);
-
-
-
 
     }
 
