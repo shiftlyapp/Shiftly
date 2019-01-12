@@ -88,5 +88,6 @@
     <string name="group_num_days_hint">Choose the number of days in a week:</string>
     <string name="group_num_shifts_hint">Choose the number of shifts per day:</string>
     <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
+    <string name="menu">MENU</string>
 
 </resources>

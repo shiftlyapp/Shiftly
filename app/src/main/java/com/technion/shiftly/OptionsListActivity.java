@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // The first activity of the group creation process.
@@ -37,8 +41,9 @@ public class OptionsListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager options_layoutmanager;
 
     private List<Pair<String, String>> list;
-    private Long days_num_param = 1L;
-    private Long shifts_per_day_param = 1L;
+    private Long days_num_param = 5L;
+    private Long shifts_per_day_param = 3L;
+    private String options;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -58,7 +63,7 @@ public class OptionsListActivity extends AppCompatActivity {
         }
     }
 
-    private void loadRParamsFromDatabase() {
+    private void loadParamsFromDatabase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
 //        mDatabase.child("aaa").
         ChildEventListener cl = new ChildEventListener() {
@@ -99,18 +104,49 @@ public class OptionsListActivity extends AppCompatActivity {
         options_layoutmanager = new LinearLayoutManager(this);
         options_recyclerview.setLayoutManager(options_layoutmanager);
 
-        loadRParamsFromDatabase();
+        loadParamsFromDatabase();
         addShiftsToList();
+
+        int total_num_of_shifts = (int) (days_num_param * shifts_per_day_param);
+        char[] chars = new char[total_num_of_shifts];
+        Arrays.fill(chars, '0');
+        options = new String(chars);
+        Log.v("OPTIONS", options);
+
         options_adapter = new OptionsListAdapter(getApplicationContext(), list);
 
         OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // mark the current option as checked
+
+//                CheckBox cb = (CheckBox)findViewById(R.id.options_checkbox);
+
+                Character c = options.charAt(position);
+                Character newChar;
+//                Boolean new_cb_value;
+
+                if (c == '0') {
+                    newChar = '1';
+//                    new_cb_value = true;
+                } else {
+                    newChar = '0';
+//                    new_cb_value = false;
+                }
+//                cb.setChecked(new_cb_value);
+
+                // Change the character of the string "options" in index "position" to be 0/1
+                options = options.substring(0, position) + newChar + options.substring(position + 1);
+                Log.v("OPTIONS", options);
+
             }
         };
+
         ((OptionsListAdapter) options_adapter).setClickListener(listener);
         options_recyclerview.setAdapter(options_adapter);
+
+
+
+
     }
 
     private void addShiftsToList() {
@@ -124,7 +160,5 @@ public class OptionsListActivity extends AppCompatActivity {
             }
         }
     }
-
-//    void onClickOptionsMenu
 
 }
