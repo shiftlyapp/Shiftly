@@ -67,58 +67,18 @@ public class ScheduleViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLayout = (ConstraintLayout) findViewById(R.id.container);
 
-
-//        FloatingActionButton timeslots_fab = findViewById(R.id.timeslots_fab);
-//        timeslots_fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), TimeslotsConfigActivity.class);
-//                intent.putExtra("GROUP_NAME", "");
-//                startActivity(intent);
-//            }
-//        });
-
-//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-//        currentUser = mAuth.getCurrentUser();
-
-//        FloatingActionButton schedule_fab = findViewById(R.id.schedule_fab);
-//        schedule_fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 1. Get all the info for the algorithm from the DB
-//                Group group = new Group("admin", "security", 1L);
-//                HashMap<String, Boolean> members = new HashMap<>();
-//                for (int i = 0; i < 5; i++) {
-//                    members.put(Integer.toString(i), true);
-//                }
-//                group.setMembers(members);
-//
-//                for (int i = 0; i < 5; i++) {
-//                    assert (members.keySet().contains(Integer.toString(i)));
-//                }
-//                group.setMembers_count(5L);
-//                // Setting up options
-//                ArrayList<ArrayList<HashMap<String, Boolean>>> options = makeFullSched();
-//                // Removing worker #0 from days: 1,3,5,7
-//                for (int k=0 ; k<7 ; k+=2) {
-//                    for (int j = 0; j < 3; j++) {
-//                        assert (options.get(k).get(j).remove("0"));
-//                    }
-//                }
-//                group.setOptions(options);
-//
-//                // 2. call the solver and get the results back
-//                // Create a new parameter group
-//                    ShiftSolver solver = new ShiftSolver(group);
-//                    solver.solve();
-//                    String result = solver.toString();
-//                // 3. Display the results in the calendar view
-//                    showScheduleSnackBar();
-//                    Intent intent = new Intent(view.getContext(), PresentScheduleActivity.class);
-//                    intent.putExtra("RESULT", result);
-//                    startActivity(intent);
-//            }
-//        });
+        // TODO: Make available only if the user is not the admin, otherwise don't present the button
+        // TODO: or make it present a toast saying "you are not an employee"
+        FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        optionsFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
+                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                intent.putExtra("GROUP_NAME", group_name);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

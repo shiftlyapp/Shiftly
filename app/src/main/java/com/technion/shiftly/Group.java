@@ -17,17 +17,17 @@ public class Group {
     private Long days_num;
     private Long shifts_per_day;
     private Long employees_per_shift;
-    private ArrayList<String> options; // Each string is a binary vector representing one employee
-    private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
+    private Map<String, String> options; // Keys = UUID's, Values = binary vectors
+    private ArrayList<String> schedule; // UUID at the i'th position works shift i
 
     public Group() {
     }
 
-    public ArrayList<ArrayList<HashMap<String, Boolean>>> getSchedule() {
+    public ArrayList<String> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(ArrayList<ArrayList<HashMap<String, Boolean>>> schedule) {
+    public void setSchedule(ArrayList<String> schedule) {
         this.schedule = schedule;
     }
 
@@ -57,7 +57,7 @@ public class Group {
         return members_count;
     }
 
-    public ArrayList<String> getOptions() {
+    public Map<String, String> getOptions() {
         return options;
     }
 
@@ -89,7 +89,7 @@ public class Group {
         return employees_per_shift;
     }
 
-    public void setOptions(ArrayList<String> options) {
+    public void setOptions(Map<String, String> options) {
         this.options = options;
     }
 
