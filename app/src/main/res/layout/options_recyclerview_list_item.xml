@@ -56,11 +56,5 @@ android:orientation="vertical">
         app:srcCompat="@drawable/ic_more"
         android:contentDescription="@string/menu" />
 
-    <View
-        android:id="@+id/options_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_divider_size"
-        android:background="@color/div_color" />
-
 
 </RelativeLayout>

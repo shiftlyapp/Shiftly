@@ -30,7 +30,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     // inflates the row layout from xml when needed
     @Override @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recycleview_list_item, parent, false);
+        View view = mInflater.inflate(R.layout.groups_recycleview_list_item, parent, false);
         return new ViewHolder(view);
     }
 

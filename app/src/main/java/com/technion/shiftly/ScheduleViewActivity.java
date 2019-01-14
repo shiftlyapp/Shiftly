@@ -69,13 +69,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         // TODO: Make available only if the user is not the admin, otherwise don't present the button
         // TODO: or make it present a toast saying "you are not an employee"
-        FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
         optionsFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
-                String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                intent.putExtra("GROUP_NAME", group_name);
+                String group_name = getIntent().getExtras().getString("GROUP_ID");
+                intent.putExtra("GROUP_ID", group_name);
                 startActivity(intent);
             }
         });

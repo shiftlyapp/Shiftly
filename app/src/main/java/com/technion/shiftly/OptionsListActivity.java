@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -100,6 +100,8 @@ public class OptionsListActivity extends AppCompatActivity {
 
         options_layoutmanager = new LinearLayoutManager(this);
         options_recyclerview.setLayoutManager(options_layoutmanager);
+        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(getApplicationContext(), R.drawable.recycler_divider));
+        options_recyclerview.addItemDecoration(dividerItemDecoration);
 
         loadParamsFromDatabase();
         addShiftsToList();
@@ -133,9 +135,9 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Push options to DB
-                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                String group_name = getIntent().getExtras().getString("GROUP_ID");
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference groupOptionsRef = database.getReference().child("Groups").child(group_name);
+                DatabaseReference groupOptionsRef = database.getReference().child("Groups").child(group_name).child("options");
 
                 Map<String, Object> options_from_db = new HashMap<>();
 

@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'key0'
             keyPassword 'shiftly1234'
-            storeFile file('C:/key/ShiftlyKey')
+            storeFile file('/Users/GalFleissig/AndroidStudioProjects/Shiftly/Key/ShiftlyKey')
             storePassword 'shiftly1234'
         }
     }
