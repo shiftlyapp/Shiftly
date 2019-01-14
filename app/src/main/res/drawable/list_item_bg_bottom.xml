@@ -7,6 +7,10 @@
                 android:gradientRadius="360dp"
                 android:startColor="@android:color/white"
                 android:endColor="@color/list_item_bg_pressed" />
+            <corners android:bottomRightRadius="32dp"
+                android:bottomLeftRadius="32dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"/>
         </shape>
     </item>
     <item>
@@ -16,6 +20,10 @@
                 android:gradientRadius="260dp"
                 android:startColor="@android:color/white"
                 android:endColor="@color/silver_color_dark" />
+            <corners android:bottomRightRadius="32dp"
+                android:bottomLeftRadius="32dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"/>
         </shape>
     </item>
 </selector>

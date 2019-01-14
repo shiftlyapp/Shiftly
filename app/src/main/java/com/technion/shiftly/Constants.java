@@ -13,6 +13,10 @@ abstract class Constants {
     static final float CLOCK_ANIM_SPEED = 0.6f;
     static final float CLOCK_ANIM_SCALE = 0.55f;
     static final float LOADING_ANIM_SCALE = 0.2f;
+    static final float EYE_ANIM_SCALE = 0.4f;
+    static final int HIDE_LOADING_ANIMATION = 0;
+    static final int SHOW_LOADING_ANIMATION = 1;
+    static final int EMPTY_GROUPS_COUNT = 3;
     static final String REGEX_PASSWORD_VALIDATION = "^(?!.*\\s).{6,14}$";
     static final String REGEX_NAME_VALIDATION = "[a-zA-Z]+[[\\s][a-zA-Z]+]*";
 

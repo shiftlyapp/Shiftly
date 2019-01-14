@@ -2,5 +2,4 @@
 <resources>
     <integer name="pass_max_length">14</integer>
     <integer name="edittxt_ems">10</integer>
-
 </resources>

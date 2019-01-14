@@ -1,36 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/groups_i_belong_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg">
+    android:background="@drawable/gradient_bg"
+    android:clipToPadding="false">
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/recycler_wrapper_belong"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:id="@+id/no_groups_container_belong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/no_groups_bg"
+            android:clipToPadding="false"
+            android:elevation="@dimen/elevation_high"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/eye_anim_belong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:adjustViewBounds="true"
+                app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/colorPrimary"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/eye" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha="0.2"
+                android:src="@drawable/rounded_divider" />
+
+            <TextView
+                android:id="@+id/join_group_text_belong"
+                style="@style/CustomTextViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/groups_empty"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_icon_belong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:adjustViewBounds="true"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading" />
-
         <android.support.v7.widget.RecyclerView
-            android:elevation="@dimen/elevation"
             android:id="@+id/groups_i_belong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:elevation="@dimen/elevation_high"
+            android:outlineProvider="bounds"
             android:scrollbars="vertical" />
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/join_fab"

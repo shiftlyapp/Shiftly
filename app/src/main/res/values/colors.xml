@@ -3,7 +3,8 @@
     <!-- General -->
     <color name="colorPrimary">#006064</color>
     <color name="colorPrimaryDark">#00363a</color>
-    <color name="colorPrimaryLight">#6e00363a</color>
+    <color name="colorPrimaryLight">#00878c</color>
+    <color name="colorPrimaryLight_Bar">#008e94</color>
     <color name="colorAccent">#00363a</color>
     <color name="text_color_primary">#ffffff</color>
     <color name="background_color">#006064</color>
@@ -22,7 +23,9 @@
     <color name="silver_color">#cacaca</color>
     <color name="div_color">#e4e4e4</color>
     <color name="silver_color_dark">#e2e2e2</color>
+    <color name="list_item_bg_pressed">#dedede</color>
     <color name="silver_color_darker">#5c5c5c</color>
+    <color name="material_grey">#d9d9d9</color>
     <color name="shadow_gradient">#1e000000</color>
 
     <!-- SnackBar -->

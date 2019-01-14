@@ -40,10 +40,4 @@
         android:layout_toRightOf="@id/group_image"
         android:textColor="@color/members_color"
         android:textSize="@dimen/text_size" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_divider_size"
-        android:background="@color/div_color" />
 </RelativeLayout>

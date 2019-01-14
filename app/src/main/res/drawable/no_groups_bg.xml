@@ -4,15 +4,14 @@
         android:type="radial"
         android:gradientRadius="260dp"
         android:startColor="@android:color/white"
-        android:endColor="@color/silver_color_dark" />
+        android:endColor="@color/material_grey" />
     <padding android:left="6dp"
         android:top="0dp"
         android:right="6dp"
         android:bottom="6dp"
         />
-
-    <corners android:bottomRightRadius="16dp"
-        android:bottomLeftRadius="16dp"
+    <corners android:bottomRightRadius="36dp"
+        android:bottomLeftRadius="36dp"
         android:topLeftRadius="0dp"
         android:topRightRadius="0dp"/>
 </shape>
