@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,11 +28,31 @@ public class GroupListsActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private GoogleSignInAccount mGoogleSignInAccount;
     private TabLayout mTabLayout;
+    private Toolbar mToolbar;
     private ViewPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+
+    public ImageView getDel_group() {
+        return del_group;
+    }
+
     private GoogleSignInClient mGoogleSignInClient;
+    private ImageView del_group;
+
+    public Toolbar getmToolbar() {
+        return mToolbar;
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public TabLayout getmTabLayout() {
+        return mTabLayout;
+    }
 
     @Override
+
     public void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
@@ -49,12 +70,13 @@ public class GroupListsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lists);
-        Toolbar group_toolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
+        del_group = (ImageView)findViewById(R.id.del_group);
         final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        setSupportActionBar(group_toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        group_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawer.openDrawer(Gravity.LEFT);
@@ -117,8 +139,8 @@ public class GroupListsActivity extends AppCompatActivity {
 
     public void gotoLogin() {
         Intent login_intent = new Intent(this, LoginActivity.class);
-        finish();
         startActivity(login_intent);
+        finish();
     }
 
     private void setupTabIcons(ViewPagerAdapter pagerAdapter) {

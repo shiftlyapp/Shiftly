@@ -19,6 +19,7 @@
     <!-- TextView title -->
     <dimen name="text_title_size">20sp</dimen>
     <!-- TextView -->
+    <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_margin_top">8dp</dimen>
     <dimen name="text_margin_bottom">8dp</dimen>

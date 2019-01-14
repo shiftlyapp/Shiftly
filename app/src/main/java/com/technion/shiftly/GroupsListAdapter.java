@@ -1,14 +1,11 @@
 package com.technion.shiftly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -21,6 +18,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     private List<Long> mCounts;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private ItemLongClickListener mLongClickListener;
 
     // data is passed into the constructor
     GroupsListAdapter(Context context, List<String> names, List<Long> counts) {
@@ -30,8 +28,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     }
 
     // inflates the row layout from xml when needed
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.recycleview_list_item, parent, false);
         return new ViewHolder(view);
     }
@@ -43,12 +41,15 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         String count = Long.toString(mCounts.get(position));
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
+        holder.itemView.setLongClickable(true);
         if (position == 0) {
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
             marginLayoutParams.setMargins(0, 0, 0, 0);
             holder.itemView.setLayoutParams(marginLayoutParams);
-        } else if (position == getItemCount() - 1) { //last item of RecyclerView
+        } else if (position < getItemCount()-1) {
+            holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg, null));
+        } else {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
         }
     }
@@ -61,7 +62,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView myNameView;
         TextView myCountView;
 
@@ -70,6 +71,14 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
             myNameView = itemView.findViewById(R.id.group_name);
             myCountView = itemView.findViewById(R.id.group_count);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (mLongClickListener != null)
+                mLongClickListener.onItemLongClick(view,getAdapterPosition());
+            return true;
         }
 
         @Override
@@ -89,8 +98,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         this.mClickListener = itemClickListener;
     }
 
+    // allows long clicks events to be caught
+    void setLongClickListener(ItemLongClickListener itemLongClickListener) {
+        this.mLongClickListener = itemLongClickListener;
+    }
+
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public interface ItemLongClickListener {
+        void onItemLongClick(View view, int position);
     }
 }

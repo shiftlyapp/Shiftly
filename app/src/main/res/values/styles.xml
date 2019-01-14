@@ -101,6 +101,12 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
+    <style name="CustomTextViewSmall">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
     <style name="FabLabels">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>

@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 public class CustomSnackbar {
-    public static final int SNACKBAR_ERROR = 0;
-    public static final int SNACKBAR_SUCCESS = 1;
-    public static final int SNACKBAR_DEFAULT_TEXT_SIZE = 18;
+    static final int SNACKBAR_ERROR = 0;
+    static final int SNACKBAR_SUCCESS = 1;
+    static final int SNACKBAR_DEFAULT_TEXT_SIZE = 18;
 
     private int text_size;
     private int length;
@@ -34,6 +34,7 @@ public class CustomSnackbar {
     CustomSnackbar(int text_size) {
         this.text_size = text_size;
     }
+
     public void show(Context context, View v, String msg, int type, int length) {
         Snackbar snackbar = Snackbar.make(v, msg, length);
         View snackbarView = snackbar.getView();
@@ -47,10 +48,10 @@ public class CustomSnackbar {
         tv.setTextSize(text_size);
         tv.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         switch (type) {
-            case 0: // Failure
+            case SNACKBAR_ERROR: // Failure
                 tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.snackbar_error, 0, 0, 0);
                 break;
-            case 1: // Success
+            case SNACKBAR_SUCCESS: // Success
                 tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.v, 0, 0, 0);
                 break;
         }
