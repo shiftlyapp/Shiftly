@@ -56,8 +56,8 @@
     <string name="group_create">CREATE</string>
     <string name="group_create_succeed">%1$s was created successfully! </string>
     <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
-    <string name="timeslots_configure">Configure Timeslots</string>
-    <string name="fill_timeslots_text">To continue, please select your shifts general preferences:</string>
+    <string name="options_configure">Configure Options</string>
+    <string name="fill_options_text">To continue, please select your shifts general preferences:</string>
     <string name="group_pic_hint">Now, upload your Group picture:</string>
     <string name="group_name_hint">First, name your Group:</string>
     <string name="group_name_edittext_hint">GROUP NAME</string>
@@ -84,5 +84,10 @@
     <string name="title_contact_us">Contact us:</string>
     <string name="contact_us_email">course236503@gmail.com</string>
     <string name="credits_title">Credits:</string>
+    <string name="options_toolbar_text">Configure Options</string>
+    <string name="group_num_days_hint">Choose the number of days in a week:</string>
+    <string name="group_num_shifts_hint">Choose the number of shifts per day:</string>
+    <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
+    <string name="menu">MENU</string>
 
 </resources>

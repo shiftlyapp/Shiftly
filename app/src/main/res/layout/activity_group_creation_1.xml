@@ -10,6 +10,7 @@
     android:focusableInTouchMode="true"
     tools:context=".GroupCreation1Activity"
     tools:layout_editor_absoluteY="25dp">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/group_creation_toolbar_1"
         android:layout_width="match_parent"

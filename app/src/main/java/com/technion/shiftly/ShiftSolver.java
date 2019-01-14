@@ -33,13 +33,13 @@ public class ShiftSolver {
         return sched;
     }
 
-    public ShiftSolver(Group group) {
-        schedule = deepCopyOptions(group.getOptions());
-        members = new HashMap<>(group.getMembers());
-        numOfMembers = group.getMembers_count();
-        numOfShiftForEmployee = new HashMap<>();
-        updateNumOfShiftForEmployee();
-    }
+//    public ShiftSolver(Group group) {
+//        schedule = deepCopyOptions(group.getOptions());
+//        members = new HashMap<>(group.getMembers());
+//        numOfMembers = group.getMembers_count();
+//        numOfShiftForEmployee = new HashMap<>();
+//        updateNumOfShiftForEmployee();
+//    }
 
     private void updateNumOfShiftForEmployee() {
         for(String member: members.keySet()) {
