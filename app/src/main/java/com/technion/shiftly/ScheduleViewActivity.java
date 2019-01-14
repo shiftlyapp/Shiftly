@@ -67,18 +67,18 @@ public class ScheduleViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLayout = (ConstraintLayout) findViewById(R.id.container);
 
-        FloatingActionButton timeslots_fab = findViewById(R.id.timeslots_fab);
-        timeslots_fab.setOnClickListener(new View.OnClickListener() {
+        // TODO: Make available only if the user is not the admin, otherwise don't present the button
+        // TODO: or make it present a toast saying "you are not an employee"
+        FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        optionsFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), GroupCreation1Activity.class);
-                intent.putExtra("GROUP_NAME", "");
+                Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
+                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                intent.putExtra("GROUP_NAME", group_name);
                 startActivity(intent);
             }
         });
-
-//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-//        currentUser = mAuth.getCurrentUser();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

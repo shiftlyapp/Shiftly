@@ -4,21 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // The first activity of the group creation process.
 // In this activity the future admin sets the group name.
@@ -93,7 +91,7 @@ public class OptionsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config_options);
+        setContentView(R.layout.activity_options_list);
         options_recyclerview = findViewById(R.id.options_recycler_view);
         Toolbar optionsToolbar = findViewById(R.id.options_toolbar);
         optionsToolbar.setTitle(getResources().getString(R.string.options_toolbar_text));
@@ -110,9 +108,7 @@ public class OptionsListActivity extends AppCompatActivity {
         char[] chars = new char[total_num_of_shifts];
         Arrays.fill(chars, '0');
         options = new String(chars);
-
         options_adapter = new OptionsListAdapter(getApplicationContext(), list);
-
         OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -131,6 +127,24 @@ public class OptionsListActivity extends AppCompatActivity {
 
         ((OptionsListAdapter) options_adapter).setClickListener(listener);
         options_recyclerview.setAdapter(options_adapter);
+
+        FloatingActionButton doneFab = findViewById(R.id.done_fab);
+        doneFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Push options to DB
+                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference groupOptionsRef = database.getReference().child("Groups").child(group_name);
+
+                Map<String, Object> options_from_db = new HashMap<>();
+
+                options_from_db.put(currentUser.getUid(), options);
+
+                groupOptionsRef.updateChildren(options_from_db);
+
+            }
+        });
 
     }
 

@@ -43,7 +43,7 @@
         app:menu="@menu/navigation" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/timeslots_fab"
+        android:id="@+id/options_fab"
         android:clickable="true"
         app:fabSize="normal"
         app:backgroundTint="@color/orange_color"
@@ -70,7 +70,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/timeslots_fab"
+        app:layout_constraintBottom_toTopOf="@id/options_fab"
         app:layout_constraintEnd_toEndOf="@id/schedule_view_toolbar"
         android:focusable="true" />
 

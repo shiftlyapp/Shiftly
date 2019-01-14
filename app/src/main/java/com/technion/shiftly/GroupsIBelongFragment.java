@@ -135,6 +135,7 @@ public class GroupsIBelongFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 // Go to a weekly schedule on a certain group
+                // TODO: send the group UUID to scheduleViewActivity
                 Intent intent = new Intent(view.getContext(), ScheduleViewActivity.class);
                 startActivity(intent);
             }
