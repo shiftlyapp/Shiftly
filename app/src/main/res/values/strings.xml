@@ -77,13 +77,10 @@
     <!-- Group lists -->
     <string name="groups_i_belong">GROUPS I BELONG</string>
     <string name="groups_i_manage">GROUPS I MANAGE</string>
-    <string name="groups_empty">You have yet to join a group.</string>
+    <string name="groups_empty_belong">You have yet to join a group.</string>
+    <string name="groups_empty_manage">You have yet to create a group.</string>
     <string name="schedule_generated">A new schedule has been generated!</string>
     <string name="confirm_schedule">CONFIRM</string>
-    <string name="fetching_txt_0">Syncing</string>
-    <string name="fetching_txt_1">Syncing.</string>
-    <string name="fetching_txt_2">Syncing..</string>
-    <string name="fetching_txt_3">Syncing\u2026</string>
 
     <!-- About -->
     <string name="title_contact_us">Contact us:</string>
