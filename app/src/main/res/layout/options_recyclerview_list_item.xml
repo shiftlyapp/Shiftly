@@ -44,17 +44,4 @@ android:orientation="vertical">
         android:textSize="@dimen/text_size" />
 
 
-    <ImageView
-        android:id="@+id/options_menu"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/list_item_image_left_margin"
-        android:layout_marginRight="@dimen/list_item_image_left_margin"
-        app:srcCompat="@drawable/ic_more"
-        android:contentDescription="@string/menu" />
-
-
 </RelativeLayout>

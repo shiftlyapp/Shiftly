@@ -74,8 +74,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
-                String group_name = getIntent().getExtras().getString("GROUP_ID");
-                intent.putExtra("GROUP_ID", group_name);
+                String group_id = getIntent().getExtras().getString("GROUP_ID");
+                intent.putExtra("GROUP_ID", group_id);
                 startActivity(intent);
             }
         });

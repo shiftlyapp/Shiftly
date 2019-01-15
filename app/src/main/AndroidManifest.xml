@@ -33,11 +33,6 @@
         <activity
             android:name="com.technion.shiftly.LoginActivity"
             android:theme="@style/SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.technion.shiftly.SignupActivity"
@@ -51,14 +46,21 @@
 
         <activity
             android:name="com.technion.shiftly.GroupListsActivity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.technion.shiftly.ScheduleViewActivity">
-
         </activity>
         <activity android:name="com.technion.shiftly.GroupCreation3Activity" />
         <activity android:name="com.technion.shiftly.PresentScheduleActivity" />
         <activity android:name="com.technion.shiftly.AboutActivity" />
+        <activity android:name="com.technion.shiftly.JoinGroupActivity" />
         <activity android:name="com.technion.shiftly.OptionsListActivity">
+
         </activity>
     </application>
 </manifest>

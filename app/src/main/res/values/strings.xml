@@ -95,5 +95,9 @@
     <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
     <string name="menu">MENU</string>
     <string name="done_text">Done</string>
+    <string name="join_group_hint">Enter group ID:</string>
+    <string name="join_group_edittext_hint">Group ID</string>
+    <string name="err_groupid">Invalid group ID!</string>
+    <string name="group_join_label">Join Group</string>
 
 </resources>

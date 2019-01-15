@@ -146,6 +146,14 @@ public class GroupsIBelongFragment extends Fragment {
         loading_icon = view.findViewById(R.id.loading_icon_belong);
         LottieAnimationView eye_anim = view.findViewById(R.id.eye_anim_belong);
         no_groups_container = view.findViewById(R.id.no_groups_container_belong);
+
+        view.findViewById(R.id.join_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(context,JoinGroupActivity.class));
+            }
+        });
+
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
 
         // Configuring RecyclerView with A LinearLayout and adding dividers
