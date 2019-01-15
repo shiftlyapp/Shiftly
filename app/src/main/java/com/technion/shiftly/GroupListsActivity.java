@@ -71,7 +71,7 @@ public class GroupListsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lists);
         mToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
-        del_group = (ImageView)findViewById(R.id.del_group);
+        del_group = (ImageView) findViewById(R.id.del_group);
         final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,7 +97,7 @@ public class GroupListsActivity extends AppCompatActivity {
         // Tab layout
         mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-       // setupTabIcons(mPagerAdapter);
+        // setupTabIcons(mPagerAdapter);
 
         // Drawer layout
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -129,6 +129,8 @@ public class GroupListsActivity extends AppCompatActivity {
         int intent_fragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
         if (intent_fragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
             mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
+        } else if (intent_fragment == Constants.GROUPS_I_BELONG_FRAGMENT) {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
         }
     }
 

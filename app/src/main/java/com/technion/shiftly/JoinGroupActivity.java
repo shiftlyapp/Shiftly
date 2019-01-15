@@ -70,10 +70,8 @@ public class JoinGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
-        final String group_code = ((EditText)findViewById(R.id.join_group_edittext)).getText().toString();
-        mAwesomeValidation.addValidation(JoinGroupActivity.this, R.id.join_group_edittext, "^[a-zA-Z0-9\u0590-\u05fe][a-zA-Z0-9\u0590-\u05fe\\s]*$", R.string.err_groupid);
+        mAwesomeValidation.addValidation(JoinGroupActivity.this, R.id.join_group_edittext, "^[\\-\\_a-zA-Z0-9]*$", R.string.err_groupid);
         databaseRef = FirebaseDatabase.getInstance().getReference();
         groupsIds = new ArrayList<>();
 
@@ -85,6 +83,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                     // Add the user to the group and close this intent
                     String user_id = currentUser.getUid();
                     final DatabaseReference userGroupsRef = databaseRef.child("Users").child(user_id);
+                    final String group_code = ((EditText)findViewById(R.id.join_group_edittext)).getText().toString();
 
                     userGroupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         // TODO: add: do this only if group not already in the groups
@@ -93,33 +92,23 @@ public class JoinGroupActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             // Increment groups number by one
 
-                            Map<String, Object> map = new HashMap<>();
+                            Map<String, Object> groups_count_map = new HashMap<>();
                             Long groups_count = dataSnapshot.child("groups_count").getValue(Long.class);
                             Long newValue = (groups_count + 1L);
-                            map.put("groups_count", newValue);
-                            userGroupsRef.updateChildren(map);
+                            groups_count_map.put("groups_count", newValue);
+                            userGroupsRef.updateChildren(groups_count_map);
 
 
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    userGroupsRef.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
-                        // TODO: add: do this only if group not already in the groups
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                       // Add the group to the groups of the user
-                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            // Add the group to the groups of the user
+                            for (DataSnapshot postSnapshot : dataSnapshot.child("groups").getChildren()) {
                                 groupsIds.add(postSnapshot.getValue(String.class));
                             }
 
+                            Map<String, Object> groups_map = new HashMap<>();
                             groupsIds.add(group_code);
-                            userGroupsRef.child("groups").setValue(groupsIds);
+                            groups_map.put("groups", groupsIds);
+                            userGroupsRef.updateChildren(groups_map);
+
                         }
 
                         @Override
@@ -129,17 +118,12 @@ public class JoinGroupActivity extends AppCompatActivity {
                     });
 
 
+                    Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("FRAGMENT_TO_LOAD",Constants.GROUPS_I_BELONG_FRAGMENT);
+                    startActivity(intent);
 
 
-
-
-
-
-
-                    // TODO: update groups count with the two lines below
-//                    Long groups_count = userGroupsRef.child("groups_count").getValue(Long.class);
-//                    userGroupsRef.child("groups_count").push().setValue(groups_count + 1);
-                    finish();
                 }
             }
         });

@@ -50,7 +50,7 @@
         android:ems="10"
         android:hint="@string/join_group_edittext_hint"
         android:inputType="text"
-        android:maxLength="20"
+        android:maxLength="25"
         android:paddingLeft="12dp"
         android:paddingEnd="12dp"
         android:paddingRight="12dp"
