@@ -132,11 +132,27 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Push options to DB
-                DatabaseReference groupOptionsRef = databaseRef.child("Groups").child(group_id).child("options");
-                Map<String, Object> options_from_db = new HashMap<>();
-                options_from_db.put(currentUser.getUid(), options);
-                groupOptionsRef.updateChildren(options_from_db);
 
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> options_map = new HashMap<>();
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
+                            options_map.put(postSnapshot.getKey(), postSnapshot.getValue());
+                        }
+                        options_map.put(currentUser.getUid(), options);
+
+                        Map<String, Object> options_map_of_db = new HashMap<>();
+                        options_map_of_db.put("options", options_map);
+
+                        databaseRef.updateChildren(options_map_of_db);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }
