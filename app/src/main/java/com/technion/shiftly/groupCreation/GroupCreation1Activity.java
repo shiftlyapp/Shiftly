@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupCreation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.technion.shiftly.R;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
@@ -18,19 +17,6 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 // In this activity the future admin sets the group name.
 
 public class GroupCreation1Activity extends AppCompatActivity {
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -47,7 +33,6 @@ public class GroupCreation1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_creation_1);
-        mAuth = FirebaseAuth.getInstance();
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_1);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));

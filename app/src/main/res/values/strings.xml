@@ -108,6 +108,4 @@
         https://play.google.com/store/apps/details?id=com.technion.shiftly
     </string>
     <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
-    <string name="groups_empty">You have yet to create a group.</string>
-
 </resources>

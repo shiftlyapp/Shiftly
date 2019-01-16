@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupJoin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.google.common.primitives.UnsignedLong;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
+import com.technion.shiftly.entry.LoginActivity;
+import com.technion.shiftly.groupsList.GroupListsActivity;
+import com.technion.shiftly.utility.Constants;
+import com.technion.shiftly.utility.CustomSnackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
-import static java.lang.Math.toIntExact;
 
 // The join group activity
 

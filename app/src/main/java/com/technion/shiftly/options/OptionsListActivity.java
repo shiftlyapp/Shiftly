@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.options;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +21,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
+import com.technion.shiftly.entry.LoginActivity;
+import com.technion.shiftly.utility.DividerItemDecorator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 // The first activity of the group creation process.
 // In this activity the future admin sets the group name.
 

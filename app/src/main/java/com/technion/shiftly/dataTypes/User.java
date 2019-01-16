@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.dataTypes;
 
 import java.util.ArrayList;
 import java.util.List;

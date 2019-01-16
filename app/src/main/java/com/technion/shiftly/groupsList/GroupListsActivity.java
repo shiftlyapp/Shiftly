@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupsList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +27,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
+import com.technion.shiftly.entry.LoginActivity;
+import com.technion.shiftly.miscellaneous.AboutActivity;
+import com.technion.shiftly.utility.Constants;
 
 public class GroupListsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -81,19 +85,15 @@ public class GroupListsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        if (userDisplayName.length() == 0) {
+        if (userDisplayName==null || userDisplayName.isEmpty()) {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
             db.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String firstname = null, lastname = null;
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        firstname = ds.child("firstname").getValue(String.class);
-                        lastname = ds.child("lastname").getValue(String.class);
-                    }
+                    String firstname = dataSnapshot.child("firstname").getValue(String.class);
+                    String lastname = dataSnapshot.child("lastname").getValue(String.class);
                     mToolbar.setSubtitle(firstname + " " + lastname);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

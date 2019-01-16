@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_bg"
         android:focusableInTouchMode="true"
-        tools:context=".GroupCreation3Activity"
+        tools:context=".GroupCreation4Activity"
         tools:layout_editor_absoluteY="25dp">
 
         <android.support.v7.widget.Toolbar

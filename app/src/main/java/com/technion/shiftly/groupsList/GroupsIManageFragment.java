@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupsList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
+import com.technion.shiftly.groupCreation.GroupCreation1Activity;
+import com.technion.shiftly.utility.Constants;
+import com.technion.shiftly.utility.CustomSnackbar;
+import com.technion.shiftly.utility.DividerItemDecorator;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.utility;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,11 +6,12 @@ import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import com.technion.shiftly.R;
 
 public class CustomSnackbar {
-    static final int SNACKBAR_ERROR = 0;
-    static final int SNACKBAR_SUCCESS = 1;
-    static final int SNACKBAR_DEFAULT_TEXT_SIZE = 18;
+    public static final int SNACKBAR_ERROR = 0;
+    public static final int SNACKBAR_SUCCESS = 1;
+    public static final int SNACKBAR_DEFAULT_TEXT_SIZE = 18;
 
     private int text_size;
     private int length;
@@ -31,7 +32,7 @@ public class CustomSnackbar {
         this.text_size = text_size;
     }
 
-    CustomSnackbar(int text_size) {
+    public CustomSnackbar(int text_size) {
         this.text_size = text_size;
     }
 

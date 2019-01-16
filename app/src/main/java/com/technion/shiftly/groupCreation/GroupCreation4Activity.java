@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupCreation;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,12 +17,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.technion.shiftly.R;
+import com.technion.shiftly.dataTypes.Group;
+import com.technion.shiftly.groupsList.GroupListsActivity;
+import com.technion.shiftly.utility.Constants;
 
-public class GroupCreation3Activity extends AppCompatActivity {
+public class GroupCreation4Activity extends AppCompatActivity {
+
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
+    private UploadTask uploadTask;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -33,8 +47,26 @@ public class GroupCreation3Activity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("FRAGMENT_TO_LOAD",Constants.GROUPS_I_MANAGE_FRAGMENT);
+        intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_MANAGE_FRAGMENT);
         startActivity(intent);
+    }
+
+    private void uploadToStorage(byte[] compressed_bitmap, String filename) {
+        mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
+        uploadTask = mStorageRef.putBytes(compressed_bitmap);
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // mCustomSnackbar.show(getApplicationContext(),view,"Upload fail",0);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+            }
+        });
     }
 
     @Override
@@ -47,9 +79,9 @@ public class GroupCreation3Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         Bundle extras = getIntent().getExtras();
         final String group_name = extras.getString("GROUP_NAME");
+        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
         TextView signup_text = findViewById(R.id.signup_header);
         final Resources res = getResources();
         signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
@@ -61,11 +93,13 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        mStorage = FirebaseStorage.getInstance();
         String admin_UID = currentUser.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mGroupRef = database.getReference().child(("Groups"));
 
         final String group_UID = mGroupRef.push().getKey();
+
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
@@ -73,8 +107,10 @@ public class GroupCreation3Activity extends AppCompatActivity {
         final Group group = new Group(admin_UID, group_name, 0L,
                 days_num, shifts_per_day, employees_per_shift);
         mGroupRef.child(group_UID).setValue(group);
-
         EditText group_code_edittext = findViewById(R.id.group_code);
+        if (group_pic_array!=null) {
+            uploadToStorage(group_pic_array, group_UID);
+        }
         group_code_edittext.setText(group_UID);
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
                 group_name + " " + res.getString(R.string.message2_share_group_code) + " " + group_UID + "\n\n" +

@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.utility;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -9,7 +9,7 @@ import android.view.View;
 public class DividerItemDecorator extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
 
-    DividerItemDecorator(Drawable divider) {
+    public DividerItemDecorator(Drawable divider) {
         mDivider = divider;
     }
 

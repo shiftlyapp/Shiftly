@@ -1,8 +1,6 @@
-package com.technion.shiftly;
+package com.technion.shiftly.dataTypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // A class that represents a group in the app.
@@ -104,44 +102,4 @@ public class Group {
     public void setEmployees_per_shift(Long employees_per_shift) {
         this.employees_per_shift = employees_per_shift;
     }
-
-    //    @Override
-//    public String toString() {
-//        String sched = "";
-//        int i = 1;
-//        if (schedule != null) {
-//            for (ArrayList<HashMap<String, Boolean>> day : schedule) {
-//                sched += ("day" + Integer.toString(i++) + ": " + day + "\n") ;
-//            }
-//        } else {
-//            sched = "Unresolved";
-//        }
-//        String opts = "";
-//        int j = 1;
-//        if (options != null) {
-//            for (ArrayList<String> day : options) {
-//                opts += ("day" + Integer.toString(j++) + ": " + day + "\n") ;
-//            }
-//        } else {
-//            opts = "None Exist";
-//        }
-//        String slots = "";
-//        int k = 1;
-//        if (timeslots != null) {
-//            for (Map<String, Boolean> shift : timeslots) {
-//                slots += ("shift" + Integer.toString(j++) + ": " + shift + "\n") ;
-//            }
-//        } else {
-//            slots = "None Exist";
-//        }
-//
-//        return "-----Group----\n" +
-//                "group_name: '" + group_name + "'\n" +
-//                "admin: '" + admin + "'\n" +
-//                "members: " + members + "\n" +
-//                "member_count: " + members_count + "\n" +
-//                "\nOptions: \n" + opts + "\n" +
-//                "Schedule: \n" + sched + "\n" +
-//                "timeslots: \n" + slots + "\n";
-//    }
 }

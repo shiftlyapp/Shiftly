@@ -1,8 +1,9 @@
-package com.technion.shiftly;
+package com.technion.shiftly.miscellaneous;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import com.technion.shiftly.R;
 
 public class AboutActivity extends AppCompatActivity {
 

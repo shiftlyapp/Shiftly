@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.scheduleView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +21,13 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.technion.shiftly.R;
+import com.technion.shiftly.options.OptionsListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ScheduleViewActivity extends AppCompatActivity {
-
 
     private ConstraintLayout mLayout;
     private FirebaseAuth mAuth;

@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.algorithm;
 
 import android.os.Build;
 
@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 
-@SuppressWarnings("unchecked")
 public class ShiftSolver {
     private ArrayList<ArrayList<HashMap<String, Boolean>>> schedule;
     private HashMap<String, Boolean> members;

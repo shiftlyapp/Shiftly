@@ -1,10 +1,8 @@
-package com.technion.shiftly;
+package com.technion.shiftly.options;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.util.SparseBooleanArray;
@@ -12,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.technion.shiftly.R;
 import java.util.List;
 
-
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.OptionsViewHolder> {
-
 
     @NonNull
     private List<Pair<String, String>> options; // First = day, Second = time
@@ -36,9 +32,6 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     @Override
     public void onBindViewHolder(@NonNull final OptionsViewHolder holder, int position) {
 //        final ClipData.Item currentItem = items.get(position);
-
-
-
         // - get element from dataset at this position
         String day = options.get(position).first;
         String time = options.get(position).second;

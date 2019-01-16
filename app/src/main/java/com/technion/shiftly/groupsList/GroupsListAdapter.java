@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.groupsList;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.technion.shiftly.R;
+import com.technion.shiftly.utility.Constants;
 
 import java.util.List;
 

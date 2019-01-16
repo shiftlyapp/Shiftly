@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.scheduleView;
 
 import android.graphics.RectF;
 import android.os.Build;
@@ -12,16 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
+import com.technion.shiftly.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 
 public class DailyViewFragment extends Fragment {
 

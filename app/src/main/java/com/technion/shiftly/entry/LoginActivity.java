@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.entry;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -46,11 +46,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.technion.shiftly.dataTypes.User;
+import com.technion.shiftly.groupsList.GroupListsActivity;
+import com.technion.shiftly.R;
+import com.technion.shiftly.utility.Constants;
+import com.technion.shiftly.utility.CustomSnackbar;
 
 import java.util.Arrays;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
-
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
