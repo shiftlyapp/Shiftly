@@ -23,9 +23,6 @@ android:orientation="vertical">
         style="@style/ListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/option_item_text_left_margin"
-        android:layout_marginEnd="@dimen/option_item_text_left_margin"
-        android:layout_marginRight="@dimen/option_item_text_left_margin"
         android:layout_marginTop="@dimen/list_item_text_margin_top"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_title_size"
@@ -36,12 +33,21 @@ android:orientation="vertical">
         style="@style/ListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/option_item_text_left_margin"
-        android:layout_marginEnd="@dimen/option_item_text_left_margin"
-        android:layout_marginRight="@dimen/option_item_text_left_margin"
         android:layout_below="@id/options_shift"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_size" />
 
+
+    <ImageView
+        android:id="@+id/options_menu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/list_item_image_left_margin"
+        android:layout_marginRight="@dimen/list_item_image_left_margin"
+        app:srcCompat="@drawable/ic_more"
+        android:contentDescription="@string/menu" />
 
 </RelativeLayout>

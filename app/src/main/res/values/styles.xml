@@ -3,7 +3,6 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:fontFamily">@font/helvetica_neue</item>
         <item name="android:layoutDirection" tools:ignore="NewApi">ltr</item>
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="buttonStyle">@style/CustomButton</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -21,7 +20,7 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="CustomEditText" parent="@android:style/Widget.EditText">
+    <style name="CustomEditText" parent="@style/Widget.AppCompat.EditText">
         <item name="android:typeface">sans</item>
         <item name="android:layout_height">@dimen/edittext_height</item>
         <item name="android:fontFamily">@font/helvetica_neue</item>
@@ -45,7 +44,7 @@
         <item name="android:ems">@integer/edittxt_ems</item>
     </style>
 
-    <style name="CustomButton" parent="@android:style/Widget.Button">
+    <style name="CustomButton" parent="@style/Widget.AppCompat.Button">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/rounded_button</item>
@@ -60,14 +59,20 @@
         <item name="android:layout_width">@dimen/button_width</item>
     </style>
 
-    <style name="RobotoTextViewStyle" parent="@android:style/Widget.TextView">
-        <item name="android:fontFamily">@font/helvetica_neue</item>
-    </style>
-
-    <style name="CustomToolBar">
+    <style name="CustomToolBar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">@null</item>
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarTitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="ToolbarSubtitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -83,7 +88,7 @@
         <item name="android:background">@null</item>
     </style>
 
-    <style name="CustomTextViewTitle">
+    <style name="CustomTextViewTitle" parent="@style/TextAppearance.AppCompat">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:layout_marginTop">@dimen/text_margin_top</item>
@@ -92,7 +97,7 @@
         <item name="android:textSize">@dimen/text_title_size</item>
     </style>
 
-    <style name="CustomTextView">
+    <style name="CustomTextView" parent="@style/TextAppearance.AppCompat" >
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:layout_marginTop">@dimen/text_margin_top</item>
@@ -101,7 +106,7 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
-    <style name="CustomTextViewSmall">
+    <style name="CustomTextViewSmall" parent="@style/TextAppearance.AppCompat">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:textSize">@dimen/text_size_small</item>

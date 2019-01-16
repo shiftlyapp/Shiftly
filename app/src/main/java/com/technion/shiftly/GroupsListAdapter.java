@@ -47,6 +47,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
             marginLayoutParams.setMargins(0, 0, 0, 0);
             holder.itemView.setLayoutParams(marginLayoutParams);
+            if (getItemCount() == 1) {
+                holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
+            }
         } else if (position < getItemCount()-1) {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg, null));
         } else {
