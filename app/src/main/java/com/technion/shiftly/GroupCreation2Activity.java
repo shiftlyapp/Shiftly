@@ -75,7 +75,14 @@ public class GroupCreation2Activity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
                 ImageView group_pic_baseline = (ImageView) findViewById(R.id.group_image);
+                Bitmap compressed_bitmap = Bitmap.createScaledBitmap(bitmap, 48, 48, true);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                compressed_bitmap.compress(Bitmap.CompressFormat.PNG,Constants.COMPRESSION_QUALITY, stream);
+                byte[] byteArray = stream.toByteArray();
+                compressed_bitmap.recycle();
                 group_pic_baseline.setImageBitmap(bitmap);
+                uploadToStorage(byteArray);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -91,8 +98,8 @@ public class GroupCreation2Activity extends AppCompatActivity {
         compressed_data = baos.toByteArray();
     }
 
-    private void uploadToStorage() {
-        uploadTask = mStorageRef.putBytes(compressed_data);
+    private void uploadToStorage(byte[] compressed_bitmap) {
+        uploadTask = mStorageRef.putBytes(compressed_bitmap);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -121,7 +128,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReference().child("/group_pic/");
+        mStorageRef = mStorage.getReference().child("/group_pics/"+"kjkj");
 
         circleImageView = findViewById(R.id.group_image);
         circleImageView.setOnClickListener(new View.OnClickListener() {
@@ -131,14 +138,10 @@ public class GroupCreation2Activity extends AppCompatActivity {
             }
         });
 
-        Button apply_button = findViewById(R.id.continue_button_group_creation_2);
-        apply_button.setOnClickListener(new View.OnClickListener() {
+        Button continue_button = findViewById(R.id.continue_button_group_creation_2);
+        continue_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mImageUri != null) {
-                    compressImage();
-                    uploadToStorage();
-                }
                 Intent options_config_intent = new Intent(getApplicationContext(), GroupCreation25Activity.class);
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 options_config_intent.putExtra("GROUP_NAME", group_name);

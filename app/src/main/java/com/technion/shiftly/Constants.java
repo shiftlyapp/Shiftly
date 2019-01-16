@@ -6,7 +6,7 @@ abstract class Constants {
     static final int SCALE_ANIMATION_REPEAT_COUNT = 0;
     static final int REDIRECTION_DELAY = 1000;
     static final int PICK_IMAGE_REQUEST = 1;
-    static final int COMPRESSION_QUALITY = 50;
+    static final int COMPRESSION_QUALITY = 100;
     static final int GROUPS_I_BELONG_FRAGMENT = 0;
     static final int GROUPS_I_MANAGE_FRAGMENT = 1;
     static final String MEMBERS_COUNT = "%s Members";

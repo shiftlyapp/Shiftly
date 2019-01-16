@@ -119,7 +119,7 @@ public class GroupsIManageFragment extends Fragment {
         // Getting views loaded with findViewById
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
         loading_icon = view.findViewById(R.id.loading_icon_manage);
-        LottieAnimationView eye_anim = view.findViewById(R.id.rubberhose_anim_manage);
+        LottieAnimationView eye_anim = view.findViewById(R.id.eye_anim_manage);
         no_groups_container = view.findViewById(R.id.no_groups_container_manage);
         view.findViewById(R.id.create_fab).setOnClickListener(new View.OnClickListener() {
             @Override
