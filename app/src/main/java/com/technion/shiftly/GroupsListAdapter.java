@@ -30,7 +30,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     // inflates the row layout from xml when needed
     @Override @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recycleview_list_item, parent, false);
+        View view = mInflater.inflate(R.layout.groups_recycleview_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -47,6 +47,9 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
             marginLayoutParams.setMargins(0, 0, 0, 0);
             holder.itemView.setLayoutParams(marginLayoutParams);
+            if (getItemCount() == 1) {
+                holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
+            }
         } else if (position < getItemCount()-1) {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg, null));
         } else {

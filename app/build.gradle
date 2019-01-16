@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.github.abdularis:CircularImageView:v1.2'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'io.apisense:rhino-android:1.0'
     implementation('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'support-v4'
@@ -75,4 +76,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'recyclerview'
         exclude group: 'com.android.support', module: 'transition'
     }
+    implementation files('libs/choco-solver-4.10.0.jar')
 }

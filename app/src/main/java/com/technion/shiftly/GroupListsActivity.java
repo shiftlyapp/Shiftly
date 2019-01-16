@@ -22,6 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class GroupListsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -51,18 +56,16 @@ public class GroupListsActivity extends AppCompatActivity {
         return mTabLayout;
     }
 
-    @Override
+    private void logOut() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
 
+    @Override
     public void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (currentUser == null) {
-            if (mGoogleSignInAccount == null) {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-            }
+            logOut();
         }
     }
 
@@ -70,12 +73,38 @@ public class GroupListsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_lists);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        String userDisplayName = currentUser.getDisplayName();
         mToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
-        del_group = (ImageView)findViewById(R.id.del_group);
-        final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        if (userDisplayName.length() == 0) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String firstname = null, lastname = null;
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        firstname = ds.child("firstname").getValue(String.class);
+                        lastname = ds.child("lastname").getValue(String.class);
+                    }
+                    mToolbar.setSubtitle(firstname + " " + lastname);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            mToolbar.setSubtitle(currentUser.getDisplayName());
+        }
+
+        del_group = (ImageView) findViewById(R.id.del_group);
+        final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +126,7 @@ public class GroupListsActivity extends AppCompatActivity {
         // Tab layout
         mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-       // setupTabIcons(mPagerAdapter);
+        // setupTabIcons(mPagerAdapter);
 
         // Drawer layout
         NavigationView navigationView = findViewById(R.id.nav_view);
