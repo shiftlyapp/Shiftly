@@ -1,126 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@drawable/gradient_bg"
-    android:focusableInTouchMode="true"
-    tools:context=".GroupCreation1Activity"
-    tools:layout_editor_absoluteY="25dp">
+    android:fillViewport="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/group_creation_toolbar_2"
-        android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"
-        android:theme="@style/CustomToolBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/group_pic_text"
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/group_pic_hint"
-        android:textAlignment="center"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_creation_toolbar_2"
-        app:layout_constraintVertical_bias="0.205" />
+        android:background="@drawable/gradient_bg"
+        android:focusableInTouchMode="true"
+        tools:layout_editor_absoluteY="25dp">
 
-    <RelativeLayout
-        android:id="@+id/pick_image_layout"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_pic_text"
-        app:layout_constraintVertical_bias="0.0">
-
-        <com.github.abdularis.civ.CircleImageView
-            android:id="@+id/group_image"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/group_creation_toolbar_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:focusable="false"
-            android:src="@drawable/upload_bg"
-            app:strokeColor="@android:color/white"
-            app:strokeWidth="4dp" />
+            android:layout_height="?android:actionBarSize"
+            android:theme="@style/CustomToolBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/upload_anim"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/group_pic_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:lottie_autoPlay="true"
-            app:lottie_colorFilter="@color/colorPrimaryDark"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/upload" />
+            android:text="@string/group_pic_hint"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_creation_toolbar_2"
+            app:layout_constraintVertical_bias="0.05" />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/pick_image_layout"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.499"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_pic_text"
+            app:layout_constraintVertical_bias="0.0">
 
-    <Button
-        android:id="@+id/skip_button"
-        style="@style/CustomButton"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/button_margin"
-        android:layout_marginLeft="@dimen/button_margin"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/button_margin"
-        android:layout_marginRight="@dimen/button_margin"
-        android:layout_marginBottom="@dimen/button_margin"
-        android:drawableStart="@drawable/skip"
-        android:drawableLeft="@drawable/skip"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
-        android:text="@string/skip_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pick_image_layout"
-        app:layout_constraintVertical_bias="0.075" />
+            <com.github.abdularis.civ.CircleImageView
+                android:id="@+id/group_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:src="@drawable/upload_bg"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="4dp" />
 
-    <Button
-        android:id="@+id/apply_button"
-        style="@style/CustomButton"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/button_margin"
-        android:layout_marginLeft="@dimen/button_margin"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/button_margin"
-        android:layout_marginRight="@dimen/button_margin"
-        android:layout_marginBottom="@dimen/button_margin"
-        android:drawableStart="@drawable/apply"
-        android:drawableLeft="@drawable/apply"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
-        android:text="@string/apply_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/pick_image_layout"
-        app:layout_constraintVertical_bias="0.075" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/upload_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/colorPrimaryDark"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/upload" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/continue_button_group_creation_2"
+            style="@style/CustomButton"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:drawableStart="@drawable/apply"
+            android:drawableLeft="@drawable/apply"
+            android:text="@string/continue_text_group_creation_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pick_image_layout"
+            app:layout_constraintVertical_bias="0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

@@ -1,182 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/anim_bg"
-    android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/anim_bg">
-
-    <RelativeLayout
-        android:id="@+id/relativelayout"
+    android:fillViewport="true">
+    
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/anim_bg"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/anim_container_height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="match_parent"
+        android:background="@drawable/anim_bg">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/clock_anim"
+        <RelativeLayout
+            android:id="@+id/relativelayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/anim_container_height"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/clock_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:alpha="@string/login_clock_animation_alpha"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/clock" />
+
+            <ImageView
+                android:id="@+id/shiftly_logo"
+                android:layout_width="@dimen/logo_width"
+                android:layout_height="@dimen/logo_height"
+                android:layout_above="@id/user_pic"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/shiftly_logo" />
+
+            <ImageView
+                android:id="@+id/user_pic"
+                android:layout_width="@dimen/user_pic_width"
+                android:layout_height="@dimen/user_pic_width"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/user_img"
+                android:src="@drawable/user" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/email_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/login_email_edittext_width"
+            android:drawableEnd="@drawable/baseline_alternate_email_black_24"
+            android:drawableRight="@drawable/baseline_alternate_email_black_24"
+            android:hint="@string/email_edittext_hint"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativelayout" />
+
+        <EditText
+            android:id="@+id/password_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/login_password_edittext_width"
+            android:drawableEnd="@drawable/baseline_lock_black_24"
+            android:drawableRight="@drawable/baseline_lock_black_24"
+            android:hint="@string/password_edittext_hint"
+            android:inputType="textPassword"
+            android:maxLength="@integer/pass_max_length"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/forgot_pass_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_edittext"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/forgot_pass_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:alpha="@string/login_clock_animation_alpha"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/clock" />
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/login_forgot_pass_top_margin"
+            android:drawableEnd="@drawable/forgot_pass"
+            android:drawableRight="@drawable/forgot_pass"
+            android:text="@string/forgot_password_txt"
+            android:textAlignment="viewEnd"
+            android:textSize="@dimen/forgot_pass_size"
+            app:layout_constraintEnd_toEndOf="@id/password_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
 
-        <ImageView
-            android:id="@+id/shiftly_logo"
-            android:layout_width="@dimen/logo_width"
-            android:layout_height="@dimen/logo_height"
-            android:layout_above="@id/user_pic"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/shiftly_logo" />
+        <Button
+            android:id="@+id/login_button"
+            style="@style/CustomButton"
+            android:drawableStart="@drawable/key"
+            android:drawableLeft="@drawable/key"
+            android:text="@string/login_txt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_edittext"
+            app:layout_constraintVertical_bias="0.18" />
 
-        <ImageView
-            android:id="@+id/user_pic"
-            android:layout_width="@dimen/user_pic_width"
-            android:layout_height="@dimen/user_pic_width"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/user_img"
-            android:src="@drawable/user" />
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/new_to_our_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin_left"
+            android:layout_marginLeft="@dimen/text_margin_left"
+            android:layout_marginTop="@dimen/text_margin_top_small"
+            android:layout_marginEnd="@dimen/text_margin_right"
+            android:layout_marginRight="@dimen/text_margin_left"
+            android:layout_marginBottom="@dimen/text_margin_bottom"
+            android:drawableEnd="@drawable/in"
+            android:drawableRight="@drawable/in"
+            android:text="@string/new_txt"
+            android:textAlignment="center"
+            android:textSize="@dimen/sign_up_textview_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_button"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/email_edittext"
-        style="@style/CustomEditText"
-        android:layout_width="@dimen/login_email_edittext_width"
-        android:drawableEnd="@drawable/baseline_alternate_email_black_24"
-        android:drawableRight="@drawable/baseline_alternate_email_black_24"
-        android:hint="@string/email_edittext_hint"
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativelayout" />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/hidden_fb_button"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/password_edittext"
-        style="@style/CustomEditText"
-        android:layout_width="@dimen/login_password_edittext_width"
-        android:drawableEnd="@drawable/baseline_lock_black_24"
-        android:drawableRight="@drawable/baseline_lock_black_24"
-        android:hint="@string/password_edittext_hint"
-        android:inputType="textPassword"
-        android:maxLength="@integer/pass_max_length"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/forgot_pass_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edittext"
-        app:layout_constraintVertical_chainStyle="spread" />
+        <ImageButton
+            android:id="@+id/google_login_button"
+            android:layout_width="@dimen/google_button_width"
+            android:layout_height="@dimen/google_button_height"
+            android:layout_marginEnd="@dimen/login_buttons_right_margin"
+            android:layout_marginRight="@dimen/login_buttons_right_margin"
+            android:background="@drawable/google"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/login_button"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="@+id/login_button"
+            app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+            app:layout_constraintVertical_bias="0.8" />
 
-    <TextView
-        android:id="@+id/forgot_pass_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/login_forgot_pass_top_margin"
-        android:drawableEnd="@drawable/forgot_pass"
-        android:drawableRight="@drawable/forgot_pass"
-        android:text="@string/forgot_password_txt"
-        android:textAlignment="viewEnd"
-        android:textSize="@dimen/forgot_pass_size"
-        app:layout_constraintEnd_toEndOf="@id/password_edittext"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext" />
+        <ImageButton
+            android:id="@+id/facebook_login_button"
+            android:layout_width="@dimen/facebook_button_width"
+            android:layout_height="@dimen/facebook_button_width"
+            android:layout_marginStart="@dimen/login_buttons_left_margin"
+            android:layout_marginLeft="@dimen/login_buttons_left_margin"
+            android:background="@drawable/facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/login_button"
+            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintStart_toStartOf="@+id/login_button"
+            app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+            app:layout_constraintVertical_bias="0.8" />
 
-    <Button
-        android:id="@+id/login_button"
-        style="@style/CustomButton"
-        android:drawableStart="@drawable/key"
-        android:drawableLeft="@drawable/key"
-        android:text="@string/login_txt"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edittext"
-        app:layout_constraintVertical_bias="0.18" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sign_in_with_bottom_margin"
+            android:text="@string/sign_in_with"
+            android:textAlignment="center"
+            android:textSize="@dimen/sign_in_with_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/facebook_login_button"
+            app:layout_constraintEnd_toEndOf="@+id/login_button"
+            app:layout_constraintStart_toStartOf="@+id/login_button"
+            app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
+            app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/new_to_our_app"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_margin_left"
-        android:layout_marginLeft="@dimen/text_margin_left"
-        android:layout_marginTop="@dimen/text_margin_top_small"
-        android:layout_marginEnd="@dimen/text_margin_right"
-        android:layout_marginRight="@dimen/text_margin_left"
-        android:layout_marginBottom="@dimen/text_margin_bottom"
-        android:drawableEnd="@drawable/in"
-        android:drawableRight="@drawable/in"
-        android:text="@string/new_txt"
-        android:textAlignment="center"
-        android:textSize="@dimen/sign_up_textview_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="0.0" />
+    </android.support.constraint.ConstraintLayout>
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/hidden_fb_button"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/google_login_button"
-        android:layout_width="@dimen/google_button_width"
-        android:layout_height="@dimen/google_button_height"
-        android:layout_marginEnd="@dimen/login_buttons_right_margin"
-        android:layout_marginRight="@dimen/login_buttons_right_margin"
-        android:background="@drawable/google"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/login_button"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toStartOf="@+id/login_button"
-        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
-        app:layout_constraintVertical_bias="0.8" />
-
-    <ImageButton
-        android:id="@+id/facebook_login_button"
-        android:layout_width="@dimen/facebook_button_width"
-        android:layout_height="@dimen/facebook_button_width"
-        android:layout_marginStart="@dimen/login_buttons_left_margin"
-        android:layout_marginLeft="@dimen/login_buttons_left_margin"
-        android:background="@drawable/facebook"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/login_button"
-        app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="@+id/login_button"
-        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
-        app:layout_constraintVertical_bias="0.8" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/sign_in_with_bottom_margin"
-        android:text="@string/sign_in_with"
-        android:textAlignment="center"
-        android:textSize="@dimen/sign_in_with_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/facebook_login_button"
-        app:layout_constraintEnd_toEndOf="@+id/login_button"
-        app:layout_constraintStart_toStartOf="@+id/login_button"
-        app:layout_constraintTop_toBottomOf="@+id/new_to_our_app"
-        app:layout_constraintVertical_bias="1.0" />
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

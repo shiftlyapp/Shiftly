@@ -99,5 +99,14 @@
     <string name="err_group_doesnt_exist">The group does not exist</string>
     <string name="err_group_already_exist">You are already a member of this group</string>
     <string name="group_join_success">You successfully joined the group!</string>
+    <string name="continue_text_group_creation_2">Continue</string>
+
+    <!-- Share group code -->
+    <string name="message1_share_group_code" type="id">You have been invited to join the group</string>
+    <string name="message2_share_group_code" type="id">in Shiftly!\nJoin the group with the following code:</string>
+    <string name="message3_share_group_code" type="id">Download Shiftly from here:
+        https://play.google.com/store/apps/details?id=com.technion.shiftly
+    </string>
+    <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
 
 </resources>
