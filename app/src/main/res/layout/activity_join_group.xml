@@ -8,6 +8,7 @@
     android:layout_gravity="center"
     android:background="@drawable/gradient_bg"
     android:focusableInTouchMode="true"
+    android:id="@+id/join_group"
     tools:context=".GroupCreation1Activity"
     tools:layout_editor_absoluteY="25dp">
 

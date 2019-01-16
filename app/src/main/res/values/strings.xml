@@ -99,5 +99,8 @@
     <string name="join_group_edittext_hint">Group ID</string>
     <string name="err_groupid">Invalid group ID!</string>
     <string name="group_join_label">Join Group</string>
+    <string name="err_group_doesnt_exist">The group does not exist</string>
+    <string name="err_group_already_exist">You are already a member of this group</string>
+    <string name="group_join_success">You successfully joined the group!</string>
 
 </resources>
