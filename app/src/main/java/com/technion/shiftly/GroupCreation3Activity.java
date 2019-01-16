@@ -49,9 +49,9 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        String group_name = extras.getString("GROUP_NAME");
+        final String group_name = extras.getString("GROUP_NAME");
         TextView signup_text = findViewById(R.id.signup_header);
-        Resources res = getResources();
+        final Resources res = getResources();
         signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
         MediaPlayer success_sound = MediaPlayer.create(this, R.raw.success);
         success_sound.start();
@@ -65,17 +65,20 @@ public class GroupCreation3Activity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mGroupRef = database.getReference().child(("Groups"));
 
-        String group_UID = mGroupRef.push().getKey();
+        final String group_UID = mGroupRef.push().getKey();
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
 
-        Group group = new Group(admin_UID, group_name, 0L,
+        final Group group = new Group(admin_UID, group_name, 0L,
                 days_num, shifts_per_day, employees_per_shift);
         mGroupRef.child(group_UID).setValue(group);
 
         EditText group_code_edittext = findViewById(R.id.group_code);
         group_code_edittext.setText(group_UID);
+        final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
+                group_name + " " + res.getString(R.string.message2_share_group_code) + " " + group_UID + "\n\n" +
+                res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
         ImageView whatsapp_share = findViewById(R.id.whatsapp_share);
@@ -85,7 +88,8 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
                 whatsapp_intent.setType("text/plain");
                 whatsapp_intent.setPackage("com.whatsapp");
-                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, "The text you wanted to share");
+
+                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
                 try {
                     startActivity(whatsapp_intent);
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -101,9 +105,9 @@ public class GroupCreation3Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent email_intent = new Intent(Intent.ACTION_SEND);
                 email_intent.setType("text/html");
-                email_intent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com");
-                email_intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                email_intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+                email_intent.putExtra(Intent.EXTRA_EMAIL, "");
+                email_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
+                email_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
                 startActivity(Intent.createChooser(email_intent, "Send Email"));
             }
         });
@@ -125,7 +129,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 cursor.close();
                 Uri uri = Uri.parse("smsto:" + sms_number);
                 Intent sms_intent = new Intent(Intent.ACTION_SENDTO, uri);
-                sms_intent.putExtra("sms_body", "Here you can set the SMS text to be sent");
+                sms_intent.putExtra("sms_body", message_share_group_code);
                 startActivity(sms_intent);
             }
         });

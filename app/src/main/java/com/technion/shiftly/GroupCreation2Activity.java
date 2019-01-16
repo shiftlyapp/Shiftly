@@ -131,7 +131,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
             }
         });
 
-        Button apply_button = findViewById(R.id.apply_button);
+        Button apply_button = findViewById(R.id.continue_button_group_creation_2);
         apply_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +139,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
                     compressImage();
                     uploadToStorage();
                 }
-                Intent options_config_intent = new Intent(getApplicationContext(), GroupCreation1Activity.class);
+                Intent options_config_intent = new Intent(getApplicationContext(), GroupCreation25Activity.class);
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 options_config_intent.putExtra("GROUP_NAME", group_name);
                 startActivity(options_config_intent);
