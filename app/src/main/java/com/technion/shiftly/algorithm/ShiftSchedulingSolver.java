@@ -51,23 +51,22 @@ public class ShiftSchedulingSolver {
             }
             if (num_of_employees_can_work_this_shift == 1) {
                 if (i>0) {
+                    if (only_worker_available.getValue().charAt(i-1) == '1') {
+                        has_changed = true;
+                    }
                     // removing the shift before
-
                     String updated_options = only_worker_available.getValue().substring(0,i-1)
                             +'0'+only_worker_available.getValue().substring(i);
                     only_worker_available.setValue(updated_options);
                 }
-                if (i<total_shifts_num) {
-                    if (only_worker_available.getValue().charAt(i-1) == '1') {
+                if (i<total_shifts_num-1) {
+                    if (only_worker_available.getValue().charAt(i+1) == '1') {
                         has_changed = true;
                     }
                     // removing the shift after
                     String updated_options = only_worker_available.getValue().substring(0,i+1)
                             +'0';
-                    if (i < total_shifts_num-1)
-                        if (only_worker_available.getValue().charAt(i+1) == '1') {
-                            has_changed = true;
-                        }
+                    if (i < total_shifts_num-2)
                         updated_options += only_worker_available.getValue().substring(i+2);
                     only_worker_available.setValue(updated_options);
                 }
