@@ -3,6 +3,7 @@ package com.technion.shiftly.entry;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,15 +50,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.technion.shiftly.R;
 import com.technion.shiftly.dataTypes.User;
 import com.technion.shiftly.groupsList.GroupListsActivity;
-import com.technion.shiftly.R;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 
 import java.util.Arrays;
 
+import jp.wasabeef.blurry.Blurry;
+
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
+import static com.technion.shiftly.utility.Constants.BLUR_DOWN_SAMPLING;
+import static com.technion.shiftly.utility.Constants.BLUR_RADIUS;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -62,8 +71,24 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
+    private Button mLoginButton;
+    private CheckBox mLoginCheckBox;
     private CustomSnackbar mSnackbar;
     private CallbackManager mCallbackManager;
+    private SharedPreferences prefs;
+
+    private void goToMainActivity() {
+        FrameLayout container = findViewById(R.id.blur_container);
+        Blurry.with(container.getContext()).radius(BLUR_RADIUS).sampling(BLUR_DOWN_SAMPLING).async().onto(container);
+        mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateUI();
+            }
+        }, Constants.REDIRECTION_DELAY);
+    }
 
     @Override
     public void onStart() {
@@ -74,6 +99,36 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, GroupListsActivity.class);
             startActivity(intent);
             finish();
+        }
+        loadPreferneces();
+    }
+
+    private void loadPreferneces() {
+        if (prefs != null) {
+            String email_pref = prefs.getString("EMAIL", "");
+            String pwd_pref = prefs.getString("PWD", "");
+            boolean checkbox_state = prefs.getBoolean("CHECKBOX_STATE",false);
+            email_edt.setText(email_pref);
+            password_edt.setText(pwd_pref);
+            mLoginCheckBox.setChecked(checkbox_state);
+        }
+    }
+
+    private void savePreferences() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("EMAIL", email_edt.getText().toString());
+        editor.putString("PWD", password_edt.getText().toString());
+        editor.putBoolean("CHECKBOX_STATE",true);
+        editor.apply();
+    }
+
+    private void clearPreferences() {
+        if (prefs != null) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("EMAIL");
+            editor.remove("PWD");
+            editor.remove("CHECKBOX_STATE");
+            editor.apply();
         }
     }
 
@@ -149,17 +204,9 @@ public class LoginActivity extends AppCompatActivity {
                                 String email = acct.getEmail();
                                 pushUserIntoDatabase(firstname, lastname, email);
                             }
-                            mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateUI();
-                                }
-                            }, Constants.REDIRECTION_DELAY);
+                            goToMainActivity();
                         } else {
-                            mSnackbar.show(LoginActivity.this, mLayout, task.getException().toString(), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
-
+                            mSnackbar.show(LoginActivity.this, mLayout, task.getException().toString(), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                         }
                     }
                 });
@@ -172,8 +219,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         mLayout = (ConstraintLayout) findViewById(R.id.anim_bg);
-        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+        mLoginCheckBox = (CheckBox) findViewById(R.id.remember_login_checkbox);
+        mLoginButton = (Button)findViewById(R.id.login_button);
         ImageView logo = (ImageView) findViewById(R.id.shiftly_logo);
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+        prefs = getSharedPreferences("UserData", MODE_PRIVATE);
         AnimationDrawable animationDrawable = (AnimationDrawable) mLayout.getBackground();
         animationDrawable.setEnterFadeDuration(Constants.ANIM_DURATION);
         animationDrawable.setExitFadeDuration(Constants.ANIM_DURATION);
@@ -257,7 +307,7 @@ public class LoginActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.reset_email_sent), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
                                             } else {
-                                                mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.err_invalid_email), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                                                mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.err_invalid_email), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                                             }
                                         }
                                     });
@@ -286,6 +336,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLoginButton.setEnabled(false);
                 if (mAwesomeValidation.validate()) {
                     String password = password_edt.getText().toString();
                     String email = email_edt.getText().toString();
@@ -294,30 +345,32 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
-                                        Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                updateUI();
-                                            }
-                                        }, Constants.REDIRECTION_DELAY);
+                                        if (mLoginCheckBox.isChecked()) {
+                                            savePreferences();
+                                        } else {
+                                            clearPreferences();
+                                        }
+                                        goToMainActivity();
                                     } else {
                                         String sbError;
                                         try {
                                             throw task.getException();
                                         } catch (FirebaseAuthInvalidUserException e) {
                                             sbError = getResources().getString(R.string.err_invalid_email);
+                                            mLoginButton.setEnabled(true);
                                             email_edt.requestFocus();
                                         } catch (FirebaseAuthInvalidCredentialsException e) {
                                             sbError = getResources().getString(R.string.err_invalid_pass);
+                                            mLoginButton.setEnabled(true);
                                             password_edt.requestFocus();
                                         } catch (FirebaseTooManyRequestsException e) {
                                             sbError = getResources().getString(R.string.err_login_attempts);
+                                            mLoginButton.setEnabled(true);
                                         } catch (Exception e) {
+                                            mLoginButton.setEnabled(true);
                                             sbError = task.getException().getMessage();
                                         }
-                                        mSnackbar.show(LoginActivity.this, mLayout, sbError, CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                                        mSnackbar.show(LoginActivity.this, mLayout, sbError, CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                                     }
                                 }
                             });

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="forgot_pass_size">18sp</dimen>
+    <dimen name="forgot_pass_size">14sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="elevation_low">4dp</dimen>
@@ -21,7 +21,8 @@
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_margin_top">8dp</dimen>
-    <dimen name="text_margin_bottom">8dp</dimen>
+    <dimen name="text_margin_bottom">4dp</dimen>
+    <dimen name="text_no_margin_bottom">0dp</dimen>
     <dimen name="text_margin_left">8dp</dimen>
     <dimen name="text_margin_right">8dp</dimen>
     <dimen name="text_margin_top_small">4dp</dimen>
@@ -69,7 +70,7 @@
     <dimen name="login_forgot_pass_top_margin">4dp</dimen>
     <dimen name="login_buttons_left_margin">12dp</dimen>
     <dimen name="sign_in_with_bottom_margin">6dp</dimen>
-    <dimen name="sign_up_textview_text_size">18sp</dimen>
+    <dimen name="sign_up_textview_text_size">16sp</dimen>
     <!-- Signup Page -->
     <dimen name="signup_header_text_size">36sp</dimen>
     <dimen name="signup_anim_height">180dp</dimen>
