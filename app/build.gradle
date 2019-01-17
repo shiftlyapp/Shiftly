@@ -18,9 +18,10 @@ android {
         versionCode 2
         versionName "1.0b"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary true
         multiDexEnabled true
         signingConfig signingConfigs.config
+
     }
     buildTypes {
         release {
@@ -69,6 +70,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'io.apisense:rhino-android:1.0'
+    implementation 'jp.wasabeef:blurry:3.0.0'
     implementation('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'support-v4'

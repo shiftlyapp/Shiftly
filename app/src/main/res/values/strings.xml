@@ -19,7 +19,7 @@
     <string name="login_txt">LOGIN</string>
     <string name="signup_txt">SIGN UP</string>
     <string name="forgot_password_txt">Forgot Password\u0020</string>
-    <string name="new_txt">New to our app? <b>Sign Up</b></string>
+    <string name="new_txt">New to our app?  Sign Up</string>
     <string name="signup_header">Register your new\n Shiftly account.</string>
     <string name="firstname_edittext_hint">FIRST NAME</string>
     <string name="lastname_edittext_hint">LAST NAME</string>
@@ -108,4 +108,5 @@
         https://play.google.com/store/apps/details?id=com.technion.shiftly
     </string>
     <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
+    <string name="remember_checkbox">Remember me</string>
 </resources>

@@ -29,7 +29,7 @@
         <item name="android:textColorHighlight">@color/colorPrimary</item>
         <item name="android:background">@drawable/rounded_edittext</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/edittext_elevation</item>
-        <item name="android:textAlignment" tools:ignore="NewApi"> center</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">center</item>
         <item name="android:layout_margin">@dimen/edittext_margin</item>
         <item name="android:layout_marginStart">@dimen/edittext_margin</item>
         <item name="android:layout_marginLeft">@dimen/edittext_margin</item>
@@ -75,6 +75,13 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="CustomCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="fontFamily">@font/helvetica_neue</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
@@ -97,7 +104,7 @@
         <item name="android:textSize">@dimen/text_title_size</item>
     </style>
 
-    <style name="CustomTextView" parent="@style/TextAppearance.AppCompat" >
+    <style name="CustomTextView" parent="@style/TextAppearance.AppCompat">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@color/text_color_primary</item>
         <item name="android:layout_marginTop">@dimen/text_margin_top</item>
