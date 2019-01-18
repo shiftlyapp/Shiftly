@@ -25,7 +25,7 @@ public class ShiftSchedulingSolver {
 
     // If returns true, then the final_schedule can be accessed with the method getFinalSchedule
     // on the ShiftSchedulingSolver object
-    Boolean solve() {
+    public Boolean solve() {
         if (!minimize_sched(options, true))
             return false;
         else
@@ -41,7 +41,7 @@ public class ShiftSchedulingSolver {
             return true;
         }
         Boolean has_changed = false;
-        for (int i=0 ; i < total_shifts_num ; i++) {
+        for (int i=0 ; i < total_shifts_num ; i += workers_in_shift) {
             int num_of_employees_can_work_this_shift = 0;
             LinkedHashMap.Entry<String, String> only_worker_available = null;
             for (LinkedHashMap.Entry<String, String> entry : options.entrySet()) {
@@ -56,23 +56,31 @@ public class ShiftSchedulingSolver {
             }
             if (num_of_employees_can_work_this_shift == 1) {
                 if (i>0) {
-                    if (only_worker_available.getValue().charAt(i-1) == '1') {
+                    if (only_worker_available.getValue().charAt(i-workers_in_shift) == '1') {
                         has_changed = true;
                     }
                     // removing the shift before
-                    String updated_options = only_worker_available.getValue().substring(0,i-1)
-                            +'0'+only_worker_available.getValue().substring(i);
+                    String replace = "";
+                    for(int j = 0; j < workers_in_shift ; j++) {
+                        replace += '0';
+                    }
+                    String updated_options = only_worker_available.getValue().substring(0,i-workers_in_shift)
+                            + replace +only_worker_available.getValue().substring(i);
                     only_worker_available.setValue(updated_options);
                 }
-                if (i<total_shifts_num-1) {
-                    if (only_worker_available.getValue().charAt(i+1) == '1') {
+                if (i<total_shifts_num-workers_in_shift) {
+                    if (only_worker_available.getValue().charAt(i+workers_in_shift) == '1') {
                         has_changed = true;
                     }
                     // removing the shift after
-                    String updated_options = only_worker_available.getValue().substring(0,i+1)
-                            +'0';
-                    if (i < total_shifts_num-2)
-                        updated_options += only_worker_available.getValue().substring(i+2);
+                    String replace = "";
+                    for(int j = 0; j < workers_in_shift ; j++) {
+                        replace += '0';
+                    }
+                    String updated_options = only_worker_available.getValue().substring(0,i+workers_in_shift)
+                            + replace;
+                    if (i < total_shifts_num-2*workers_in_shift)
+                        updated_options += only_worker_available.getValue().substring(i+2*workers_in_shift);
                     only_worker_available.setValue(updated_options);
                 }
             }
@@ -85,7 +93,8 @@ public class ShiftSchedulingSolver {
         LinkedHashMap<String, String> shuffled_options = shuffle_options(options_aux);
 
         // Base case of the recursion: if the starting_sched_from_shift == total_shift_num - we are done
-        if (starting_sched_from_shift == this.total_shifts_num) return true;
+//        if (starting_sched_from_shift == this.total_shifts_num) return true;
+        if (final_schedule.size() == total_shifts_num) return true;
 
         for (LinkedHashMap.Entry<String, String> entry : shuffled_options.entrySet()) {
 
@@ -94,7 +103,7 @@ public class ShiftSchedulingSolver {
 //            Boolean employee_wasnt_scheduled_for_previous_shift = (starting_sched_from_shift == 0) ||
 //                    !(this.final_schedule.get(starting_sched_from_shift - workers_in_shift).equals(entry.getKey()));
 
-            int employees_already_assigned_for_shift = final_schedule.size() % workers_in_shift;
+            int employees_already_assigned_for_shift = starting_sched_from_shift % workers_in_shift;
 
             // Validate that the employee was not assigned already to the previous shift
             Boolean employee_wasnt_scheduled_for_previous_shift = true;
@@ -155,14 +164,16 @@ public class ShiftSchedulingSolver {
     @Override
     public String toString() {
         String sched = "";
-        int i = 1;
+        int num_of_shift = 1;
         for (String employee : final_schedule) {
-            sched += "Shift #" + i + ":\n";
-            for (int j=0 ; j < workers_in_shift ; j++) {
+            if (num_of_shift % workers_in_shift != 0) {
+                sched += employee + ",";
+            } else {
+                sched += "\n";
+                sched += "Shift #" + num_of_shift/workers_in_shift + ":\n";
                 sched += employee + ",";
             }
-            i++;
-            sched += "\n";
+            num_of_shift++;
         }
         return "----ShiftSolver----\n" +
                 "schedule:\n" + sched;
