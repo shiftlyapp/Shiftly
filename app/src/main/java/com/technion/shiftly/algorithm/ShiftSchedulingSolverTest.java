@@ -9,20 +9,20 @@ public class ShiftSchedulingSolverTest {
         long startTime = System.nanoTime();
         LinkedHashMap<String, String> options = new LinkedHashMap<>();
         options.put("1", "101000111111111111111101000111111111111110");
-        options.put("2", "000010111111111111111111111111111100000000");
-        options.put("3", "011001111111111111111101010111100000000000");
-        options.put("4", "000110111111100000000000001000000000000000");
+        options.put("2", "000010111111111111111111111111111111111000");
+        options.put("3", "011001111111111111111101010111100000111000");
+        options.put("4", "000110111111100000000000001000000010000000");
         options.put("5", "000011111111111111111101000111111111111111");
 
-        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(options);
+        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(options,1);
 
         Boolean scheduling_result = solver.solve();
         if (scheduling_result) {
             List<String> schedule = solver.getFinal_schedule();
-
-            for (int i = 0; i < schedule.size(); i++) {
-                System.out.print(schedule.get(i) + "\n");
-            }
+            System.out.println(solver.toString());
+//            for (int i = 0; i < schedule.size(); i++) {
+//                System.out.print(schedule.get(i) + "\n");
+//            }
         } else {
             System.out.print("No solution could be found with these constraints");
         }
