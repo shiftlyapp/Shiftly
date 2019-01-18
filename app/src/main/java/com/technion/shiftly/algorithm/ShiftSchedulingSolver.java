@@ -23,17 +23,19 @@ public class ShiftSchedulingSolver {
 
     // If returns true, then the final_schedule can be accessed with the method getFinalSchedule
     // on the ShiftSchedulingSolver object
-    Boolean solve() {
+    public Boolean solve() {
         return solve_aux(0, this.options);
     }
 
 
-    Boolean solve_aux(int starting_sched_from_shift, LinkedHashMap<String, String> options_aux) {
+    private Boolean solve_aux(int starting_sched_from_shift, LinkedHashMap<String, String> options_aux) {
+
+        LinkedHashMap<String, String> shuffled_options = shuffle_options(options_aux);
 
         // Base case of the recursion: if the starting_sched_from_shift == total_shift_num - we are done
         if (starting_sched_from_shift == this.total_shifts_num) return true;
 
-        for (LinkedHashMap.Entry<String, String> entry : options_aux.entrySet()) {
+        for (LinkedHashMap.Entry<String, String> entry : shuffled_options.entrySet()) {
 
             Boolean employee_can_work_this_shift = (entry.getValue().charAt(starting_sched_from_shift) == '1');
             Boolean employee_wasnt_scheduled_for_previous_shift = (starting_sched_from_shift == 0) ||
@@ -45,7 +47,6 @@ public class ShiftSchedulingSolver {
                 // Schedule her to work this shift
                 this.final_schedule.add(entry.getKey());
 
-                LinkedHashMap<String, String> shuffled_options = shuffle_options(options_aux);
 
                 // --------- THE RECURSIVE CALL -----------
                 Boolean result = solve_aux(starting_sched_from_shift + 1, shuffled_options);

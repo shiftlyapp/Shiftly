@@ -1,10 +1,6 @@
 package com.technion.shiftly.scheduleView;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -13,26 +9,29 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
+import com.technion.shiftly.algorithm.ShiftSchedulingSolver;
 import com.technion.shiftly.options.OptionsListActivity;
+import com.technion.shiftly.utility.CustomSnackbar;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ScheduleViewActivity extends AppCompatActivity {
 
     private ConstraintLayout mLayout;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-    private FirebaseUser currentUser;
+    private DatabaseReference databaseRef;
+    private CustomSnackbar mSnackbar;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,7 +64,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
         setSupportActionBar(schedule_view_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        mLayout = (ConstraintLayout) findViewById(R.id.container);
+        mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+        final String group_id = getIntent().getExtras().getString("GROUP_ID");
 
         // TODO: Make available only if the user is not the admin, otherwise don't present the button
         // TODO: or make it present a toast saying "you are not an employee"
@@ -74,11 +75,55 @@ public class ScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
-                String group_id = getIntent().getExtras().getString("GROUP_ID");
                 intent.putExtra("GROUP_ID", group_id);
                 startActivity(intent);
             }
         });
+
+        com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        scheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Pull data from db
+                databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        LinkedHashMap<String, String> group_options = new LinkedHashMap<>();
+                        for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
+                            group_options.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+                        }
+
+                        String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
+                        // Run scheduling algorithm
+                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options);
+                        Boolean result = solver.solve();
+                        if (result) {
+
+                            // Present a snackbar of "Schedule generated!" (success)
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
+
+                            // Upload schedule to DB
+                            List<String> generated_schedule = solver.getFinal_schedule();
+                            Map<String, Object> schedule_map = new HashMap<>();
+                            schedule_map.put("schedule", generated_schedule);
+                            databaseRef.updateChildren(schedule_map);
+
+                        } else {
+                            // Present a snackbar of "No schedule could be generated" (error)
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -86,41 +131,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     }
 
-    // TODO: later remove duplicate code with login snackbar
-    private void showScheduleSnackBar() {
-        final Snackbar mySnackbar = Snackbar.make(mLayout, R.string.schedule_generated, Snackbar.LENGTH_INDEFINITE);
-        final View snackbarView = mySnackbar.getView();
-        final TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        } else {
-            tv.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
-        snackbarView.setBackgroundColor(getResources().getColor(R.color.text_color_primary));
-        tv.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        tv.setTextSize(22);
-        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(snackbarView, "alpha", 0f, 1f);
-        fadeIn.setDuration(500);
-        fadeIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                snackbarView.setVisibility(View.VISIBLE);
-                snackbarView.setAlpha(0);
-                mySnackbar.setAction(R.string.confirm_schedule, new ConfirmListener());
-                mySnackbar.setActionTextColor(getResources().getColor(R.color.background_color));
-                mySnackbar.show();
-            }
-        });
-        fadeIn.start();
-    }
-
-    public class ConfirmListener implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            // TODO: Upload the newly created schedule to the DB
-        }
-    }
 
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {
@@ -128,21 +138,5 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         return true;
-    }
-
-    private ArrayList<ArrayList<HashMap<String, Boolean>>> makeFullSched() {
-        ArrayList<ArrayList<HashMap<String, Boolean>>> options = new ArrayList<>();
-        for (int k=0 ; k<7 ; k++) {
-            ArrayList<HashMap<String, Boolean>> day1 = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                HashMap<String, Boolean> shift1 = new HashMap<>();
-                for (int i = 0; i < 5; i++) {
-                    shift1.put(Integer.toString(i), true);
-                }
-                day1.add(shift1);
-            }
-            options.add(day1);
-        }
-        return options;
     }
 }
