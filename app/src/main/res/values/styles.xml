@@ -60,7 +60,7 @@
     </style>
 
     <style name="CustomToolBar" parent="Theme.AppCompat">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@drawable/rounded_toolbar</item>
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
@@ -144,6 +144,8 @@
     <style name="TabLayout">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/tab_elevation_size</item>
+        <item name="tabTextColor">@color/tablayout_unselected</item>
+        <item name="tabSelectedTextColor">@color/tablayout_selected</item>
     </style>
 
     <style name="FAB">
