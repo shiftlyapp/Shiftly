@@ -16,7 +16,7 @@ public class Group {
     private Long shifts_per_day;
     private Long employees_per_shift;
     private Map<String, String> options; // Keys = UUID's, Values = binary vectors
-    private ArrayList<String> schedule; // UUID at the i'th position works shift i
+    private ArrayList<String> schedule; // UUID's: at the i'th position works shift i
 
     public Group() {
     }

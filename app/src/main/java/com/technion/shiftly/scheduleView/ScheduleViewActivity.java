@@ -120,17 +120,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
         });
-
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         launchFragment(new DailyViewFragment());
-
     }
-
 
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {
