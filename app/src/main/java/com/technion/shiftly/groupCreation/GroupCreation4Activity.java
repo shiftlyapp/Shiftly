@@ -72,8 +72,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_creation_3);
-        Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
+        setContentView(R.layout.activity_group_creation_4);
+        Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_4);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,9 +103,11 @@ public class GroupCreation4Activity extends AppCompatActivity {
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
+        String starting_hour = extras.getString("STARTING_HOUR");
+        Long shift_len = extras.getLong("SHIFT_LEN");
 
         final Group group = new Group(admin_UID, group_name, 0L,
-                days_num, shifts_per_day, employees_per_shift);
+                days_num, shifts_per_day, employees_per_shift, starting_hour, shift_len);
         mGroupRef.child(group_UID).setValue(group);
         EditText group_code_edittext = findViewById(R.id.group_code);
         if (group_pic_array!=null) {

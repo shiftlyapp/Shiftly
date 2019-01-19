@@ -160,11 +160,19 @@ public class OptionsListActivity extends AppCompatActivity {
     }
 
     private void addShiftsToList() {
+        List<String> days_array = new ArrayList<>();
+        days_array.add("Sunday");
+        days_array.add("Monday");
+        days_array.add("Tuesday");
+        days_array.add("Wednesday");
+        days_array.add("Thursday");
+        days_array.add("Friday");
+        days_array.add("Saturday");
         for (int i = 1; i < days_num_param + 1; i++) {
             for (int j = 1; j < shifts_per_day_param + 1; j++) {
-                String day_as_string = Integer.toString(i);
+//                String day_as_string = Integer.toString(i);
                 String shift_as_string = Integer.toString(j);
-                Pair<String, String> p = new Pair<>("Day number: " + day_as_string, "Shift number: " + shift_as_string);
+                Pair<String, String> p = new Pair<>("Day: " + days_array.get(i), "Shift number: " + shift_as_string);
                 list_of_texts.add(p);
             }
         }

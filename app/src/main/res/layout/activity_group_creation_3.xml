@@ -9,159 +9,197 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:background="@drawable/gradient_bg"
         android:focusableInTouchMode="true"
-        tools:context=".GroupCreation4Activity"
+        tools:context=".GroupCreation1Activity"
         tools:layout_editor_absoluteY="25dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/group_creation_confirm_toolbar_3"
+            android:id="@+id/group_creation_toolbar_3"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:theme="@style/CustomToolBar" />
+            android:layout_height="?android:actionBarSize"
+            android:theme="@style/CustomToolBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/signup_header"
-            android:layout_width="0dp"
+            android:id="@+id/group_days_num_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/group_create_succeed"
+            android:text="@string/group_num_days_hint"
             android:textAlignment="center"
-            android:textSize="36sp"
-            app:layout_constraintBottom_toTopOf="@+id/success_img"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/group_creation_confirm_toolbar_3"
-            app:layout_constraintVertical_bias="0.6"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+            android:textSize="22sp"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_creation_toolbar_3"
+            app:layout_constraintBottom_toTopOf="@+id/days_num_spinner"
+            app:layout_constraintVertical_bias="0.205" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/success_img"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            app:layout_constraintBottom_toTopOf="@+id/share_with_friends_txt"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/signup_header"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="false"
-            app:lottie_rawRes="@raw/check" />
+        <Spinner
+            android:id="@+id/days_num_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintTop_toBottomOf="@+id/group_days_num_text"
+            app:layout_constraintBottom_toTopOf="@+id/group_shifts_per_day_num_text"/>
 
         <TextView
-            android:id="@+id/share_with_friends_txt"
-            android:layout_width="0dp"
+            android:id="@+id/group_shifts_per_day_num_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/group_share_hint"
+            android:text="@string/group_num_shifts_hint"
             android:textAlignment="center"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/group_code"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/success_img" />
+            android:textSize="22sp"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/days_num_spinner"
+            app:layout_constraintBottom_toTopOf="@+id/shifts_per_day_num_spinner"
+            app:layout_constraintVertical_bias="0.205" />
 
-        <EditText
-            android:id="@+id/group_code"
-            style="@style/CustomEditText"
-            android:layout_width="0dp"
+        <Spinner
+            android:id="@+id/shifts_per_day_num_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintTop_toBottomOf="@+id/group_shifts_per_day_num_text"
+            app:layout_constraintBottom_toTopOf="@+id/group_employees_per_shift_num_text" />
+
+        <TextView
+            android:id="@+id/group_employees_per_shift_num_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/group_num_employees_hint"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shifts_per_day_num_spinner"
+            app:layout_constraintBottom_toTopOf="@+id/employees_per_shift_num_spinner"
+            app:layout_constraintVertical_bias="0.205" />
+
+        <Spinner
+            android:id="@+id/employees_per_shift_num_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintTop_toBottomOf="@+id/group_employees_per_shift_num_text"
+            app:layout_constraintBottom_toTopOf="@+id/starting_hour" />
+
+        <TextView
+            android:id="@+id/starting_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/starting_hour_hint"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employees_per_shift_num_spinner"
+            app:layout_constraintBottom_toTopOf="@+id/starting_hour_spinner"
+            app:layout_constraintVertical_bias="0.205" />
+
+        <Spinner
+            android:id="@+id/starting_hour_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintTop_toBottomOf="@+id/starting_hour"
+            app:layout_constraintBottom_toTopOf="@+id/shift_len" />
+
+        <TextView
+            android:id="@+id/shift_len"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/shift_len_hint"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/starting_hour_spinner"
+            app:layout_constraintBottom_toTopOf="@+id/shift_len_spinner"
+            app:layout_constraintVertical_bias="0.205" />
+
+        <Spinner
+            android:id="@+id/shift_len_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/spinner_width"
+            android:paddingStart="@dimen/spinner_width"
+            android:paddingLeft="@dimen/spinner_width"
+            android:paddingEnd="@dimen/spinner_width"
+            app:layout_constraintTop_toBottomOf="@+id/shift_len"
+            app:layout_constraintBottom_toTopOf="@+id/continue_button" />
+
+        <Button
+            android:id="@+id/continue_button"
+            style="@style/CustomButton"
+            android:layout_width="160dp"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:ems="10"
-            android:inputType="text"
-            android:maxLength="20"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline3" />
-
-
-        <ImageView
-            android:id="@+id/whatsapp_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginRight="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
-            android:src="@drawable/whatsapp"
+            android:layout_margin="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="@dimen/button_margin"
+            android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
+            android:drawableLeft="@drawable/round_arrow_forward_ios_white_18"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/continue_text"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/email_share"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/group_code"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageView
-            android:id="@+id/email_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginRight="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
-            android:src="@drawable/gmail"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sms_share"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/whatsapp_share"
-            app:layout_constraintTop_toBottomOf="@+id/group_code"
-            app:layout_constraintVertical_bias="0.3" />
 
-        <ImageView
-            android:id="@+id/sms_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginRight="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
-            android:src="@drawable/sms"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/etc_share"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/email_share"
-            app:layout_constraintTop_toBottomOf="@+id/group_code"
-            app:layout_constraintVertical_bias="0.3" />
-
-        <ImageView
-            android:id="@+id/etc_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginRight="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
-            android:src="@drawable/more"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/sms_share"
-            app:layout_constraintTop_toBottomOf="@+id/group_code"
-            app:layout_constraintVertical_bias="0.3" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.10" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85" />
 
     </android.support.constraint.ConstraintLayout>
 

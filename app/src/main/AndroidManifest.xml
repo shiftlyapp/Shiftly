@@ -34,18 +34,20 @@
         <activity
             android:name="com.technion.shiftly.entry.LoginActivity"
             android:theme="@style/SplashScreen">
+        </activity>
+        <activity
+            android:name="com.technion.shiftly.entry.SignupActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation1Activity"/>
+        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.technion.shiftly.entry.SignupActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation1Activity"/>
-        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation2Activity"/>
-        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation3Activity"/>
+        <activity android:name="com.technion.shiftly.groupCreation.GroupCreation3Activity">
+        </activity>
         <activity android:name="com.technion.shiftly.groupCreation.GroupCreation4Activity"/>
         <activity
             android:name="com.technion.shiftly.groupsList.GroupListsActivity"

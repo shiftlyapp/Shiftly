@@ -96,7 +96,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                         String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
                         // Run scheduling algorithm
-                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options);
+                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
                         Boolean result = solver.solve();
                         if (result) {
 

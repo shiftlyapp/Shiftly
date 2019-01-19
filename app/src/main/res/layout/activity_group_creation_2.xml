@@ -78,7 +78,7 @@
         <Button
             android:id="@+id/continue_button_group_creation_2"
             style="@style/CustomButton"
-            android:layout_width="140dp"
+            android:layout_width="180dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
