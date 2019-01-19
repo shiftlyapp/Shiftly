@@ -43,12 +43,6 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
         (holder.options_layout).setBackgroundColor(Color.WHITE);
     }
 
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-
-
     public class OptionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // These are the elements of the list item
         CheckBox checkbox;
@@ -62,32 +56,26 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
             day_textview = itemView.findViewById(R.id.options_day);
             shift_textview = itemView.findViewById(R.id.options_shift);
             checkbox = itemView.findViewById(R.id.options_checkbox);
-//            checkbox.setClickable(false);
             options_layout = itemView.findViewById(R.id.options_list_item);
 
 
             itemView.setOnClickListener(this);
         }
 
-//        public void SetOnClickListener(View.OnClickListener onClickListener) {
-//            itemView.setOnClickListener(onClickListener);
-//        }
-
         @Override
         public void onClick(View view) {
 
-        if (options_listener != null)
-            options_listener.onItemClick(view, getAdapterPosition());
+            if (options_listener != null)
+                options_listener.onItemClick(view, getAdapterPosition());
 
-        int adapterPosition = getAdapterPosition();
-        if (!state_array.get(adapterPosition, false)) {
-            checkbox.setChecked(true);
-            state_array.put(adapterPosition, true);
-        } else {
-            checkbox.setChecked(false);
-            state_array.put(adapterPosition, false);
-        }
-
+            int adapterPosition = getAdapterPosition();
+            if (!state_array.get(adapterPosition, false)) {
+                checkbox.setChecked(true);
+                state_array.put(adapterPosition, true);
+            } else {
+                checkbox.setChecked(false);
+                state_array.put(adapterPosition, false);
+            }
         }
     }
 

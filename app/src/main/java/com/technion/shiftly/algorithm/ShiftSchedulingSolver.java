@@ -32,6 +32,7 @@ public class ShiftSchedulingSolver {
 
         LinkedHashMap<String, String> shuffled_options = shuffle_options(options_aux);
 
+        // --------- THE BASE CASE -----------
         // Base case of the recursion: if the starting_sched_from_shift == total_shift_num - we are done
         if (starting_sched_from_shift == this.total_shifts_num) return true;
 
@@ -77,6 +78,5 @@ public class ShiftSchedulingSolver {
         }
         return result;
     }
-
 
 }
