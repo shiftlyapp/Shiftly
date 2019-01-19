@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.technion.shiftly.R;
 import com.technion.shiftly.entry.LoginActivity;
 import com.technion.shiftly.miscellaneous.AboutActivity;
@@ -35,6 +37,17 @@ import com.technion.shiftly.utility.Constants;
 public class GroupListsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+
+    public FirebaseStorage getStorage() {
+        return mStorage;
+    }
+
+    public StorageReference getStorageRef() {
+        return mStorageRef;
+    }
+
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
     private GoogleSignInAccount mGoogleSignInAccount;
     private TabLayout mTabLayout;
     private Toolbar mToolbar;
@@ -79,6 +92,8 @@ public class GroupListsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_lists);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference();
         String userDisplayName = currentUser.getDisplayName();
         mToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
         setSupportActionBar(mToolbar);

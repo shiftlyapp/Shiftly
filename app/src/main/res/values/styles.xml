@@ -59,10 +59,17 @@
         <item name="android:layout_width">@dimen/button_width</item>
     </style>
 
-    <style name="CustomToolBar" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:background">@null</item>
+    <style name="CustomToolBar" parent="Theme.AppCompat">
+        <item name="android:background">@color/colorPrimary</item>
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="MainToolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/toolbar_elevation_size</item>
+        <item name="android:titleTextStyle">@style/ToolbarTitleAppearance</item>
     </style>
 
     <style name="ToolbarTitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -70,15 +77,10 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <style name="ToolbarSubtitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="fontFamily">@font/helvetica_neue</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
     <style name="CustomCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="fontFamily">@font/helvetica_neue</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">center</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -137,11 +139,6 @@
         <item name="android:paddingTop">@dimen/list_item_padding</item>
         <item name="android:paddingBottom">@dimen/list_item_padding</item>
         <item name="android:layout_marginTop">1dp</item>
-    </style>
-
-    <style name="MainToolbar">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:elevation" tools:ignore="NewApi">@dimen/toolbar_elevation_size</item>
     </style>
 
     <style name="TabLayout">

@@ -93,7 +93,7 @@ public class JoinGroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (mAwesomeValidation.validate()) {
                     // Add the user to the group and close this intent
-                    final String group_code = ((EditText)findViewById(R.id.join_group_edittext)).getText().toString();
+                    final String group_code = ((EditText) findViewById(R.id.join_group_edittext)).getText().toString();
 
                     // Check if group exists in the db
                     databaseRef.child("Groups").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -108,7 +108,7 @@ public class JoinGroupActivity extends AppCompatActivity {
 
                             }
                             if (!group_exists_in_db) {
-                                mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_doesnt_exist), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                                mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_invalid_id), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
 
                             } else {
                                 String user_id = currentUser.getUid();
@@ -125,7 +125,7 @@ public class JoinGroupActivity extends AppCompatActivity {
 
                                         // Check if the user is already a member of this group
                                         if (groupsIds.contains(group_code)) {
-                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_already_exist), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_already_exist), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                                         } else {
 
                                             // Add this group to the user's groups list in the DB
@@ -141,7 +141,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                                             groups_count_map.put("groups_count", newValue);
                                             userGroupsRef.updateChildren(groups_count_map);
 
-                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.group_join_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
+                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.group_join_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
                                             Handler handler = new Handler();
                                             handler.postDelayed(new Runnable() {
                                                 @Override
@@ -149,7 +149,6 @@ public class JoinGroupActivity extends AppCompatActivity {
                                                     // Switch back to the GROUPS_I_BELONG fragment after a short delay
                                                     Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    intent.putExtra("FRAGMENT_TO_LOAD",Constants.GROUPS_I_BELONG_FRAGMENT);
                                                     startActivity(intent);
                                                 }
                                             }, Constants.REDIRECTION_DELAY);
@@ -163,6 +162,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                                 });
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 

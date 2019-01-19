@@ -35,8 +35,15 @@ public class GroupCreation4Activity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
+    private DatabaseReference mGroupRef;
     private UploadTask uploadTask;
 
+    private Toolbar mainToolbar;
+    private TextView signup_text, share_with_friends_txt;
+    private LottieAnimationView done_animation, loading_animation;
+    private ImageView whatsapp_share,email_share,sms_share,etc_share;
+    private EditText group_code_edittext;
+    private boolean back_pressed_locked;
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -45,79 +52,135 @@ public class GroupCreation4Activity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_MANAGE_FRAGMENT);
-        startActivity(intent);
+        if (!back_pressed_locked) {
+            super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_MANAGE_FRAGMENT);
+            startActivity(intent);
+        }
     }
 
-    private void uploadToStorage(byte[] compressed_bitmap, String filename) {
+    private void pushGroupToDatabase(byte[] compressed_bitmap, final String filename,
+                                     final Long days_num, final Long shifts_per_day,
+                                     final Long employees_per_shift, final String admin_UID,
+                                     final String group_name, final String group_UID) {
         mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
-        uploadTask = mStorageRef.putBytes(compressed_bitmap);
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // mCustomSnackbar.show(getApplicationContext(),view,"Upload fail",0);
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-            }
-        });
+        if (compressed_bitmap == null) {
+            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, "");
+            mGroupRef.child(group_UID).setValue(group);
+        } else {
+            uploadTask = mStorageRef.putBytes(compressed_bitmap);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, "");
+                    mGroupRef.child(group_UID).setValue(group);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
+                            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, uri.toString());
+                            mGroupRef.child(group_UID).setValue(group);
+                            MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
+                            success_sound.start();
+                        }
+                    });
+
+                }
+            });
+        }
+    }
+
+
+
+    private void handleLoadingState(int state) {
+        if (state == Constants.SHOW_LOADING_ANIMATION) {
+            loading_animation.setVisibility(View.VISIBLE);
+            back_pressed_locked = true;
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            signup_text.setVisibility(View.GONE);
+            done_animation.setVisibility(View.GONE);
+            email_share.setVisibility(View.GONE);
+            whatsapp_share.setVisibility(View.GONE);
+            sms_share.setVisibility(View.GONE);
+            group_code_edittext.setVisibility(View.GONE);
+            etc_share.setVisibility(View.GONE);
+            share_with_friends_txt.setVisibility(View.GONE);
+
+        } else {
+            loading_animation.setVisibility(View.GONE);
+            back_pressed_locked = false;
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mainToolbar.setEnabled(true);
+            signup_text.setVisibility(View.VISIBLE);
+            done_animation.setVisibility(View.VISIBLE);
+            done_animation.playAnimation();
+            email_share.setVisibility(View.VISIBLE);
+            whatsapp_share.setVisibility(View.VISIBLE);
+            sms_share.setVisibility(View.VISIBLE);
+            group_code_edittext.setVisibility(View.VISIBLE);
+            etc_share.setVisibility(View.VISIBLE);
+            share_with_friends_txt.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_creation_3);
-        Toolbar mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
+        setContentView(R.layout.activity_group_creation_4);
+        // Get views -------------------------------------------------------------------------------
+        mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
+        loading_animation = findViewById(R.id.loading_icon_creation);
+        done_animation = findViewById(R.id.success_img);
+        whatsapp_share = findViewById(R.id.whatsapp_share);
+        email_share = findViewById(R.id.email_share);
+        sms_share = findViewById(R.id.sms_share);
+        etc_share = findViewById(R.id.etc_share);
+        group_code_edittext = findViewById(R.id.group_code);
+        signup_text = findViewById(R.id.signup_header);
+        share_with_friends_txt = findViewById(R.id.share_with_friends_txt);
+        //------------------------------------------------------------------------------------------
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        Bundle extras = getIntent().getExtras();
-        final String group_name = extras.getString("GROUP_NAME");
-        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
-        TextView signup_text = findViewById(R.id.signup_header);
+        // -----------------------------------------------------------------------------------------
+        handleLoadingState(Constants.SHOW_LOADING_ANIMATION);
+        // -----------------------------------------------------------------------------------------
         final Resources res = getResources();
-        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
-        MediaPlayer success_sound = MediaPlayer.create(this, R.raw.success);
-        success_sound.start();
-
-        LottieAnimationView done_animation = findViewById(R.id.success_img);
+        Bundle extras = getIntent().getExtras();
         done_animation.setSpeed(0.5f);
-
+        // ------------------------- Firebase instances --------------------------------------------
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
-        String admin_UID = currentUser.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mGroupRef = database.getReference().child(("Groups"));
-
-        final String group_UID = mGroupRef.push().getKey();
-
+        mGroupRef = database.getReference().child(("Groups"));
+        // -----------------------------------------------------------------------------------------
+        String group_UID = mGroupRef.push().getKey();
+        String group_name = extras.getString("GROUP_NAME");
+        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
+        String admin_UID = currentUser.getUid();
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
 
-        final Group group = new Group(admin_UID, group_name, 0L,
-                days_num, shifts_per_day, employees_per_shift);
-        mGroupRef.child(group_UID).setValue(group);
-        EditText group_code_edittext = findViewById(R.id.group_code);
-        if (group_pic_array!=null) {
-            uploadToStorage(group_pic_array, group_UID);
-        }
+        pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, admin_UID, group_name, group_UID);
+        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
         group_code_edittext.setText(group_UID);
+
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
                 group_name + " " + res.getString(R.string.message2_share_group_code) + " " + group_UID + "\n\n" +
                 res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
-        ImageView whatsapp_share = findViewById(R.id.whatsapp_share);
         whatsapp_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +198,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
         });
 
         // Email sharing
-        ImageView email_share = findViewById(R.id.email_share);
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,7 +211,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         });
 
         // Text message sharing
-        ImageView sms_share = findViewById(R.id.sms_share);
+        // TODO: Broken - NEED TO FIX CODE
         sms_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

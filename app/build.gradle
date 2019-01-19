@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
     //#####################################################################
     //          Extra Libraries
     //#####################################################################
@@ -71,6 +72,8 @@ dependencies {
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'io.apisense:rhino-android:1.0'
     implementation 'jp.wasabeef:blurry:3.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'
         exclude group: 'com.android.support', module: 'support-v4'

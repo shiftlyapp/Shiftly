@@ -27,7 +27,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_creation_25);
+        setContentView(R.layout.activity_group_creation_3);
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_25);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));

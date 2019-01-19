@@ -3,6 +3,7 @@ package com.technion.shiftly.groupsList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,8 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.github.abdularis.civ.CircleImageView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +32,7 @@ import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
+import com.technion.shiftly.utility.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class GroupsIBelongFragment extends Fragment {
     private List<String> groupsName;
     private List<Long> groupsMembersCount;
     private List<String> groupsIds;
+    private List<CircleImageView> groupsIcons;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
     private CustomSnackbar mSnackbar;
@@ -117,10 +122,22 @@ public class GroupsIBelongFragment extends Fragment {
                     mGroupDatabase.child(current_group_id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String group_name = dataSnapshot.child("group_name").getValue(String.class);
-                            Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
-                            groupsName.add(group_name);
-                            groupsMembersCount.add(members_count);
+                            final String group_name = dataSnapshot.child("group_name").getValue(String.class);
+                            final Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
+                            activity.getStorageRef().child("/group_pics/"+current_group_id+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    CircleImageView icon = new CircleImageView(context);
+                                    GlideApp.with(context.getApplicationContext())
+                                            .load(uri)
+                                            .placeholder(R.drawable.group)
+                                            .dontAnimate()
+                                            .into(icon);
+                                    groupsIcons.add(icon);
+                                    groupsName.add(group_name);
+                                    groupsMembersCount.add(members_count);
+                                }
+                            });
                             mAdapter.notifyDataSetChanged();
                         }
 
@@ -130,9 +147,9 @@ public class GroupsIBelongFragment extends Fragment {
                         }
                     });
                 }
+                //----------------------------------------------------------------------------------
             }
         });
-
     }
 
     @Override
@@ -140,7 +157,7 @@ public class GroupsIBelongFragment extends Fragment {
             savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
         activity = (GroupListsActivity) getActivity();
-        context = getContext();
+        context = inflater.getContext();
         resources = getResources();
 
         // Getting views loaded with findViewById
@@ -152,7 +169,7 @@ public class GroupsIBelongFragment extends Fragment {
         view.findViewById(R.id.join_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context,JoinGroupActivity.class));
+                startActivity(new Intent(context, JoinGroupActivity.class));
             }
         });
 
@@ -174,7 +191,8 @@ public class GroupsIBelongFragment extends Fragment {
         groupsIds = new ArrayList<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount);
+        groupsIcons = new ArrayList<>();
+        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount, groupsIcons);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
         runLayoutAnimation(mRecyclerView);

@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.github.abdularis.civ.CircleImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,17 +33,15 @@ import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GroupsIManageFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private List<String> groupsName;
+    private List<String> groupsNames;
     private List<Long> groupsMembersCount;
-    private Set<String> groupsIds;
+    private List<CircleImageView> groupsIcons;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
     private CustomSnackbar mSnackbar;
@@ -50,6 +49,7 @@ public class GroupsIManageFragment extends Fragment {
     private GroupListsActivity activity;
     private View view;
     private Resources resources;
+
 
     private void handleLoadingState(int state) {
         switch (state) {
@@ -83,7 +83,7 @@ public class GroupsIManageFragment extends Fragment {
                     for (DataSnapshot current_group : dataSnapshot.getChildren()) {
                         String group_name = current_group.child("group_name").getValue(String.class);
                         Long members_count = current_group.child("members_count").getValue(Long.class);
-                        groupsName.add(group_name);
+                        groupsNames.add(group_name);
                         groupsMembersCount.add(members_count);
                     }
                     handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
@@ -147,10 +147,10 @@ public class GroupsIManageFragment extends Fragment {
         // Show the loading animation upon loading the fragment
         handleLoadingState(Constants.SHOW_LOADING_ANIMATION);
 
-        groupsIds = new HashSet<>();
-        groupsName = new ArrayList<>();
+        groupsNames = new ArrayList<>();
+        groupsIcons = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount);
+        mAdapter = new GroupsListAdapter(context, groupsNames, groupsMembersCount, groupsIcons);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
         return view;

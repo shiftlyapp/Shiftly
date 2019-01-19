@@ -20,6 +20,7 @@
             android:id="@+id/group_creation_toolbar_2"
             android:layout_width="match_parent"
             android:layout_height="?android:actionBarSize"
+            android:elevation="@dimen/toolbar_elevation_size"
             android:theme="@style/CustomToolBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
