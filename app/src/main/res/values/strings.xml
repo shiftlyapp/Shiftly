@@ -93,7 +93,7 @@
     <string name="done_text">Done</string>
 
     <!-- Group join -->
-    <string name="join_group_hint">Enter group below ID:</string>
+    <string name="join_group_hint">Enter group ID below:</string>
     <string name="join_group_edittext_hint">GROUP ID</string>
     <string name="err_groupid">Invalid ID format</string>
     <string name="group_join_label">Join a Group</string>

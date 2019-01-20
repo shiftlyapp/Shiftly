@@ -1,5 +1,8 @@
 package com.technion.shiftly.groupJoin;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
+import static com.technion.shiftly.utility.Constants.GROUP_ID_LENGTH;
 
 // The join group activity
 
@@ -43,6 +48,7 @@ public class JoinGroupActivity extends AppCompatActivity {
     private List<String> groupsIds;
     private CustomSnackbar mSnackbar;
     private ConstraintLayout mLayout;
+    private EditText join_group_edittext;
     private Boolean group_exists_in_db;
 
     @Override
@@ -53,17 +59,38 @@ public class JoinGroupActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
+        loadClipboardData();
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void loadClipboardData() {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        String pasteData = "";
+
+        // Empty Clipboard
+        if (!(clipboard.hasPrimaryClip())) {
+            return;
+            // Clipboard contains not a plain text
+        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+            return;
+        } else {
+            // Clipboard contains plain text.
+            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+            pasteData = item.getText().toString();
+            if (pasteData.length() == GROUP_ID_LENGTH  && pasteData.startsWith("-")) { // Valid Group ID
+                join_group_edittext.setText(pasteData);
+            }
+        }
     }
 
     @Override
@@ -82,13 +109,11 @@ public class JoinGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-        final EditText join_group_edittext = (EditText) findViewById(R.id.join_group_edittext);
+        join_group_edittext = (EditText) findViewById(R.id.join_group_edittext);
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
         mAwesomeValidation.addValidation(JoinGroupActivity.this, R.id.join_group_edittext, "^([\\-\\_a-zA-Z0-9]{20})*$", R.string.err_groupid);
         databaseRef = FirebaseDatabase.getInstance().getReference();
         groupsIds = new ArrayList<>();
-
         Button joinButton = findViewById(R.id.join_button);
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +178,7 @@ public class JoinGroupActivity extends AppCompatActivity {
                                                         // Switch back to the GROUPS_I_BELONG fragment after a short delay
                                                         Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_BELONG_FRAGMENT);
                                                         startActivity(intent);
                                                     }
                                                 }, Constants.REDIRECTION_DELAY);

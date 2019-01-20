@@ -2,8 +2,6 @@ package com.technion.shiftly.groupsList;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,12 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.github.abdularis.civ.CircleImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +38,7 @@ public class GroupsIManageFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private List<String> groupsNames;
     private List<Long> groupsMembersCount;
-    private List<CircleImageView> groupsIcons;
+    private List<String> groupsIconsUrls;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
     private CustomSnackbar mSnackbar;
@@ -52,7 +47,6 @@ public class GroupsIManageFragment extends Fragment {
     private View view;
     private TooltipView manage_tooltip;
     private FloatingActionButton create_group_fab;
-    private Resources resources;
 
     private void handleLoadingState(int state) {
         switch (state) {
@@ -93,11 +87,13 @@ public class GroupsIManageFragment extends Fragment {
                     for (DataSnapshot current_group : dataSnapshot.getChildren()) {
                         String group_name = current_group.child("group_name").getValue(String.class);
                         Long members_count = current_group.child("members_count").getValue(Long.class);
+                        String group_icon_url = current_group.child("group_icon_url").getValue(String.class);
+                        groupsIconsUrls.add(group_icon_url);
                         groupsNames.add(group_name);
                         groupsMembersCount.add(members_count);
                     }
-                    handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
                     mAdapter.notifyDataSetChanged();
+                    handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
                 } else {
                     handleLoadingState(Constants.EMPTY_GROUPS_COUNT);
                 }
@@ -110,16 +106,10 @@ public class GroupsIManageFragment extends Fragment {
         });
     }
 
-    private void handleLongPress(View view) {
-        activity.getDel_group().setVisibility(View.VISIBLE);
-        activity.getmToolbar().setTitle("");
-        activity.getmToolbar().setBackgroundColor(resources.getColor(R.color.colorPrimaryLight));
-        activity.getmTabLayout().setBackgroundColor(resources.getColor(R.color.colorPrimaryLight));
-        view.setBackgroundColor(resources.getColor(R.color.list_item_bg_pressed));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(resources.getColor(R.color.colorPrimaryLight_Bar));
+    public void onResume() {
+        super.onResume();
+        if (mAdapter!=null) {
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -129,7 +119,6 @@ public class GroupsIManageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
         activity = (GroupListsActivity) getActivity();
         context = getContext();
-        resources = getResources();
 
         // Getting views loaded with findViewById
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
@@ -169,9 +158,9 @@ public class GroupsIManageFragment extends Fragment {
         handleLoadingState(Constants.SHOW_LOADING_ANIMATION);
 
         groupsNames = new ArrayList<>();
-        groupsIcons = new ArrayList<>();
+        groupsIconsUrls = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        mAdapter = new GroupsListAdapter(context, groupsNames, groupsMembersCount, groupsIcons);
+        mAdapter = new GroupsListAdapter(context, groupsNames, groupsMembersCount, groupsIconsUrls);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
         return view;

@@ -173,6 +173,8 @@ public class GroupListsActivity extends AppCompatActivity {
         int intent_fragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
         if (intent_fragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
             mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
+        } else if (intent_fragment == Constants.GROUPS_I_BELONG_FRAGMENT) {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
         }
     }
 

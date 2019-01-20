@@ -16,7 +16,6 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/list_item_image_left_margin"
         android:layout_marginLeft="@dimen/list_item_image_left_margin"
-        android:src="@drawable/group"
         />
     <TextView
         android:id="@+id/group_name"

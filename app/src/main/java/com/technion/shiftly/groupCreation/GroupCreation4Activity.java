@@ -31,6 +31,8 @@ import com.technion.shiftly.dataTypes.Group;
 import com.technion.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftly.utility.Constants;
 
+import static com.technion.shiftly.utility.Constants.SHOW_LOADING_ANIMATION;
+
 public class GroupCreation4Activity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;
@@ -68,19 +70,26 @@ public class GroupCreation4Activity extends AppCompatActivity {
                                      final String group_name, final String group_UID) {
         mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
         if (compressed_bitmap == null) {
+            // No image upload
+            handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
             Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
             mGroupRef.child(group_UID).setValue(group);
+            MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
+            success_sound.start();
         } else {
             uploadTask = mStorageRef.putBytes(compressed_bitmap);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+                    // Image upload failed
+                    handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
                     Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
                     mGroupRef.child(group_UID).setValue(group);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Image upload succeed
                     mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -98,7 +107,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
     }
 
     private void handleLoadingState(int state) {
-        if (state == Constants.SHOW_LOADING_ANIMATION) {
+        if (state == SHOW_LOADING_ANIMATION) {
             loading_animation.setVisibility(View.VISIBLE);
             back_pressed_locked = true;
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -111,7 +120,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
             group_code_edittext.setVisibility(View.GONE);
             etc_share.setVisibility(View.GONE);
             share_with_friends_txt.setVisibility(View.GONE);
-
         } else {
             loading_animation.setVisibility(View.GONE);
             back_pressed_locked = false;
@@ -151,7 +159,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         // -----------------------------------------------------------------------------------------
-        handleLoadingState(Constants.SHOW_LOADING_ANIMATION);
+        handleLoadingState(SHOW_LOADING_ANIMATION);
         // -----------------------------------------------------------------------------------------
         final Resources res = getResources();
         Bundle extras = getIntent().getExtras();

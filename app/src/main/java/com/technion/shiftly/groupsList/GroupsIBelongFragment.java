@@ -2,8 +2,6 @@ package com.technion.shiftly.groupsList;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -20,8 +18,6 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.github.abdularis.civ.CircleImageView;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +29,6 @@ import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
-import com.technion.shiftly.utility.GlideApp;
 import com.venmo.view.TooltipView;
 
 import java.util.ArrayList;
@@ -46,7 +41,7 @@ public class GroupsIBelongFragment extends Fragment {
     private List<String> groupsName;
     private List<Long> groupsMembersCount;
     private List<String> groupsIds;
-    private List<CircleImageView> groupsIcons;
+    private List<String> groupsIconsUrls;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
     private CustomSnackbar mSnackbar;
@@ -55,13 +50,11 @@ public class GroupsIBelongFragment extends Fragment {
     private View view;
     private TooltipView belong_tooltip;
     private FloatingActionButton join_group_fab;
-    private Resources resources;
 
-    private void runLayoutAnimation(final RecyclerView recyclerView) {
+    private void initializeRecyclerAnimation() {
         final LayoutAnimationController controller =
                 AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down);
-        recyclerView.setLayoutAnimation(controller);
-        recyclerView.startLayoutAnimation();
+        mRecyclerView.setLayoutAnimation(controller);
     }
 
     private void handleLoadingState(int state) {
@@ -112,7 +105,6 @@ public class GroupsIBelongFragment extends Fragment {
                 showError(databaseError);
             }
         });
-
         // ---------------------------- Load user groups IDs into a List ---------------------------
         final DatabaseReference mGroupDatabase = FirebaseDatabase.getInstance().getReference("Groups");
         mUserDatabase.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,39 +120,47 @@ public class GroupsIBelongFragment extends Fragment {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     groupsIds.add(postSnapshot.getValue(String.class));
                 }
-                // --------------------- Load groups' details into the Adapter ---------------------
-                for (final String current_group_id : groupsIds) {
-                    mGroupDatabase.child(current_group_id).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            final String group_name = dataSnapshot.child("group_name").getValue(String.class);
-                            final Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
-                            activity.getStorageRef().child("/group_pics/"+current_group_id+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        showError(databaseError);
+                    }
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (final String current_group_id : groupsIds) {
+                            DatabaseReference innerRef = mGroupDatabase.child(current_group_id);
+                            innerRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onSuccess(Uri uri) {
-                                    CircleImageView icon = new CircleImageView(context);
-                                    GlideApp.with(context.getApplicationContext())
-                                            .load(uri)
-                                            .placeholder(R.drawable.group)
-                                            .dontAnimate()
-                                            .into(icon);
-                                    groupsIcons.add(icon);
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    String group_name = dataSnapshot.child("group_name").getValue(String.class);
+                                    Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
+                                    String group_icon_url = dataSnapshot.child("group_icon_url").getValue(String.class);
+                                    groupsIconsUrls.add(group_icon_url);
                                     groupsName.add(group_name);
                                     groupsMembersCount.add(members_count);
+                                    mAdapter.notifyDataSetChanged();
+                                    mRecyclerView.scheduleLayoutAnimation();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    showError(databaseError);
                                 }
                             });
-                            mAdapter.notifyDataSetChanged();
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            showError(databaseError);
-                        }
-                    });
-                }
-                //----------------------------------------------------------------------------------
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -169,7 +169,6 @@ public class GroupsIBelongFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
         activity = (GroupListsActivity) getActivity();
         context = inflater.getContext();
-        resources = getResources();
 
         // Getting views loaded with findViewById
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_belong);
@@ -200,7 +199,7 @@ public class GroupsIBelongFragment extends Fragment {
         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.recycler_divider));
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-
+        initializeRecyclerAnimation();
         // Setting the animations scale
         eye_anim.setScale(Constants.EYE_ANIM_SCALE);
         loading_icon.setScale(Constants.LOADING_ANIM_SCALE);
@@ -211,12 +210,10 @@ public class GroupsIBelongFragment extends Fragment {
         groupsIds = new ArrayList<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        groupsIcons = new ArrayList<>();
-        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount, groupsIcons);
+        groupsIconsUrls = new ArrayList<>();
+        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount, groupsIconsUrls);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
-        runLayoutAnimation(mRecyclerView);
-
         ((GroupsListAdapter) mAdapter).setClickListener(new GroupsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

@@ -18,7 +18,8 @@ public final class Constants {
     public static final float EYE_ANIM_SCALE = 0.4f;
     public static final int HIDE_LOADING_ANIMATION = 0;
     public static final int SHOW_LOADING_ANIMATION = 1;
-    public static final int EMPTY_GROUPS_COUNT = 3;
+    public static final int EMPTY_GROUPS_COUNT = 2;
+    public static final int GROUP_ID_LENGTH = 20;
     public static final String REGEX_PASSWORD_VALIDATION = "^(?!.*\\s).{6,14}$";
     public static final String REGEX_NAME_VALIDATION = "[a-zA-Z]+[[\\s][a-zA-Z]+]*";
 }

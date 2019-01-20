@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.abdularis.civ.CircleImageView;
+import com.squareup.picasso.Picasso;
 import com.technion.shiftly.R;
 import com.technion.shiftly.utility.Constants;
 
@@ -20,17 +21,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
 
     private List<String> mNames;
     private List<Long> mCounts;
-    private List<CircleImageView> mIcons;
+    private List<String> mIconsUrls;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemLongClickListener mLongClickListener;
 
     // data is passed into the constructor
-    GroupsListAdapter(Context context, List<String> names, List<Long> counts, List<CircleImageView> icons) {
+    GroupsListAdapter(Context context, List<String> names, List<Long> counts, List<String> icons) {
         this.mInflater = LayoutInflater.from(context);
         this.mNames = names;
         this.mCounts = counts;
-        this.mIcons = icons;
+        this.mIconsUrls = icons;
     }
 
     // inflates the row layout from xml when needed
@@ -40,8 +41,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         return new ViewHolder(view);
     }
 
-    public List<CircleImageView> getmIcons() {
-        return mIcons;
+    public List<String> getmIconsUrls() {
+        return mIconsUrls;
     }
 
     // binds the data to the TextView in each row
@@ -49,20 +50,21 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         String name = mNames.get(position);
         String count = Long.toString(mCounts.get(position));
-        CircleImageView group_icon = mIcons.get(position);
+        String url = mIconsUrls.get(position);
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
-        holder.myIconView.setImageDrawable(group_icon.getDrawable());
-        holder.itemView.setLongClickable(true);
-        if (position == 0) {
+        if (!url.isEmpty()) {
+            Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(holder.myIconView);
+        } else {
+            Picasso.get().load(R.drawable.group).noFade().into(holder.myIconView);
+        }
+        if (position == 0) { // Do this if first item (Remove top line)
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
             marginLayoutParams.setMargins(0, 0, 0, 0);
             holder.itemView.setLayoutParams(marginLayoutParams);
-            if (getItemCount() == 1) {
-                holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
-            }
-        } else if (position < getItemCount()-1) {
+        }
+        if (position < getItemCount()-1) {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg, null));
         } else {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
