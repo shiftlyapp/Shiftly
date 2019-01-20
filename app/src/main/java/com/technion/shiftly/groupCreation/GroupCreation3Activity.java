@@ -37,31 +37,31 @@ public class GroupCreation3Activity extends AppCompatActivity {
         // Setting the spinners with their adapters
         final Spinner days_spinner = findViewById(R.id.days_num_spinner);
         ArrayAdapter<CharSequence> days_spinner_adapter = ArrayAdapter.createFromResource(this,
-                R.array.days_num, android.R.layout.simple_spinner_item);
+                R.array.days_num, R.layout.custom_spinner_item);
         days_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         days_spinner.setAdapter(days_spinner_adapter);
 
         final Spinner shifts_per_day_spinner = findViewById(R.id.shifts_per_day_num_spinner);
         ArrayAdapter<CharSequence> shifts_spinner_adapter = ArrayAdapter.createFromResource(this,
-                R.array.shifts_per_day, android.R.layout.simple_spinner_item);
+                R.array.shifts_per_day, R.layout.custom_spinner_item);
         shifts_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shifts_per_day_spinner.setAdapter(shifts_spinner_adapter);
 
         final Spinner employees_per_shift_spinner = findViewById(R.id.employees_per_shift_num_spinner);
         ArrayAdapter<CharSequence> employees_spinner_adapter = ArrayAdapter.createFromResource(this,
-                R.array.employees_per_shift, android.R.layout.simple_spinner_item);
+                R.array.employees_per_shift, R.layout.custom_spinner_item);
         employees_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employees_per_shift_spinner.setAdapter(employees_spinner_adapter);
 
         final Spinner starting_hour_spinner = findViewById(R.id.starting_hour_spinner);
         ArrayAdapter<CharSequence> starting_hour_spinner_adapter = ArrayAdapter.createFromResource(this,
-                R.array.starting_hour, android.R.layout.simple_spinner_item);
+                R.array.starting_hour, R.layout.custom_spinner_item);
         starting_hour_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         starting_hour_spinner.setAdapter(starting_hour_spinner_adapter);
 
         final Spinner shift_len_spinner = findViewById(R.id.shift_len_spinner);
         ArrayAdapter<CharSequence> shift_len_spinner_adapter = ArrayAdapter.createFromResource(this,
-                R.array.shift_len, android.R.layout.simple_spinner_item);
+                R.array.shift_len, R.layout.custom_spinner_item);
         shift_len_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shift_len_spinner.setAdapter(shift_len_spinner_adapter);
 
@@ -74,19 +74,14 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 byte[] group_pic_array = getIntent().getExtras().getByteArray("GROUP_PICTURE");
 
-//                final Spinner days_num_spinner = findViewById(R.id.days_num_spinner);
                 Long days_num = Long.parseLong(days_spinner.getSelectedItem().toString());
 
-//                final Spinner shifts_num_spinner = findViewById(R.id.shifts_per_day_num_spinner);
                 Long shifts_per_day = Long.parseLong(shifts_per_day_spinner.getSelectedItem().toString());
 
-//                final Spinner employees_per_shift_num_spinner = findViewById(R.id.employees_per_shift_num_spinner);
                 Long employees_per_shift = Long.parseLong(employees_per_shift_spinner.getSelectedItem().toString());
 
-//                final Spinner starting_hour_num_spinner = findViewById(R.id.starting_hour_spinner);
                 String starting_hour = starting_hour_spinner.getSelectedItem().toString();
 
-//                final Spinner employees_per_shift_num_spinner = findViewById(R.id.shift_len_spinner);
                 Long shift_len = Long.parseLong(shift_len_spinner.getSelectedItem().toString());
 
                 timeslots_config_intent.putExtra("GROUP_NAME", group_name);

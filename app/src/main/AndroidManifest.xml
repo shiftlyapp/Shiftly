@@ -34,11 +34,7 @@
         <activity
             android:name="com.technion.shiftly.entry.LoginActivity"
             android:theme="@style/SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name="com.technion.shiftly.entry.SignupActivity"
@@ -47,6 +43,11 @@
         <activity android:name="com.technion.shiftly.groupCreation.GroupCreation2Activity">
         </activity>
         <activity android:name="com.technion.shiftly.groupCreation.GroupCreation3Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name="com.technion.shiftly.groupCreation.GroupCreation4Activity"/>
         <activity
