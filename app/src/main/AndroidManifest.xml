@@ -58,7 +58,8 @@
             android:configChanges="orientation|keyboardHidden" />
         <activity
             android:name="com.technion.shiftly.groupsList.GroupListsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleInstance" />
         <activity android:name="com.technion.shiftly.scheduleView.ScheduleViewActivity" />
         <activity android:name="com.technion.shiftly.miscellaneous.AboutActivity" />
         <activity android:name="com.technion.shiftly.options.OptionsListActivity" />

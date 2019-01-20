@@ -141,7 +141,7 @@ public class GroupListsActivity extends AppCompatActivity {
         // Tab layout
         mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-        // setupTabIcons(mPagerAdapter);
+        setupTabIcons(mPagerAdapter);
 
         // Drawer layout
         NavigationView navigationView = findViewById(R.id.nav_view);

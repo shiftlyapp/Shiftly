@@ -91,7 +91,7 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_fab_add" />
+            app:srcCompat="@drawable/ic_join_fab" />
 
         <com.venmo.view.TooltipView
             android:id="@+id/belong_tooltip"

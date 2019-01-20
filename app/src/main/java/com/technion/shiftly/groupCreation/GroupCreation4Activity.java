@@ -41,9 +41,10 @@ public class GroupCreation4Activity extends AppCompatActivity {
     private Toolbar mainToolbar;
     private TextView signup_text, share_with_friends_txt;
     private LottieAnimationView done_animation, loading_animation;
-    private ImageView whatsapp_share,email_share,sms_share,etc_share;
+    private ImageView whatsapp_share, email_share, sms_share, etc_share;
     private EditText group_code_edittext;
     private boolean back_pressed_locked;
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -63,18 +64,18 @@ public class GroupCreation4Activity extends AppCompatActivity {
 
     private void pushGroupToDatabase(byte[] compressed_bitmap, final String filename,
                                      final Long days_num, final Long shifts_per_day,
-                                     final Long employees_per_shift, final String admin_UID,
+                                     final Long employees_per_shift, final String starting_hour, final Long shift_length, final String admin_UID,
                                      final String group_name, final String group_UID) {
         mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
         if (compressed_bitmap == null) {
-            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, "");
+            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
             mGroupRef.child(group_UID).setValue(group);
         } else {
             uploadTask = mStorageRef.putBytes(compressed_bitmap);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, "");
+                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
                     mGroupRef.child(group_UID).setValue(group);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -84,7 +85,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, uri.toString());
+                            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, uri.toString());
                             mGroupRef.child(group_UID).setValue(group);
                             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
                             success_sound.start();
@@ -95,8 +96,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
             });
         }
     }
-
-
 
     private void handleLoadingState(int state) {
         if (state == Constants.SHOW_LOADING_ANIMATION) {
@@ -171,8 +170,10 @@ public class GroupCreation4Activity extends AppCompatActivity {
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
+        String starting_hour = extras.getString("STARTING_HOUR");
+        Long shift_length = extras.getLong("SHIFT_LEN");
 
-        pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, admin_UID, group_name, group_UID);
+        pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, admin_UID, group_name, group_UID);
         signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
         group_code_edittext.setText(group_UID);
 

@@ -51,6 +51,7 @@ public class GroupsIManageFragment extends Fragment {
     private GroupListsActivity activity;
     private View view;
     private TooltipView manage_tooltip;
+    private FloatingActionButton create_group_fab;
     private Resources resources;
 
     private void handleLoadingState(int state) {
@@ -58,17 +59,22 @@ public class GroupsIManageFragment extends Fragment {
             case Constants.HIDE_LOADING_ANIMATION:
                 manage_tooltip.setVisibility(View.GONE);
                 loading_icon.setVisibility(View.GONE);
+                create_group_fab.show();
                 mRecyclerView.setVisibility(View.VISIBLE);
                 break;
             case Constants.SHOW_LOADING_ANIMATION:
+                manage_tooltip.setVisibility(View.GONE);
                 loading_icon.setVisibility(View.VISIBLE);
+                create_group_fab.hide();
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 break;
             case Constants.EMPTY_GROUPS_COUNT:
                 manage_tooltip.setVisibility(View.VISIBLE);
                 no_groups_container.setVisibility(View.VISIBLE);
                 loading_icon.setVisibility(View.GONE);
+                create_group_fab.show();
                 mRecyclerView.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -131,7 +137,7 @@ public class GroupsIManageFragment extends Fragment {
         LottieAnimationView eye_anim = view.findViewById(R.id.eye_anim_manage);
         no_groups_container = view.findViewById(R.id.no_groups_container_manage);
 
-        FloatingActionButton create_group_fab = view.findViewById(R.id.create_fab);
+        create_group_fab = view.findViewById(R.id.create_fab);
         create_group_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

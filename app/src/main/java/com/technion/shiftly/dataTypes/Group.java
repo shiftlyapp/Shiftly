@@ -24,18 +24,9 @@ public class Group {
     public Group() {
     }
 
-    public ArrayList<String> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ArrayList<String> schedule) {
-        this.schedule = schedule;
-    }
-
     public Group(String admin, String group_name, Long members_count,
                  Long days_num, Long shifts_per_day, Long employees_per_shift,
-                 String starting_time, Long shift_len) {
-                 Long days_num, Long shifts_per_day, Long employees_per_shift, String group_icon_url) {
+                 String starting_time, Long shift_len, String group_icon_url) {
         this.admin = admin;
         this.group_name = group_name;
         this.members_count = members_count;
@@ -45,6 +36,30 @@ public class Group {
         this.starting_time = starting_time;
         this.shift_len = shift_len;
         this.group_icon_url = group_icon_url;
+    }
+
+    public ArrayList<String> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<String> schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getStarting_time() {
+        return starting_time;
+    }
+
+    public Long getShift_len() {
+        return shift_len;
+    }
+
+    public void setStarting_time(String starting_time) {
+        this.starting_time = starting_time;
+    }
+
+    public void setShift_len(Long shift_len) {
+        this.shift_len = shift_len;
     }
 
     public String getAdmin() {
