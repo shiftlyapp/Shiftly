@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -33,6 +34,7 @@ import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
 import com.technion.shiftly.utility.GlideApp;
+import com.venmo.view.TooltipView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class GroupsIBelongFragment extends Fragment {
     private Context context;
     private GroupListsActivity activity;
     private View view;
+    private TooltipView belong_tooltip;
     private Resources resources;
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
@@ -63,6 +66,7 @@ public class GroupsIBelongFragment extends Fragment {
     private void handleLoadingState(int state) {
         switch (state) {
             case Constants.HIDE_LOADING_ANIMATION:
+                belong_tooltip.setVisibility(View.GONE);
                 loading_icon.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 break;
@@ -71,9 +75,11 @@ public class GroupsIBelongFragment extends Fragment {
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 break;
             case Constants.EMPTY_GROUPS_COUNT:
+                belong_tooltip.setVisibility(View.VISIBLE);
                 no_groups_container.setVisibility(View.VISIBLE);
                 loading_icon.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -166,10 +172,19 @@ public class GroupsIBelongFragment extends Fragment {
         LottieAnimationView eye_anim = view.findViewById(R.id.eye_anim_belong);
         no_groups_container = view.findViewById(R.id.no_groups_container_belong);
 
-        view.findViewById(R.id.join_fab).setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton join_group_fab = view.findViewById(R.id.join_fab);
+        join_group_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(context, JoinGroupActivity.class));
+            }
+        });
+
+        belong_tooltip = view.findViewById(R.id.belong_tooltip);
+        belong_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
             }
         });
 

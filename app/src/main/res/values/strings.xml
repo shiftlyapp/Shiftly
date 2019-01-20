@@ -61,9 +61,8 @@
     <string name="group_pic_hint">Now, upload your Group picture:</string>
     <string name="group_name_hint">First, name your Group:</string>
     <string name="group_name_edittext_hint">GROUP NAME</string>
-    <string name="share_code">C</string>
-
     <string name="err_groupname">Invalid group name!</string>
+    <string name="group_create_tooltip">Click here to create a group</string>
 
     <!-- Calendar -->
     <string name="title_activity_schedule_view">View schedules</string>
@@ -103,6 +102,8 @@
     <string name="err_group_already_exist">You are already a member of this group</string>
     <string name="group_join_success">You successfully joined the group!</string>
     <string name="continue_text_group_creation_2">Continue</string>
+    <string name="group_join_tooltip">Click here to join a group</string>
+
 
     <!-- Share group code -->
     <string name="message1_share_group_code" type="id">You have been invited to join the group</string>

@@ -35,9 +35,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //#####################################################################
+    //##############################################################################################
     //          Support Libraries
-    //#####################################################################
+    //##############################################################################################
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-media-compat:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
@@ -48,23 +48,23 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    //#####################################################################
+    //##############################################################################################
     //          Tests
-    //#####################################################################
+    //##############################################################################################
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //#####################################################################
+    //##############################################################################################
     //          Firebase
-    //#####################################################################
+    //##############################################################################################
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
-    //#####################################################################
+    //##############################################################################################
     //          Extra Libraries
-    //#####################################################################
+    //##############################################################################################
     implementation 'com.basgeekball:awesome-validation:4.2'
     implementation 'com.github.marcoscgdev:Android-Week-View:1.2.7'
     implementation 'com.github.abdularis:CircularImageView:v1.2'
@@ -73,6 +73,7 @@ dependencies {
     implementation 'io.apisense:rhino-android:1.0'
     implementation 'jp.wasabeef:blurry:3.0.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.venmo.view.tooltip:tooltip:0.1.2@aar'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'

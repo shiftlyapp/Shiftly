@@ -91,6 +91,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
             itemView.setOnLongClickListener(this);
         }
 
+
         @Override
         public boolean onLongClick(View view) {
             if (mLongClickListener != null)
