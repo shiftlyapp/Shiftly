@@ -24,8 +24,11 @@ android:orientation="vertical">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/list_item_text_margin_top"
+        android:layout_toRightOf="@id/options_checkbox"
+        android:layout_toEndOf="@id/options_checkbox"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_title_size"
+        android:layout_marginStart="@dimen/button_left_margin"
         android:layout_marginLeft="@dimen/button_left_margin" />
 
     <TextView
@@ -33,10 +36,11 @@ android:orientation="vertical">
         style="@style/ListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/options_checkbox"
+        android:layout_toEndOf="@id/options_checkbox"
         android:layout_below="@id/options_shift"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text_size" />
-
+        android:textSize="@dimen/text_size"/>
 
     <ImageView
         android:id="@+id/options_menu"
