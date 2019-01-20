@@ -1,5 +1,6 @@
 package com.technion.shiftly.entry;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -36,6 +40,30 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt, firstname_edt, lastname_edt;
+
+    public void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) SignupActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    protected void setupParent(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideKeyboard(v);
+                    return false;
+                }
+            });
+        }
+        //If a layout container, iterate over children
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupParent(innerView);
+            }
+        }
+    }
 
     private void pushUserIntoDatabase(String firstname, String lastname, String email) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -69,6 +97,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         mLayout = (ConstraintLayout) findViewById(R.id.signup_cl);
+        setupParent(mLayout);
         runAnimation();
 
         mAuth = FirebaseAuth.getInstance();

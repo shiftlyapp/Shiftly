@@ -15,6 +15,7 @@ public class Group {
     private Long days_num;
     private Long shifts_per_day;
     private Long employees_per_shift;
+    private String group_icon_url;
     private String starting_time;
     private Long shift_len;
     private Map<String, String> options; // Keys = UUID's, Values = binary vectors
@@ -34,6 +35,7 @@ public class Group {
     public Group(String admin, String group_name, Long members_count,
                  Long days_num, Long shifts_per_day, Long employees_per_shift,
                  String starting_time, Long shift_len) {
+                 Long days_num, Long shifts_per_day, Long employees_per_shift, String group_icon_url) {
         this.admin = admin;
         this.group_name = group_name;
         this.members_count = members_count;
@@ -42,6 +44,7 @@ public class Group {
         this.employees_per_shift = employees_per_shift;
         this.starting_time = starting_time;
         this.shift_len = shift_len;
+        this.group_icon_url = group_icon_url;
     }
 
     public String getAdmin() {
@@ -58,6 +61,14 @@ public class Group {
 
     public Long getMembers_count() {
         return members_count;
+    }
+
+    public String getGroup_icon_url() {
+        return group_icon_url;
+    }
+
+    public void setGroup_icon_url(String group_icon_url) {
+        this.group_icon_url = group_icon_url;
     }
 
     public Map<String, String> getOptions() {

@@ -52,7 +52,7 @@
     <string name="account_created">Account created! Logging you in…</string>
 
     <!-- GroupCreation -->
-    <string name="group_create_label">Group Creation</string>
+    <string name="group_create_label">Create a new Group</string>
     <string name="group_create">CREATE</string>
     <string name="group_create_succeed">%1$s was created successfully! </string>
     <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
@@ -61,9 +61,8 @@
     <string name="group_pic_hint">Now, upload your Group picture:</string>
     <string name="group_name_hint">First, name your Group:</string>
     <string name="group_name_edittext_hint">GROUP NAME</string>
-    <string name="share_code">C</string>
-
     <string name="err_groupname">Invalid group name!</string>
+    <string name="group_create_tooltip">Click here to create a group</string>
 
     <!-- Calendar -->
     <string name="title_activity_schedule_view">View schedules</string>
@@ -92,14 +91,19 @@
     <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
     <string name="menu">MENU</string>
     <string name="done_text">Done</string>
-    <string name="join_group_hint">Enter group ID:</string>
-    <string name="join_group_edittext_hint">Group ID</string>
-    <string name="err_groupid">Invalid group ID!</string>
-    <string name="group_join_label">Join Group</string>
+
+    <!-- Group join -->
+    <string name="join_group_hint">Enter group below ID:</string>
+    <string name="join_group_edittext_hint">GROUP ID</string>
+    <string name="err_groupid">Invalid ID format</string>
+    <string name="err_group_invalid_id">Invalid Group ID</string>
+    <string name="group_join_label">Join a Group</string>
     <string name="err_group_doesnt_exist">The group does not exist</string>
     <string name="err_group_already_exist">You are already a member of this group</string>
     <string name="group_join_success">You successfully joined the group!</string>
     <string name="continue_text_group_creation_2">Continue</string>
+    <string name="group_join_tooltip">Click here to join a group</string>
+
 
     <!-- Share group code -->
     <string name="message1_share_group_code" type="id">You have been invited to join the group</string>

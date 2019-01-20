@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.github.abdularis.civ.CircleImageView;
 import com.technion.shiftly.R;
 import com.technion.shiftly.utility.Constants;
 
@@ -18,15 +20,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
 
     private List<String> mNames;
     private List<Long> mCounts;
+    private List<CircleImageView> mIcons;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemLongClickListener mLongClickListener;
 
     // data is passed into the constructor
-    GroupsListAdapter(Context context, List<String> names, List<Long> counts) {
+    GroupsListAdapter(Context context, List<String> names, List<Long> counts, List<CircleImageView> icons) {
         this.mInflater = LayoutInflater.from(context);
         this.mNames = names;
         this.mCounts = counts;
+        this.mIcons = icons;
     }
 
     // inflates the row layout from xml when needed
@@ -36,13 +40,19 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         return new ViewHolder(view);
     }
 
+    public List<CircleImageView> getmIcons() {
+        return mIcons;
+    }
+
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         String name = mNames.get(position);
         String count = Long.toString(mCounts.get(position));
+        CircleImageView group_icon = mIcons.get(position);
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
+        holder.myIconView.setImageDrawable(group_icon.getDrawable());
         holder.itemView.setLongClickable(true);
         if (position == 0) {
             ViewGroup.MarginLayoutParams marginLayoutParams =
@@ -70,14 +80,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView myNameView;
         TextView myCountView;
+        CircleImageView myIconView;
 
         ViewHolder(View itemView) {
             super(itemView);
             myNameView = itemView.findViewById(R.id.group_name);
             myCountView = itemView.findViewById(R.id.group_count);
+            myIconView = itemView.findViewById(R.id.group_icon);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
+
 
         @Override
         public boolean onLongClick(View view) {

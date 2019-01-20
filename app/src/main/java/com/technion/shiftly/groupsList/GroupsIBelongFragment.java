@@ -3,8 +3,10 @@ package com.technion.shiftly.groupsList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +20,8 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.github.abdularis.civ.CircleImageView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +33,8 @@ import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
+import com.technion.shiftly.utility.GlideApp;
+import com.venmo.view.TooltipView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +46,14 @@ public class GroupsIBelongFragment extends Fragment {
     private List<String> groupsName;
     private List<Long> groupsMembersCount;
     private List<String> groupsIds;
+    private List<CircleImageView> groupsIcons;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
     private CustomSnackbar mSnackbar;
     private Context context;
     private GroupListsActivity activity;
     private View view;
+    private TooltipView belong_tooltip;
     private Resources resources;
 
     private void runLayoutAnimation(final RecyclerView recyclerView) {
@@ -58,6 +66,7 @@ public class GroupsIBelongFragment extends Fragment {
     private void handleLoadingState(int state) {
         switch (state) {
             case Constants.HIDE_LOADING_ANIMATION:
+                belong_tooltip.setVisibility(View.GONE);
                 loading_icon.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 break;
@@ -66,9 +75,11 @@ public class GroupsIBelongFragment extends Fragment {
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 break;
             case Constants.EMPTY_GROUPS_COUNT:
+                belong_tooltip.setVisibility(View.VISIBLE);
                 no_groups_container.setVisibility(View.VISIBLE);
                 loading_icon.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -117,10 +128,22 @@ public class GroupsIBelongFragment extends Fragment {
                     mGroupDatabase.child(current_group_id).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String group_name = dataSnapshot.child("group_name").getValue(String.class);
-                            Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
-                            groupsName.add(group_name);
-                            groupsMembersCount.add(members_count);
+                            final String group_name = dataSnapshot.child("group_name").getValue(String.class);
+                            final Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
+                            activity.getStorageRef().child("/group_pics/"+current_group_id+".png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    CircleImageView icon = new CircleImageView(context);
+                                    GlideApp.with(context.getApplicationContext())
+                                            .load(uri)
+                                            .placeholder(R.drawable.group)
+                                            .dontAnimate()
+                                            .into(icon);
+                                    groupsIcons.add(icon);
+                                    groupsName.add(group_name);
+                                    groupsMembersCount.add(members_count);
+                                }
+                            });
                             mAdapter.notifyDataSetChanged();
                         }
 
@@ -130,9 +153,9 @@ public class GroupsIBelongFragment extends Fragment {
                         }
                     });
                 }
+                //----------------------------------------------------------------------------------
             }
         });
-
     }
 
     @Override
@@ -140,7 +163,7 @@ public class GroupsIBelongFragment extends Fragment {
             savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_groups_i_belong, container, false);
         activity = (GroupListsActivity) getActivity();
-        context = getContext();
+        context = inflater.getContext();
         resources = getResources();
 
         // Getting views loaded with findViewById
@@ -149,10 +172,19 @@ public class GroupsIBelongFragment extends Fragment {
         LottieAnimationView eye_anim = view.findViewById(R.id.eye_anim_belong);
         no_groups_container = view.findViewById(R.id.no_groups_container_belong);
 
-        view.findViewById(R.id.join_fab).setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton join_group_fab = view.findViewById(R.id.join_fab);
+        join_group_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context,JoinGroupActivity.class));
+                startActivity(new Intent(context, JoinGroupActivity.class));
+            }
+        });
+
+        belong_tooltip = view.findViewById(R.id.belong_tooltip);
+        belong_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
             }
         });
 
@@ -174,7 +206,8 @@ public class GroupsIBelongFragment extends Fragment {
         groupsIds = new ArrayList<>();
         groupsName = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
-        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount);
+        groupsIcons = new ArrayList<>();
+        mAdapter = new GroupsListAdapter(context, groupsName, groupsMembersCount, groupsIcons);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
         runLayoutAnimation(mRecyclerView);

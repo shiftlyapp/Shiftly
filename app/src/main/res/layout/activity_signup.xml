@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/anim_bg"
-        android:focusableInTouchMode="true"
         android:isScrollContainer="true"
-        tools:context=".SignupActivity"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:layout_editor_absoluteY="25dp">
 
         <TextView
