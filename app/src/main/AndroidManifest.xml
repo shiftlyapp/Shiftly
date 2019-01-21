@@ -41,11 +41,6 @@
             android:name="com.technion.shiftly.entry.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.technion.shiftly.entry.SignupActivity"
@@ -55,7 +50,13 @@
         <activity android:name="com.technion.shiftly.groupCreation.GroupCreation3Activity" />
         <activity
             android:name="com.technion.shiftly.groupCreation.GroupCreation4Activity"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.technion.shiftly.groupsList.GroupListsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">

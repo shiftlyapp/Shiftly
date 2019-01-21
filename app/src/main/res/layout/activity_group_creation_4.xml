@@ -85,9 +85,9 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:inputType="text"
             android:maxLength="20"
             android:textAlignment="center"
+            android:selectAllOnFocus="true"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline3" />
