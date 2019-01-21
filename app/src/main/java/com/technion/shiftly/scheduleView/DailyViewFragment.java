@@ -12,11 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.technion.shiftly.R;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DailyViewFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.daily_label));
 // Set an action when any event is clicked.)
         final ConstraintLayout ext_layout = getActivity().findViewById(R.id.container_schedule_view);
-        final FloatingActionsMenu fab_schedule_menu = ext_layout.findViewById(R.id.fab_schedule_view);
+//        final FloatingActionsMenu fab_schedule_menu = ext_layout.findViewById(R.id.fab_schedule_view);
 
         // The week view has infinite scrolling horizontally. We have to provide the events of a
 // month every time the month changes on the week view.
