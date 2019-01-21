@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.github.abdularis.civ.CircleImageView;
+import com.squareup.picasso.Picasso;
 import com.technion.shiftly.R;
 import com.technion.shiftly.utility.Constants;
 
@@ -18,15 +21,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
 
     private List<String> mNames;
     private List<Long> mCounts;
+    private List<String> mIconsUrls;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemLongClickListener mLongClickListener;
 
     // data is passed into the constructor
-    GroupsListAdapter(Context context, List<String> names, List<Long> counts) {
+    GroupsListAdapter(Context context, List<String> names, List<Long> counts, List<String> icons) {
         this.mInflater = LayoutInflater.from(context);
         this.mNames = names;
         this.mCounts = counts;
+        this.mIconsUrls = icons;
     }
 
     // inflates the row layout from xml when needed
@@ -36,23 +41,30 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         return new ViewHolder(view);
     }
 
+    public List<String> getmIconsUrls() {
+        return mIconsUrls;
+    }
+
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         String name = mNames.get(position);
         String count = Long.toString(mCounts.get(position));
+        String url = mIconsUrls.get(position);
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
-        holder.itemView.setLongClickable(true);
-        if (position == 0) {
+        if (!url.isEmpty()) {
+            Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(holder.myIconView);
+        } else {
+            Picasso.get().load(R.drawable.group).noFade().into(holder.myIconView);
+        }
+        if (position == 0) { // Do this if first item (Remove top line)
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
             marginLayoutParams.setMargins(0, 0, 0, 0);
             holder.itemView.setLayoutParams(marginLayoutParams);
-            if (getItemCount() == 1) {
-                holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
-            }
-        } else if (position < getItemCount()-1) {
+        }
+        if (position < getItemCount()-1) {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg, null));
         } else {
             holder.itemView.setBackground(ResourcesCompat.getDrawable(holder.itemView.getResources(), R.drawable.list_item_bg_bottom, null));
@@ -70,14 +82,17 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView myNameView;
         TextView myCountView;
+        CircleImageView myIconView;
 
         ViewHolder(View itemView) {
             super(itemView);
             myNameView = itemView.findViewById(R.id.group_name);
             myCountView = itemView.findViewById(R.id.group_count);
+            myIconView = itemView.findViewById(R.id.group_icon);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
+
 
         @Override
         public boolean onLongClick(View view) {

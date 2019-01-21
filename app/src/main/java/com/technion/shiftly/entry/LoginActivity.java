@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -159,7 +158,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("TAG", "handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -167,11 +165,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithCredential:success");
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI();
@@ -336,7 +332,6 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLoginButton.setEnabled(false);
                 if (mAwesomeValidation.validate()) {
                     String password = password_edt.getText().toString();
                     String email = email_edt.getText().toString();
@@ -357,17 +352,13 @@ public class LoginActivity extends AppCompatActivity {
                                             throw task.getException();
                                         } catch (FirebaseAuthInvalidUserException e) {
                                             sbError = getResources().getString(R.string.err_invalid_email);
-                                            mLoginButton.setEnabled(true);
                                             email_edt.requestFocus();
                                         } catch (FirebaseAuthInvalidCredentialsException e) {
                                             sbError = getResources().getString(R.string.err_invalid_pass);
-                                            mLoginButton.setEnabled(true);
                                             password_edt.requestFocus();
                                         } catch (FirebaseTooManyRequestsException e) {
                                             sbError = getResources().getString(R.string.err_login_attempts);
-                                            mLoginButton.setEnabled(true);
                                         } catch (Exception e) {
-                                            mLoginButton.setEnabled(true);
                                             sbError = task.getException().getMessage();
                                         }
                                         mSnackbar.show(LoginActivity.this, mLayout, sbError, CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);

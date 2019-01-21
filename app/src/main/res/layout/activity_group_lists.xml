@@ -23,7 +23,6 @@
                 app:layout_constraintBottom_toTopOf="@id/tabs"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
                 app:titleTextAppearance="@style/ToolbarTitleAppearance" />
 
             <android.support.design.widget.TabLayout

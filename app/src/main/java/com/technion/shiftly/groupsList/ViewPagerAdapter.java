@@ -18,8 +18,8 @@ class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
     private int[] tabIcons = {
-            R.drawable.groups_i_belong_icon,
-            R.drawable.skip};
+            R.drawable.tablayout_belong,
+            R.drawable.tablayout_manage};
 
     ViewPagerAdapter(FragmentManager manager, Context context) {
         super(manager);

@@ -30,14 +30,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/group_creation_toolbar_2">
+            app:layout_constraintTop_toBottomOf="@+id/group_creation_toolbar_2">
 
             <TextView
                 android:id="@+id/group_pic_text"
