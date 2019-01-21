@@ -1,5 +1,6 @@
 package com.technion.shiftly.groupsList;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -144,7 +146,7 @@ public class GroupListsActivity extends AppCompatActivity {
         setupTabIcons(mPagerAdapter);
 
         // Drawer layout
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -155,15 +157,34 @@ public class GroupListsActivity extends AppCompatActivity {
                                 break;
                             }
                             case R.id.drawer_signout_button: {
-                                mAuth.signOut(); // Firebase Sign-out
-                                mGoogleSignInClient.signOut()
-                                        .addOnCompleteListener(GroupListsActivity.this, new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
+                                AlertDialog.Builder signoutDialogBuilder = new AlertDialog.Builder(navigationView.getContext(), R.style.CustomAlertDialog);
+                                signoutDialogBuilder.setMessage("Are you sure to sign out?");
+                                signoutDialogBuilder.setCancelable(true);
+                                signoutDialogBuilder.setPositiveButton(
+                                        "Yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                                mAuth.signOut(); // Firebase Sign-out
+                                                mGoogleSignInClient.signOut()
+                                                        .addOnCompleteListener(GroupListsActivity.this, new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                gotoLogin();
+                                                            }
+                                                        });
                                                 gotoLogin();
                                             }
                                         });
-                                gotoLogin();
+                                signoutDialogBuilder.setNegativeButton(
+                                        "No",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog signoutDialog = signoutDialogBuilder.create();
+                                signoutDialog.show();
                                 break;
                             }
                         }
