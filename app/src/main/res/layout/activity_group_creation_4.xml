@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/hourglass" />
+            app:lottie_rawRes="@raw/loading" />
 
         <TextView
             android:id="@+id/share_with_friends_txt"
