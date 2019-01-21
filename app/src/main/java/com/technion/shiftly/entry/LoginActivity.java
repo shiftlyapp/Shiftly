@@ -57,7 +57,6 @@ import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 
 import java.util.Arrays;
-
 import jp.wasabeef.blurry.Blurry;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;

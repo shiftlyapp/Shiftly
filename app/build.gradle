@@ -31,6 +31,10 @@ android {
     }
     productFlavors {
     }
+    // For tests to return deafault values of objects
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
