@@ -2,6 +2,7 @@
 <resources>
     <!-- General -->
     <color name="colorPrimary">#006064</color>
+    <color name="colorPrimaryDrawer">#006064</color>
     <color name="colorPrimaryDark">#00363a</color>
     <color name="colorPrimaryLight">#00878c</color>
     <color name="colorPrimaryLight_Bar">#008e94</color>

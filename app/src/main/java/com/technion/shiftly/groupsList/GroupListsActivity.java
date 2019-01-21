@@ -158,10 +158,10 @@ public class GroupListsActivity extends AppCompatActivity {
                             }
                             case R.id.drawer_signout_button: {
                                 AlertDialog.Builder signoutDialogBuilder = new AlertDialog.Builder(navigationView.getContext(), R.style.CustomAlertDialog);
-                                signoutDialogBuilder.setMessage("Are you sure to sign out?");
+                                signoutDialogBuilder.setMessage(Constants.SIGNOUT_MESSAGE);
                                 signoutDialogBuilder.setCancelable(true);
                                 signoutDialogBuilder.setPositiveButton(
-                                        "Yes",
+                                        Constants.YES,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.cancel();
@@ -177,7 +177,7 @@ public class GroupListsActivity extends AppCompatActivity {
                                             }
                                         });
                                 signoutDialogBuilder.setNegativeButton(
-                                        "No",
+                                        Constants.NO,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.cancel();
