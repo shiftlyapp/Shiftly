@@ -53,6 +53,11 @@ public class GroupListsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+    private String fullName;
+
+    public String getFullName() {
+        return fullName;
+    }
 
     public ImageView getDel_group() {
         return del_group;
@@ -107,7 +112,8 @@ public class GroupListsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String firstname = dataSnapshot.child("firstname").getValue(String.class);
                     String lastname = dataSnapshot.child("lastname").getValue(String.class);
-                    mToolbar.setSubtitle(firstname + " " + lastname);
+                    fullName = firstname + " " + lastname;
+                    mToolbar.setSubtitle(fullName);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -115,7 +121,8 @@ public class GroupListsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            mToolbar.setSubtitle(currentUser.getDisplayName());
+            fullName = currentUser.getDisplayName();
+            mToolbar.setSubtitle(fullName);
         }
 
         del_group = (ImageView) findViewById(R.id.del_group);
