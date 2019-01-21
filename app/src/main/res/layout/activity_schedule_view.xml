@@ -77,4 +77,21 @@
         fab:fab_addButtonSize="normal"
         fab:fab_title="Generate schedule" />
 
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/copy_group_code_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="56dp"
+        app:layout_constraintBottom_toTopOf="@id/schedule_fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        fab:fab_colorNormal="@color/orange_color_light"
+        fab:fab_colorPressed="@color/dark_orange_color"
+        android:background="@android:color/white"
+        android:visibility="invisible"
+        app:fab_icon="@drawable/ic_copy_to_clipboard"
+        fab:fab_addButtonSize="normal"
+        fab:fab_title="Copy group code" />
+
 </android.support.constraint.ConstraintLayout>

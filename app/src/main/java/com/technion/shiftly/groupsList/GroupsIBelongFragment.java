@@ -180,7 +180,9 @@ public class GroupsIBelongFragment extends Fragment {
         join_group_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context, JoinGroupActivity.class));
+                Intent join_group_intent = new Intent(context, JoinGroupActivity.class);
+                join_group_intent.putExtra("FULL_NAME", activity.getFullName());
+                startActivity(join_group_intent);
             }
         });
 

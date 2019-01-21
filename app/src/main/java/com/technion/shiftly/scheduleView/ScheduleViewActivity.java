@@ -1,5 +1,8 @@
 package com.technion.shiftly.scheduleView;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -74,15 +78,17 @@ public class ScheduleViewActivity extends AppCompatActivity {
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
         final com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
         final com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton copyCodeFab = findViewById(R.id.copy_group_code_fab);
 
         databaseRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String adming_uuid = dataSnapshot.getValue().toString();
+                String admin_uuid = dataSnapshot.getValue().toString();
                 String logged_in_user_uuid = mAuth.getCurrentUser().getUid();
 
-                if (adming_uuid.equals(logged_in_user_uuid)) {
+                if (admin_uuid.equals(logged_in_user_uuid)) {
                     scheduleFab.setVisibility(View.VISIBLE);
+                    copyCodeFab.setVisibility(View.VISIBLE);
                 } else {
                     optionsFab.setVisibility(View.VISIBLE);
                 }
@@ -94,13 +100,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
-
         optionsFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
                 intent.putExtra("GROUP_ID", group_id);
                 startActivity(intent);
+            }
+        });
+        copyCodeFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("group code", group_id);
+                clipboard.setPrimaryClip(clipData);
+                Toast.makeText(ScheduleViewActivity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
             }
         });
         scheduleFab.setOnClickListener(new View.OnClickListener() {
