@@ -17,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,11 +55,8 @@ import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 
 import java.util.Arrays;
-import jp.wasabeef.blurry.Blurry;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
-import static com.technion.shiftly.utility.Constants.BLUR_DOWN_SAMPLING;
-import static com.technion.shiftly.utility.Constants.BLUR_RADIUS;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -76,8 +72,6 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences prefs;
 
     private void goToMainActivity() {
-        FrameLayout container = findViewById(R.id.blur_container);
-        Blurry.with(container.getContext()).radius(BLUR_RADIUS).sampling(BLUR_DOWN_SAMPLING).async().onto(container);
         mSnackbar.show(LoginActivity.this, mLayout, getResources().getString(R.string.login_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
