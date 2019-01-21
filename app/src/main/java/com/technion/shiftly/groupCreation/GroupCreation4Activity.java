@@ -72,7 +72,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         if (compressed_bitmap == null) {
             // No image upload
             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
+            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "none");
             mGroupRef.child(group_UID).setValue(group);
             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
             success_sound.start();
@@ -83,7 +83,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
                     handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "");
+                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "none");
                     mGroupRef.child(group_UID).setValue(group);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
