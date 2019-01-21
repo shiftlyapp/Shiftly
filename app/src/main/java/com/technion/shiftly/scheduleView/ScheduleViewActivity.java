@@ -1,5 +1,8 @@
 package com.technion.shiftly.scheduleView;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +37,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private ConstraintLayout mLayout;
     private DatabaseReference databaseRef;
     private CustomSnackbar mSnackbar;
-    private String groupId;
+    private FirebaseAuth mAuth;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,23 +72,51 @@ public class ScheduleViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
-        final String group_id = getIntent().getExtras().getString("GROUP_ID");
-        groupId = group_id;
+        mAuth = FirebaseAuth.getInstance();
 
-        // TODO: Make available only if the user is not the admin, otherwise don't present the button
-        // TODO: or make it present a toast saying "you are not an employee"
-        com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        final String group_id = getIntent().getExtras().getString("GROUP_ID");
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+        final com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton copyCodeFab = findViewById(R.id.copy_group_code_fab);
+
+        databaseRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_uuid = dataSnapshot.getValue().toString();
+                String logged_in_user_uuid = mAuth.getCurrentUser().getUid();
+
+                if (admin_uuid.equals(logged_in_user_uuid)) {
+                    scheduleFab.setVisibility(View.VISIBLE);
+                    copyCodeFab.setVisibility(View.VISIBLE);
+                } else {
+                    optionsFab.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         optionsFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
                 intent.putExtra("GROUP_ID", group_id);
-//                groupId = group_id;
                 startActivity(intent);
             }
         });
-
-        com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        copyCodeFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("group code", group_id);
+                clipboard.setPrimaryClip(clipData);
+                Toast.makeText(ScheduleViewActivity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
+            }
+        });
         scheduleFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +132,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                         String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
                         // Run scheduling algorithm
-                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options,1);
+                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
                         Boolean result = solver.solve();
                         if (result) {
 
@@ -123,26 +156,18 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
         });
-
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         launchFragment(new DailyViewFragment());
-
     }
-
 
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {
             return false;
         }
-        // Pass the group name to the fragments
-        Bundle bundle = new Bundle();
-        bundle.putString("group_id", groupId);
-        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         return true;
     }
