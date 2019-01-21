@@ -17,7 +17,7 @@ public class Group {
     private Long employees_per_shift;
     private String group_icon_url;
     private String starting_time;
-    private Long shift_len;
+    private Long shift_length;
     private Map<String, String> options; // Keys = UUID's, Values = binary vectors
     private ArrayList<String> schedule; // UUID's: at the i'th position works shift i
 
@@ -26,7 +26,7 @@ public class Group {
 
     public Group(String admin, String group_name, Long members_count,
                  Long days_num, Long shifts_per_day, Long employees_per_shift,
-                 String starting_time, Long shift_len, String group_icon_url) {
+                 String starting_time, Long shift_length, String group_icon_url) {
         this.admin = admin;
         this.group_name = group_name;
         this.members_count = members_count;
@@ -34,7 +34,7 @@ public class Group {
         this.shifts_per_day = shifts_per_day;
         this.employees_per_shift = employees_per_shift;
         this.starting_time = starting_time;
-        this.shift_len = shift_len;
+        this.shift_length = shift_length;
         this.group_icon_url = group_icon_url;
     }
 
@@ -50,16 +50,16 @@ public class Group {
         return starting_time;
     }
 
-    public Long getShift_len() {
-        return shift_len;
+    public Long getShift_length() {
+        return shift_length;
     }
 
     public void setStarting_time(String starting_time) {
         this.starting_time = starting_time;
     }
 
-    public void setShift_len(Long shift_len) {
-        this.shift_len = shift_len;
+    public void setShift_length(Long shift_length) {
+        this.shift_length = shift_length;
     }
 
     public String getAdmin() {
