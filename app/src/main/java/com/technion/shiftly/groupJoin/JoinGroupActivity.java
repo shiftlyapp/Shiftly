@@ -130,10 +130,14 @@ public class JoinGroupActivity extends AppCompatActivity {
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                     String group = postSnapshot.getKey();
                                     if (group.equals(group_code)) {
-                                        group_exists_in_db = true;
-                                        break;
+                                        if (postSnapshot.child("admin").getValue().toString().equals(mAuth.getUid())) {
+                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_user_is_admin), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                                            return;
+                                        } else {
+                                            group_exists_in_db = true;
+                                            break;
+                                        }
                                     }
-
                                 }
                                 // Group does not exist in DB
                                 if (!group_exists_in_db) {
