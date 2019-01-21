@@ -2,11 +2,9 @@ package com.technion.shiftly.groupCreation;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -186,7 +184,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         group_code_edittext.setText(group_UID);
 
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
-                group_name + " " + res.getString(R.string.message2_share_group_code) + " " + group_UID + "\n\n" +
+                group_name + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
                 res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
@@ -224,20 +222,15 @@ public class GroupCreation4Activity extends AppCompatActivity {
         sms_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(intent, 1);
-                String sms_number = null;
-                Uri uri1 = intent.getData();
-                Cursor cursor = getContentResolver().query(uri1, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                    sms_number = cursor.getString(phoneIndex);
+                Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                sendIntent.setData(Uri.parse("smsto:"));
+                sendIntent.putExtra("sms_body", message_share_group_code);
+
+                try {
+                    startActivity(sendIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    ex.printStackTrace();
                 }
-                cursor.close();
-                Uri uri = Uri.parse("smsto:" + sms_number);
-                Intent sms_intent = new Intent(Intent.ACTION_SENDTO, uri);
-                sms_intent.putExtra("sms_body", message_share_group_code);
-                startActivity(sms_intent);
             }
         });
     }
