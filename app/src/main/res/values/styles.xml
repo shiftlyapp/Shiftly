@@ -127,7 +127,7 @@
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:background">@color/silver_color_darker</item>
     </style>
-
+y
     <style name="ListTextView">
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:layout_marginLeft">12dp</item>

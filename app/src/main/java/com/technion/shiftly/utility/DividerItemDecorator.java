@@ -15,21 +15,20 @@ public class DividerItemDecorator extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(@Nullable Canvas c, @Nullable RecyclerView parent, @Nullable RecyclerView.State state) {
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth() - parent.getPaddingRight();
-        int childCount = parent.getAdapter().getItemCount();
-        for (int i = 0; i < childCount - 1; i++) {
-
-            View child = parent.getChildAt(i);
-            if (child != null) {
-
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-                int top = child.getBottom() + params.bottomMargin;
-                int bottom = top + mDivider.getIntrinsicHeight();
-
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
+            int left = parent.getPaddingLeft();
+            int right = parent.getWidth() - parent.getPaddingRight();
+            int childCount = parent.getAdapter().getItemCount();
+            for (int i = 0; i < childCount - 1; i++) {
+                View child = parent.getChildAt(i);
+                if (child != null) {
+                    RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+                    int top = child.getBottom() + params.bottomMargin;
+                    int bottom = top + mDivider.getIntrinsicHeight();
+                    mDivider.setBounds(left, top, right, bottom);
+                    mDivider.draw(c);
+                }
             }
-        }
+
     }
+
 }

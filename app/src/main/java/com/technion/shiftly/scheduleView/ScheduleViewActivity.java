@@ -138,7 +138,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                             // Present a snackbar of "Schedule generated!" (success)
                             mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
-
                             // Upload schedule to DB
                             List<String> generated_schedule = solver.getFinal_schedule();
                             Map<String, Object> schedule_map = new HashMap<>();
@@ -161,7 +160,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        launchFragment(new DailyViewFragment());
+        launchFragment(new WeeklyViewFragment());
     }
 
     private boolean launchFragment(Fragment fragment) {

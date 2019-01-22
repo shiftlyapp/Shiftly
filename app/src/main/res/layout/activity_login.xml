@@ -3,7 +3,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -24,6 +23,7 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/email_edittext"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
@@ -63,13 +63,14 @@
             android:id="@+id/email_edittext"
             style="@style/CustomEditText"
             android:layout_width="@dimen/login_email_edittext_width"
+            android:layout_marginTop="188dp"
             android:drawableEnd="@drawable/baseline_alternate_email_black_24"
             android:drawableRight="@drawable/baseline_alternate_email_black_24"
             android:hint="@string/email_edittext_hint"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.478"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_anim_container" />
 
@@ -85,6 +86,7 @@
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/forgot_pass_text"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.476"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email_edittext"
             app:layout_constraintVertical_chainStyle="spread" />
@@ -94,7 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/login_forgot_pass_top_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
             android:drawableEnd="@drawable/forgot_pass"
             android:drawableRight="@drawable/forgot_pass"
             android:text="@string/forgot_password_txt"
@@ -112,10 +116,9 @@
             android:text="@string/login_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password_edittext"
-            app:layout_constraintVertical_bias="0.15" />
+            app:layout_constraintVertical_bias="0.201" />
 
         <TextView
             android:id="@+id/new_to_our_app"
@@ -216,6 +219,7 @@
             android:scaleY="1.1"
             android:text="@string/remember_checkbox"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_button" />
 

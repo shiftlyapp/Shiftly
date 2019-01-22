@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WeeklyViewFragment extends Fragment{
+public class WeeklyViewFragment extends Fragment {
 
     private String groupId;
     private WeekView mWeekView;
@@ -37,9 +38,9 @@ public class WeeklyViewFragment extends Fragment{
     private int initHour;
     private Long duration;
     private List<WeekViewEvent> eventsMonth;
-    private Map<String,Integer> employeeColors;
+    private Map<String, Integer> employeeColors;
     private int counter = 0;
-    private int[] mColors = { Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN , Color.LTGRAY };
+    private int[] mColors = {Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN, Color.LTGRAY, Color.MAGENTA};
 
     protected void createEvent(int id, String employeeName, int newYear, int newMonth, int day,
                                int hour, int duration) {
@@ -51,7 +52,7 @@ public class WeeklyViewFragment extends Fragment{
         startTime.set(Calendar.MONTH, newMonth);
         startTime.set(Calendar.YEAR, newYear);
 
-        Calendar endTime = (Calendar)startTime.clone();
+        Calendar endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.HOUR_OF_DAY, hour + duration);
         endTime.set(Calendar.MINUTE, 0);
         endTime.set(Calendar.DAY_OF_WEEK, day);
@@ -61,7 +62,7 @@ public class WeeklyViewFragment extends Fragment{
         WeekViewEvent event = new WeekViewEvent(id, employeeName, startTime, endTime);
         event.setColor(employeeColors.get(employeeName));
         events.add(event);
-        if (counter ==0) {
+        if (counter == 0) {
             mWeekView.notifyDatasetChanged();
             counter++;
         }
@@ -84,7 +85,7 @@ public class WeeklyViewFragment extends Fragment{
                 numOfShifts = (Long) dataSnapshot.child("shifts_per_day").getValue();
                 numOfEmployeesPerShifts = (Long) dataSnapshot.child("employees_per_shift").getValue();
                 initHour = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
-                duration = ((Long)dataSnapshot.child("shift_length").getValue());
+                duration = ((Long) dataSnapshot.child("shift_length").getValue());
                 // Load the ids of the employees from the schedule
                 employeeNamesList = new ArrayList<>();
                 employeeColors = new HashMap<>();
@@ -94,7 +95,7 @@ public class WeeklyViewFragment extends Fragment{
                     // Load the employees names based on their ids from DB
                     String employeeName = dataSnapshot.child("members").child(employeeId).getValue().toString();
                     employeeNamesList.add(employeeName);
-                    employeeColors.put(employeeName,mColors[x++ % mColors.length]);
+                    employeeColors.put(employeeName, mColors[x++ % mColors.length]);
                 }
                 getEvents(newYear, newMonth);
             }
@@ -126,12 +127,17 @@ public class WeeklyViewFragment extends Fragment{
         }
     }
 
+    private boolean eventMatches(WeekViewEvent event, int year, int month) {
+        return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month - 1) || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month - 1);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Get a reference for the week view in the layout.
         View v = inflater.inflate(R.layout.fragment_weekly_view, container, false);
         groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
         mWeekView = (WeekView) v.findViewById(R.id.weekView);
         events = new ArrayList<>();
         eventsMonth = new ArrayList<>();
@@ -140,18 +146,18 @@ public class WeeklyViewFragment extends Fragment{
             @Override
             public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
                 pullDatabaseData(newYear, newMonth);
-//                for (int i = 0; i < events.size(); ++i) {
-//                    if (events.get(i).getStartTime().get(Calendar.MONTH) == newMonth) {
-//                        eventsMonth.add(events.get(i));
-//                    }
-//                }
-                return events;
+                // Populate the week view with some events.
+                // Return only the events that matches newYear and newMonth.
+                List<WeekViewEvent> matchedEvents = new ArrayList<WeekViewEvent>();
+                for (WeekViewEvent event : events) {
+                    if (eventMatches(event, newYear, newMonth)) {
+                        matchedEvents.add(event);
+                    }
+                }
+                return matchedEvents;
             }
         };
         mWeekView.setMonthChangeListener(mMonthChangeListener);
-
-        //  ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
-
         return v;
     }
 }
