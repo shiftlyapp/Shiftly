@@ -1,5 +1,8 @@
 package com.technion.shiftly.groupCreation;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -184,6 +188,16 @@ public class GroupCreation4Activity extends AppCompatActivity {
         pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, admin_UID, group_name, group_UID);
         signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
         group_code_edittext.setText(group_UID);
+        group_code_edittext.setInputType(InputType.TYPE_NULL);
+        group_code_edittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("group code", group_code_edittext.getText());
+                clipboard.setPrimaryClip(clipData);
+                Toast.makeText(GroupCreation4Activity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
+            }
+        });
 
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
                 group_name + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
@@ -220,7 +234,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
         });
 
         // Text message sharing
-        // TODO: Broken - NEED TO FIX CODE
         sms_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

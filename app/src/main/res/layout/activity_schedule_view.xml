@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@id/schedule_fab"
         app:layout_constraintEnd_toEndOf="parent"
         fab:fab_colorNormal="@color/orange_color_light"

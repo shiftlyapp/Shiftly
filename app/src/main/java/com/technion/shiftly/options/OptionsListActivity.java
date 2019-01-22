@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,8 +31,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-// The first activity of the group creation process.
-// In this activity the future admin sets the group name.
 
 public class OptionsListActivity extends AppCompatActivity {
 
@@ -52,8 +51,13 @@ public class OptionsListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -148,6 +152,8 @@ public class OptionsListActivity extends AppCompatActivity {
                         options_map_of_db.put("options", options_map);
 
                         databaseRef.updateChildren(options_map_of_db);
+
+                        Toast.makeText(OptionsListActivity.this, R.string.options_updated_text, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -170,12 +176,10 @@ public class OptionsListActivity extends AppCompatActivity {
         days_array.add("Saturday");
         for (int i = 1; i < days_num_param + 1; i++) {
             for (int j = 1; j < shifts_per_day_param + 1; j++) {
-//                String day_as_string = Integer.toString(i);
                 String shift_as_string = Integer.toString(j);
-                Pair<String, String> p = new Pair<>("Day: " + days_array.get(i), "Shift number: " + shift_as_string);
+                Pair<String, String> p = new Pair<>(days_array.get(i-1), "Shift number: " + shift_as_string);
                 list_of_texts.add(p);
             }
         }
     }
-
 }
