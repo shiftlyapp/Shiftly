@@ -32,6 +32,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private ConstraintLayout mLayout;
     private DatabaseReference databaseRef;
     private CustomSnackbar mSnackbar;
+    private String groupId;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,6 +68,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         final String group_id = getIntent().getExtras().getString("GROUP_ID");
+        groupId = group_id;
 
         // TODO: Make available only if the user is not the admin, otherwise don't present the button
         // TODO: or make it present a toast saying "you are not an employee"
@@ -76,6 +78,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
                 intent.putExtra("GROUP_ID", group_id);
+//                groupId = group_id;
                 startActivity(intent);
             }
         });
@@ -96,7 +99,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                         String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
                         // Run scheduling algorithm
-                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
+                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options,1);
                         Boolean result = solver.solve();
                         if (result) {
 
@@ -120,18 +123,26 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                     }
                 });
+
             }
         });
 
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        launchFragment(new DailyViewFragment());
+        launchFragment(new WeeklyViewFragment());
+
     }
+
 
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {
             return false;
         }
+        // Pass the group name to the fragments
+        Bundle bundle = new Bundle();
+        bundle.putString("group_id", groupId);
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         return true;
     }

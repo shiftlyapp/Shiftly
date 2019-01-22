@@ -163,6 +163,7 @@ public class GroupsIManageFragment extends Fragment {
         mAdapter = new GroupsListAdapter(context, groupsNames, groupsMembersCount, groupsIconsUrls);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
+
         return view;
     }
 }

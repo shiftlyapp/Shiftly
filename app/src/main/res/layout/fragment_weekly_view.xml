@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout android:id="@+id/weekly_view_cv"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_weekly_height"
-        app:eventTextColor="@android:color/white"
-        app:eventTextSize="@dimen/fragment_weekly_event_text_size"
-        app:textSize="@dimen/fragment_weekly_text_size"
-        app:hourHeight="@dimen/fragment_weekly_hours_height"
-        app:todayHeaderTextColor="@color/text_color_primary"
-        app:hourSeparatorColor="@color/colorPrimary"
-        app:headerColumnPadding="@dimen/fragment_weekly_column_padding"
-        app:headerColumnTextColor="@color/text_color_primary"
-        app:firstDayOfWeek="sunday"
+        android:layout_height="match_parent"
         app:columnGap="@dimen/fragment_weekly_column_gap"
         app:dayNameLength="length_short"
-        app:noOfVisibleDays="7"
+        app:eventTextSize="@dimen/fragment_weekly_event_text_size"
+        app:firstDayOfWeek="sunday"
+        app:headerColumnBackground="@color/colorPrimary"
+        app:headerColumnPadding="@dimen/fragment_weekly_column_padding"
+        app:headerColumnTextColor="@color/text_color_primary"
         app:headerRowBackgroundColor="@color/colorPrimary"
-        app:dayBackgroundColor="@color/text_color_primary"
-        app:headerColumnBackground="@color/text_color_primary"/>
+        app:hourHeight="30dp"
+        app:minHourHeight="30dp"
+        app:hourSeparatorColor="@color/colorPrimary"
+        app:noOfVisibleDays="7"
+        app:textSize="@dimen/fragment_weekly_text_size"
+        app:todayHeaderTextColor="@color/text_color_primary" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

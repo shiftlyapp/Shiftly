@@ -53,7 +53,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         String url = mIconsUrls.get(position);
         holder.myNameView.setText(name);
         holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
-        if (!url.isEmpty()) {
+        if (!url.equals("none")) {
             Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(holder.myIconView);
         } else {
             Picasso.get().load(R.drawable.group).noFade().into(holder.myIconView);
