@@ -116,4 +116,7 @@
     <string name="schedule_generation_error">A viable schedule could not be created!</string>
     <string name="starting_hour_hint">Choose the starting hour of the first shift:</string>
     <string name="shift_len_hint">Choose the length of every shift (in hours):</string>
+    <string name="err_user_is_admin">You cannot join your own group</string>
+    <string name="copy_group_code_text">Group code was copied!</string>
+    <string name="options_updated_text">Your options were recorded successfully!</string>
 </resources>

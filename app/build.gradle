@@ -31,6 +31,10 @@ android {
     }
     productFlavors {
     }
+    // For tests to return deafault values of objects
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -38,6 +42,7 @@ dependencies {
     //##############################################################################################
     //          Support Libraries
     //##############################################################################################
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-media-compat:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'

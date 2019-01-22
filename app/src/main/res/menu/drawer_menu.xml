@@ -2,9 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
         <item
             android:id="@+id/drawer_about_button"
+            android:icon="@drawable/ic_drawable_about_24dp"
             android:title="About"
             />
         <item
             android:id="@+id/drawer_signout_button"
+            android:icon="@drawable/ic_drawable_key_24dp"
             android:title="Sign Out" />
 </menu>

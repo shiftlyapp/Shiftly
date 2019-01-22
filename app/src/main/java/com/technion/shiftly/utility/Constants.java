@@ -22,4 +22,7 @@ public final class Constants {
     public static final int GROUP_ID_LENGTH = 20;
     public static final String REGEX_PASSWORD_VALIDATION = "^(?!.*\\s).{6,14}$";
     public static final String REGEX_NAME_VALIDATION = "[a-zA-Z]+[[\\s][a-zA-Z]+]*";
+    public static final String SIGNOUT_MESSAGE = "Are you sure you want to sign out?";
+    public static final String YES = "Yes";
+    public static final String NO = "No";
 }
