@@ -49,7 +49,7 @@
             android:drawableEnd="@drawable/baseline_person_pin_black_24"
             android:drawableRight="@drawable/baseline_person_pin_black_24"
             android:hint="@string/firstname_edittext_hint"
-            android:inputType="textEmailAddress"
+            android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/signup_lastname_edittext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
