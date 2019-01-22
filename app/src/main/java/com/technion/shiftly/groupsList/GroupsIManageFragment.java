@@ -24,6 +24,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
 import com.technion.shiftly.groupCreation.GroupCreation1Activity;
+import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.technion.shiftly.utility.DividerItemDecorator;
@@ -38,6 +39,7 @@ public class GroupsIManageFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private List<String> groupsNames;
     private List<Long> groupsMembersCount;
+    private List<String> groupsIds;
     private List<String> groupsIconsUrls;
     private LottieAnimationView loading_icon;
     private LinearLayout no_groups_container;
@@ -88,6 +90,7 @@ public class GroupsIManageFragment extends Fragment {
                         String group_name = current_group.child("group_name").getValue(String.class);
                         Long members_count = current_group.child("members_count").getValue(Long.class);
                         String group_icon_url = current_group.child("group_icon_url").getValue(String.class);
+                        groupsIds.add(current_group.getKey());
                         groupsIconsUrls.add(group_icon_url);
                         groupsNames.add(group_name);
                         groupsMembersCount.add(members_count);
@@ -157,12 +160,21 @@ public class GroupsIManageFragment extends Fragment {
         // Show the loading animation upon loading the fragment
         handleLoadingState(Constants.SHOW_LOADING_ANIMATION);
 
+        groupsIds = new ArrayList<>();
         groupsNames = new ArrayList<>();
         groupsIconsUrls = new ArrayList<>();
         groupsMembersCount = new ArrayList<>();
         mAdapter = new GroupsListAdapter(context, groupsNames, groupsMembersCount, groupsIconsUrls);
         mRecyclerView.setAdapter(mAdapter);
         loadRecyclerViewData();
+        ((GroupsListAdapter) mAdapter).setClickListener(new GroupsListAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent schedule_view = new Intent(context, ScheduleViewActivity.class);
+                schedule_view.putExtra("GROUP_ID", groupsIds.get(position));
+                startActivity(schedule_view);
+            }
+        });
         return view;
     }
 }
