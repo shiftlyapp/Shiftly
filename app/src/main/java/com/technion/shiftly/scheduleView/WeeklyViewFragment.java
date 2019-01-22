@@ -1,11 +1,10 @@
 package com.technion.shiftly.scheduleView;
 
-import android.graphics.RectF;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +21,25 @@ import com.technion.shiftly.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class WeeklyViewFragment extends Fragment {
+public class WeeklyViewFragment extends Fragment{
 
     private String groupId;
-//    protected View v;
-//    protected WeekView mWeekView;
+    private WeekView mWeekView;
     private List<WeekViewEvent> events;
-
-    private DatabaseReference datatbaseref;
-
+    private MonthLoader.MonthChangeListener mMonthChangeListener;
+    private Long numOfShifts;
+    private List<String> employeeNamesList;
+    private Long numOfEmployeesPerShifts;
+    private int initHour;
+    private Long duration;
+    private List<WeekViewEvent> eventsMonth;
+    private Map<String,Integer> employeeColors;
+    private int counter = 0;
+    private int[] mColors = { Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN , Color.LTGRAY };
 
     protected void createEvent(int id, String employeeName, int newYear, int newMonth, int day,
                                int hour, int duration) {
@@ -41,137 +48,110 @@ public class WeeklyViewFragment extends Fragment {
         startTime.set(Calendar.HOUR_OF_DAY, hour);
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.DAY_OF_WEEK, day);
-        startTime.set(Calendar.MONTH, newMonth - 1);
+        startTime.set(Calendar.MONTH, newMonth);
         startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, duration);
+
+        Calendar endTime = (Calendar)startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, hour + duration);
+        endTime.set(Calendar.MINUTE, 0);
         endTime.set(Calendar.DAY_OF_WEEK, day);
-        endTime.set(Calendar.MONTH, newMonth - 1);
+        endTime.set(Calendar.MONTH, newMonth);
+        endTime.set(Calendar.YEAR, newYear);
+
         WeekViewEvent event = new WeekViewEvent(id, employeeName, startTime, endTime);
-        event.setColor(getResources().getColor(R.color.orange_color));
+        event.setColor(employeeColors.get(employeeName));
         events.add(event);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Get a reference for the week view in the layout.
-        events = new ArrayList<>();
-        View v = inflater.inflate(R.layout.fragment_weekly_view, container, false);
-        WeekView mWeekView = (WeekView)v.findViewById(R.id.weekView);
-//        v = inflater.inflate(R.layout.fragment_weekly_view, container, false);
-//        mWeekView = (WeekView)v.findViewById(R.id.weekView);
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
-
-        // gets the passed group id from parent
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            groupId = bundle.getString("group_id");
+        if (counter ==0) {
+            mWeekView.notifyDatasetChanged();
+            counter++;
         }
-
-
-        // Set an action when any event is clicked.
-        WeekView.EventClickListener mEventClickListener = new WeekView.EventClickListener() {
-            @Override
-            public void onEventClick(WeekViewEvent event, RectF eventRect) {
-
-            }
-        };
-
-
-        // now that we have the names of the workers of this week,
-        // we can fill the calendar:
-        mWeekView = (WeekView)v.findViewById(R.id.weekView);
-
-        MonthLoader.MonthChangeListener mMonthChangeListener = new MonthLoader.MonthChangeListener() {
-            @Override
-            public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-                // Initialize the parameters required for the calendar
-//                CountDownLatch done = new CountDownLatch(1);
-//                ScheduleRetriever retriever = new ScheduleRetriever(groupId);
-//
-////                retriever.getData();
-////                int initHour = 8; //TODO: pull from db
-////                int duration = 24/retriever.getNumOfShifts().intValue(); //TODO: pull from db
-//                int count = 0;
-//                int currHour = retriever.getInitHour();
-//                int currDay = 0;
-//
-//                for (String employeeName : retriever.getEmployeeNamesList()) {
-//                    // Check if we maxed out on the employees in one shift
-//                    if (count % retriever.getNumOfEmployeesPerShifts().intValue() == 0) {
-//                        currHour += retriever.getDuration();
-//                    }
-//                    // Check if we maxed out on the employees in one day
-//                    if (count % retriever.getNumOfShifts().intValue() == 0) {
-//                        currHour = retriever.getInitHour();
-//                        currDay++;
-//                    }
-//
-//                    createEvent(count, employeeName, newYear, newMonth, currDay,
-//                            currHour, retriever.getDuration()); // add the event to the calendar.
-//                }
-                boolean result = false;
-                getEvenets(newYear, newMonth);
-
-                while (!result) {
-                    if (events.size() > 0) {
-                        result = true;
-                    }
-                }
-                return events;
-            }
-        };
-
-        mWeekView.setMonthChangeListener(mMonthChangeListener);
-
-
-        return v;
     }
 
-    private void getEvenets(final int newYear, final int newMonth) {
-//        final List<WeekViewEvent> mNewEvenets = new ArrayList<>();
+    private void pullDatabaseData(final int newYear, final int newMonth) {
+        // Pull the ids of the scheduled employees from DB
+        DatabaseReference mGroupDatabase = FirebaseDatabase.getInstance()
+                .getReference("Groups").child(groupId); // a reference the the group
 
-        datatbaseref = FirebaseDatabase.getInstance().getReference();
-
-        datatbaseref.child("Groups").child(groupId).child("schedule").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot employee : dataSnapshot.getChildren()) {
-                    Calendar startTime = Calendar.getInstance();
-                    startTime.set(Calendar.HOUR_OF_DAY, 8);
-                    startTime.set(Calendar.MINUTE, 0);
-                    startTime.set(Calendar.DAY_OF_WEEK, 1);
-                    startTime.set(Calendar.MONTH, newMonth);
-                    startTime.set(Calendar.YEAR, newYear);
-
-                    Calendar endTime = Calendar.getInstance();
-                    endTime.set(Calendar.HOUR_OF_DAY, 10);
-                    endTime.set(Calendar.MINUTE, 0);
-                    endTime.set(Calendar.DAY_OF_WEEK, 1);
-                    endTime.set(Calendar.MONTH, newMonth);
-                    endTime.set(Calendar.YEAR, newYear);
-//        Calendar endTime = (Calendar) startTime.clone();
-//        endTime.add(Calendar.HOUR, 3);
-//        endTime.set(Calendar.DAY_OF_WEEK, 1);
-//        endTime.set(Calendar.MONTH, newMonth - 1);
-
-                    WeekViewEvent event = new WeekViewEvent(1, "Yakir", startTime, endTime);
-
-                    events.add(event);
-                }
-            }
-
+        mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Load the weekly schedule parameters
+                numOfShifts = (Long) dataSnapshot.child("shifts_per_day").getValue();
+                numOfEmployeesPerShifts = (Long) dataSnapshot.child("employees_per_shift").getValue();
+                initHour = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
+                duration = ((Long)dataSnapshot.child("shift_length").getValue());
+                // Load the ids of the employees from the schedule
+                employeeNamesList = new ArrayList<>();
+                employeeColors = new HashMap<>();
+                int x = 0;
+                for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
+                    String employeeId = current_employee.getValue(String.class);
+                    // Load the employees names based on their ids from DB
+                    String employeeName = dataSnapshot.child("members").child(employeeId).getValue().toString();
+                    employeeNamesList.add(employeeName);
+                    employeeColors.put(employeeName,mColors[x++ % mColors.length]);
+                }
+                getEvents(newYear, newMonth);
+            }
         });
+    }
 
-//        return mNewEvenets;
+    public void getEvents(int newYear, int newMonth) {
+        // Initialize the parameters required for the calendar
+        int init_hour = initHour;
+        int duration_time = duration.intValue();
+        int count = 0;
+        int currHour = init_hour;
+        int currDay = 1;
 
+        for (String employeeName : employeeNamesList) {
+            // Check if we maxed out on the employees in one shift
+            if (count % numOfEmployeesPerShifts.intValue() == 0) {
+                currHour += duration_time;
+            }
+            // Check if we maxed out on the employees in one day
+            if (count % numOfShifts.intValue() == 0) {
+                currHour = init_hour;
+                currDay++;
+            }
+            createEvent(count, employeeName, newYear, newMonth, currDay,
+                    currHour, duration_time);
+            // add the event to the calendar.
+            count++;
+        }
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Get a reference for the week view in the layout.
+        View v = inflater.inflate(R.layout.fragment_weekly_view, container, false);
+        groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
+        mWeekView = (WeekView) v.findViewById(R.id.weekView);
+        events = new ArrayList<>();
+        eventsMonth = new ArrayList<>();
 
+        mMonthChangeListener = new MonthLoader.MonthChangeListener() {
+            @Override
+            public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+                pullDatabaseData(newYear, newMonth);
+//                for (int i = 0; i < events.size(); ++i) {
+//                    if (events.get(i).getStartTime().get(Calendar.MONTH) == newMonth) {
+//                        eventsMonth.add(events.get(i));
+//                    }
+//                }
+                return events;
+            }
+        };
+        mWeekView.setMonthChangeListener(mMonthChangeListener);
+
+        //  ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
+
+        return v;
     }
 }
