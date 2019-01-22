@@ -143,6 +143,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
         // Get views -------------------------------------------------------------------------------
         mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
         loading_animation = findViewById(R.id.loading_icon_creation);
+        loading_animation.setScale(Constants.LOADING_ANIM_SCALE);
+
         done_animation = findViewById(R.id.success_img);
         whatsapp_share = findViewById(R.id.whatsapp_share);
         email_share = findViewById(R.id.email_share);
