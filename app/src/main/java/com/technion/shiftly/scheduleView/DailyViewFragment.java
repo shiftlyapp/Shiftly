@@ -37,12 +37,11 @@ public class DailyViewFragment extends Fragment {
         WeekView mWeekView = (WeekView) v.findViewById(R.id.dayView);
         // Get a reference for the week view in the layout.
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.daily_label));
-// Set an action when any event is clicked.)
+        // Set an action when any event is clicked.)
         final ConstraintLayout ext_layout = getActivity().findViewById(R.id.container_schedule_view);
-//        final FloatingActionsMenu fab_schedule_menu = ext_layout.findViewById(R.id.fab_schedule_view);
 
         // The week view has infinite scrolling horizontally. We have to provide the events of a
-// month every time the month changes on the week view.
+        // month every time the month changes on the week view.
         MonthLoader.MonthChangeListener mMonthChangeListener = new MonthLoader.MonthChangeListener() {
             @Override
             public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {

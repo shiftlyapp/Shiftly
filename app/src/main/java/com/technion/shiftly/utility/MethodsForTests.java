@@ -1,4 +1,4 @@
-package com.technion.shiftly;
+package com.technion.shiftly.utility;
 
 public class MethodsForTests {
 

@@ -35,6 +35,10 @@ import com.technion.shiftly.utility.Constants;
 
 import static com.technion.shiftly.utility.Constants.SHOW_LOADING_ANIMATION;
 
+// The fourth activity of the group creation process.
+// In this activity the future admin gets the group code and can share it.
+// In this activity the group was successfully created.
+
 public class GroupCreation4Activity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;

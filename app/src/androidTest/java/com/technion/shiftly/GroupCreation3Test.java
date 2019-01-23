@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.technion.shiftly.groupCreation.GroupCreation3Activity;
 import com.technion.shiftly.groupCreation.GroupCreation4Activity;
+import com.technion.shiftly.utility.MethodsForTests;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

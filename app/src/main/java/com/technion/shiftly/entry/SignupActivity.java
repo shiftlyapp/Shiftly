@@ -104,11 +104,6 @@ public class SignupActivity extends AppCompatActivity {
 
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
         addSignUpValidation(mAwesomeValidation, SignupActivity.this);
-//        mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_firstname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
-//        mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_lastname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
-//        mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-//        mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_password_edittext, Constants.REGEX_PASSWORD_VALIDATION, R.string.err_password);
-//        mAwesomeValidation.addValidation(SignupActivity.this, R.id.signup_confirm_password_edittext, R.id.signup_password_edittext, R.string.err_password_confirmation);
 
         findViewById(R.id.signup_button).setOnClickListener(new View.OnClickListener() {
             @Override

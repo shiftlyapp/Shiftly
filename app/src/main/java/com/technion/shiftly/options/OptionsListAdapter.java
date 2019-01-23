@@ -31,7 +31,6 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final OptionsViewHolder holder, int position) {
-//        final ClipData.Item currentItem = items.get(position);
         // - get element from dataset at this position
         String day = options.get(position).first;
         String time = options.get(position).second;
