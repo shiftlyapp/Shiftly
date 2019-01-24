@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import com.technion.shiftly.R;
 
+// The third activity of the group creation process.
+// In this activity the future admin sets the group settings.
+
 public class GroupCreation3Activity extends AppCompatActivity {
 
     @Override

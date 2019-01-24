@@ -5,8 +5,6 @@ public final class Constants {
     public static final int ANIM_DURATION = 1000;
     public static final int SCALE_ANIMATION_REPEAT_COUNT = 0;
     public static final int REDIRECTION_DELAY = 1500;
-    public static final int BLUR_RADIUS = 20;
-    public static final int BLUR_DOWN_SAMPLING = 2;
     public static final int PICK_IMAGE_REQUEST = 1;
     public static final int COMPRESSION_QUALITY = 100;
     public static final int GROUPS_I_BELONG_FRAGMENT = 0;

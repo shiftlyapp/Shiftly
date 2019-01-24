@@ -26,7 +26,6 @@ public class SolverTest {
         assert (scheduling_result);
 
         System.out.println(solver.getFinal_schedule());
-//        System.out.println(solver.toString());
 
         long endTime = System.nanoTime();
 
@@ -106,7 +105,6 @@ public class SolverTest {
         assert (scheduling_result);
         if (scheduling_result) {
             System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
         } else {
             System.out.print("No solution could be found with these constraints");
         }
@@ -134,12 +132,7 @@ public class SolverTest {
 
         Boolean scheduling_result = solver.solve();
         assert (scheduling_result);
-        if (scheduling_result) {
-            System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
-        } else {
-            System.out.print("No solution could be found with these constraints");
-        }
+        System.out.println(solver.getFinal_schedule());
 
         long endTime = System.nanoTime();
 
@@ -164,12 +157,7 @@ public class SolverTest {
 
         Boolean scheduling_result = solver.solve();
         assert (scheduling_result);
-        if (scheduling_result) {
-            System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
-        } else {
-            System.out.print("No solution could be found with these constraints");
-        }
+        System.out.println(solver.getFinal_schedule());
 
         long endTime = System.nanoTime();
 
@@ -196,7 +184,6 @@ public class SolverTest {
 
         if (scheduling_result) {
             System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
         } else {
             System.out.print("No solution could be found with these constraints");
         }
@@ -225,12 +212,7 @@ public class SolverTest {
 
         Boolean scheduling_result = solver.solve();
         assert (!scheduling_result);
-        if (!scheduling_result) {
-            System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
-        } else {
-            System.out.print("No solution could be found with these constraints");
-        }
+        System.out.println(solver.getFinal_schedule());
 
         long endTime = System.nanoTime();
 
@@ -255,12 +237,7 @@ public class SolverTest {
 
         Boolean scheduling_result = solver.solve();
         assert (!scheduling_result);
-        if (scheduling_result) {
-            System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
-        } else {
-            System.out.print("No solution could be found with these constraints");
-        }
+        System.out.print("No solution could be found with these constraints");
 
         long endTime = System.nanoTime();
 
@@ -285,12 +262,7 @@ public class SolverTest {
 
         Boolean scheduling_result = solver.solve();
         assert (scheduling_result);
-        if (scheduling_result) {
-            System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
-        } else {
-            System.out.print("No solution could be found with these constraints");
-        }
+        System.out.println(solver.getFinal_schedule());
 
         long endTime = System.nanoTime();
 
@@ -326,7 +298,6 @@ public class SolverTest {
         Boolean scheduling_result = solver.solve();
         if (scheduling_result) {
             System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
         } else {
             System.out.print("No solution could be found with these constraints");
         }
@@ -357,7 +328,6 @@ public class SolverTest {
         Boolean scheduling_result = solver.solve();
         if (scheduling_result) {
             System.out.println(solver.getFinal_schedule());
-//            System.out.println(solver.toString());
         } else {
             System.out.print("No solution could be found with these constraints");
         }

@@ -22,6 +22,9 @@ import com.technion.shiftly.utility.Constants;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+// The second activity of the group creation process.
+// In this activity the future admin sets the group icon.
+
 public class GroupCreation2Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
