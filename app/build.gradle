@@ -74,8 +74,10 @@ dependencies {
     implementation 'com.github.marcoscgdev:Android-Week-View:1.2.7'
     implementation 'com.github.abdularis:CircularImageView:v1.2'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'io.apisense:rhino-android:1.0'
+    implementation 'jp.wasabeef:blurry:3.0.0'
     implementation 'com.venmo.view.tooltip:tooltip:0.1.2@aar'
-    implementation 'com.github.karanvs:hiddenshot:v1.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation('com.airbnb.android:lottie:2.7.0') {
         exclude group: 'com.android.support', module: 'support-v7'

@@ -168,26 +168,32 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         LinkedHashMap<String, String> group_options = new LinkedHashMap<>();
-                        for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
-                            group_options.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
-                        }
-
-                        String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
-                        // Run scheduling algorithm
-                        ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
-                        Boolean result = solver.solve();
-                        if (result) {
-
-                            // Present a snackbar of "Schedule generated!" (success)
-                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
-                            // Upload schedule to DB
-                            List<String> generated_schedule = solver.getFinal_schedule();
-                            Map<String, Object> schedule_map = new HashMap<>();
-                            schedule_map.put("schedule", generated_schedule);
-                            databaseRef.updateChildren(schedule_map);
+                        if (!dataSnapshot.child("options").exists()
+                                || dataSnapshot.child("options").getChildrenCount() < (Long)dataSnapshot.child("members_count").getValue()) {
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                         } else {
-                            // Present a snackbar of "No schedule could be generated" (error)
-                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                            for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
+                                group_options.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+                            }
+
+                            String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
+                            // Run scheduling algorithm
+                            ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
+                            Boolean result = solver.solve();
+                            if (result) {
+
+                                // Present a snackbar of "Schedule generated!" (success)
+                                mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
+                                // Upload schedule to DB
+                                List<String> generated_schedule = solver.getFinal_schedule();
+                                Map<String, Object> schedule_map = new HashMap<>();
+                                schedule_map.put("schedule", generated_schedule);
+                                databaseRef.updateChildren(schedule_map);
+
+                            } else {
+                                // Present a snackbar of "No schedule could be generated" (error)
+                                mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                            }
                         }
                     }
 
