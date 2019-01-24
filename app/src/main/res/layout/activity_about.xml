@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@drawable/gradient_bg"
-    tools:context=".AboutActivity"
     tools:layout_editor_absoluteY="25dp"
     android:id="@+id/about" >
 

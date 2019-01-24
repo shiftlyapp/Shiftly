@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import com.alamkanak.weekview.WeekView;
 import com.technion.shiftly.R;
 
-import java.util.Calendar;
-
 public class AgendaViewFragment extends Fragment {
 
     @Nullable
@@ -30,10 +28,6 @@ public class AgendaViewFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.agenda_label));
         WeekView mAgendaView = (WeekView) v.findViewById(R.id.agendaView);
         Scheduler agenda_schedule = new Scheduler(mAgendaView,groupId,mColors,7,employeeId);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(calendar.getTime());
-        calendar.add(Calendar.DATE, -2);
-        mAgendaView.goToDate(calendar);
         return v;
     }
 }

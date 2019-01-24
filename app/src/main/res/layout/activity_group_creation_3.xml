@@ -182,7 +182,7 @@
         <Button
             android:id="@+id/continue_button"
             style="@style/CustomButton"
-            android:layout_width="160dp"
+            android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_margin="16dp"
             android:layout_marginStart="8dp"

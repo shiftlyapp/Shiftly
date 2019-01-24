@@ -8,6 +8,8 @@
     <string name="apply_text">APPLY</string>
     <string name="skip_text">SKIP</string>
     <string name="configure_text">Configure</string>
+    <string name="about_toolbar_txt">About</string>
+    <string name="recommend_landscape">Rotate your screen for better visibility</string>
 
     <string name="yes">YES</string>
     <string name="no">NO</string>

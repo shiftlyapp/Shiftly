@@ -185,7 +185,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
                             Map<String, Object> schedule_map = new HashMap<>();
                             schedule_map.put("schedule", generated_schedule);
                             databaseRef.updateChildren(schedule_map);
-
                         } else {
                             // Present a snackbar of "No schedule could be generated" (error)
                             mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);

@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,6 +27,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -54,6 +55,9 @@ import com.technion.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
@@ -65,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt;
-    private Button mLoginButton;
     private CheckBox mLoginCheckBox;
     private CustomSnackbar mSnackbar;
     private CallbackManager mCallbackManager;
@@ -99,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         if (prefs != null) {
             String email_pref = prefs.getString("EMAIL", "");
             String pwd_pref = prefs.getString("PWD", "");
-            boolean checkbox_state = prefs.getBoolean("CHECKBOX_STATE",false);
+            boolean checkbox_state = prefs.getBoolean("CHECKBOX_STATE", false);
             email_edt.setText(email_pref);
             password_edt.setText(pwd_pref);
             mLoginCheckBox.setChecked(checkbox_state);
@@ -110,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("EMAIL", email_edt.getText().toString());
         editor.putString("PWD", password_edt.getText().toString());
-        editor.putBoolean("CHECKBOX_STATE",true);
+        editor.putBoolean("CHECKBOX_STATE", true);
         editor.apply();
     }
 
@@ -135,14 +138,14 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately// ...
+
             }
         }
     }
 
     private void updateUI() {
-        finish();
         startActivity(new Intent(getApplicationContext(), GroupListsActivity.class));
+        finish();
     }
 
     private void signInWithGoogle() {
@@ -150,20 +153,47 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInWithGoogleIntent, Constants.GOOGLE_LOGIN_SUCCESS);
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+    private void getFbDetails(final AccessToken accessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            if (json != null) {
+                                String firstname = json.getString("first_name");
+                                String lastname = json.getString("last_name");
+                                String email = json.getString("email");
+                                pushUserIntoDatabase(firstname, lastname, email);
+                            }
+                        } catch (JSONException e) {
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void handleFacebookAccessToken(final AccessToken token) {
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                getFbDetails(token);
+                            }
                             updateUI();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, task.getException().toString()
+                                    ,
                                     Toast.LENGTH_SHORT).show();
-                            updateUI();
                         }
                     }
                 });
@@ -205,10 +235,10 @@ public class LoginActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
         mLayout = (ConstraintLayout) findViewById(R.id.anim_bg);
         mLoginCheckBox = (CheckBox) findViewById(R.id.remember_login_checkbox);
-        mLoginButton = (Button)findViewById(R.id.login_button);
         ImageView logo = (ImageView) findViewById(R.id.shiftly_logo);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         prefs = getSharedPreferences("UserData", MODE_PRIVATE);
@@ -237,7 +267,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                //
+                Toast.makeText(LoginActivity.this,"Facebok Login Error"
+                        ,
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override

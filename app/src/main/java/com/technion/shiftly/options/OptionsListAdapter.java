@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.technion.shiftly.R;
+
 import java.util.List;
 
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.OptionsViewHolder> {
@@ -20,7 +23,8 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     @NonNull
     private List<Pair<String, String>> options; // First = day, Second = time
     private LayoutInflater options_inflater;
-    private OptionsListAdapter.ItemClickListener options_listener;
+    private OptionsListAdapter.ItemClickListener options_click_listener;
+    private CompoundButton.OnCheckedChangeListener options_check_listener;
     private SparseBooleanArray state_array = new SparseBooleanArray();
 
     public OptionsListAdapter(Context context, List<Pair<String, String>> options) {
@@ -42,7 +46,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
         (holder.options_layout).setBackgroundColor(Color.WHITE);
     }
 
-    public class OptionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class OptionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         // These are the elements of the list item
         CheckBox checkbox;
         TextView day_textview;
@@ -57,16 +61,31 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
             checkbox = itemView.findViewById(R.id.options_checkbox);
             options_layout = itemView.findViewById(R.id.options_list_item);
 
-
             itemView.setOnClickListener(this);
+            checkbox.setOnCheckedChangeListener(this);
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton checkbox, boolean b) {
+            if (options_check_listener!=null) {
+                options_check_listener.onCheckedChanged(checkbox,b);
+            }
+            int adapterPosition = getAdapterPosition();
+            if (!state_array.get(adapterPosition, false)) {
+                checkbox.setChecked(true);
+                state_array.put(adapterPosition, true);
+            } else {
+                checkbox.setChecked(false);
+                state_array.put(adapterPosition, false);
+            }
         }
 
         @Override
         public void onClick(View view) {
 
-            if (options_listener != null)
-                options_listener.onItemClick(view, getAdapterPosition());
-
+            if (options_click_listener != null) {
+                options_click_listener.onItemClick(view, getAdapterPosition());
+        }
             int adapterPosition = getAdapterPosition();
             if (!state_array.get(adapterPosition, false)) {
                 checkbox.setChecked(true);
@@ -95,7 +114,15 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
 
 
     void setClickListener(OptionsListAdapter.ItemClickListener itemClickListener) {
-        this.options_listener = itemClickListener;
+        this.options_click_listener = itemClickListener;
+    }
+
+    void setChangeListener(CompoundButton.OnCheckedChangeListener itemCheckListener) {
+        this.options_check_listener = itemCheckListener;
+    }
+
+    public interface ItemCheckListener {
+        void onItemCheck(CompoundButton checkbox, boolean isChecked);
     }
 
     public interface ItemClickListener {
