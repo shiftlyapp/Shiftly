@@ -54,11 +54,18 @@
     <!-- Drawer -->
     <dimen name="drawer_header_size">34dp</dimen>
     <!-- Login Page -->
-    <dimen name="anim_container_height">330dp</dimen>
+    <dimen name="anim_container_height">280dp</dimen>
+    <dimen name="anim_container_height_tablet">280dp</dimen>
+    <dimen name="logo_width_tablet">205dp</dimen>
+    <dimen name="logo_height_tablet">140dp</dimen>
     <dimen name="logo_width">155dp</dimen>
     <dimen name="logo_height">90dp</dimen>
-    <dimen name="user_pic_height">192dp</dimen>
-    <dimen name="user_pic_width">192dp</dimen>
+    <dimen name="user_pic_height">180dp</dimen>
+    <dimen name="user_pic_width">180dp</dimen>
+    <dimen name="user_pic_width_tablet">280dp</dimen>
+    <dimen name="user_pic_height_tablet">280dp</dimen>
+    <dimen name="user_pic_width_tablet_land">220dp</dimen>
+    <dimen name="user_pic_height_tablet_land">220dp</dimen>
     <dimen name="login_email_edittext_width">300dp</dimen>
     <dimen name="login_password_edittext_width">275dp</dimen>
     <dimen name="sign_in_with_text_size">14sp</dimen>
@@ -82,10 +89,14 @@
     <dimen name="group_item_padding">12dp</dimen>
     <dimen name="group_item_text_size">22sp</dimen>
     <!-- Fragment weekly view -->
-    <dimen name="fragment_weekly_height">0dp</dimen>
-    <dimen name="fragment_weekly_event_text_size">12sp</dimen>
-    <dimen name="fragment_weekly_text_size">12sp</dimen>
+    <dimen name="fragment_weekly_event_text_size">14sp</dimen>
+    <dimen name="fragment_weekly_text_size">14sp</dimen>
     <dimen name="fragment_weekly_hours_height">60dp</dimen>
-    <dimen name="fragment_weekly_column_padding">18dp</dimen>
-    <dimen name="fragment_weekly_column_gap">1dp</dimen>
+    <dimen name="fragment_weekly_column_padding">30dp</dimen>
+    <dimen name="fragment_weekly_column_gap">0dp</dimen>
+
+    <dimen name="list_item_checkbox_left_margin">5dp</dimen>
+    <dimen name="list_item_text_left_margin">20dp</dimen>
+    <dimen name="option_item_text_left_margin">40dp</dimen>
+    <dimen name="spinner_width">32dp</dimen>
 </resources>

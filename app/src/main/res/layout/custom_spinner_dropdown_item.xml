@@ -4,6 +4,7 @@
     android:id="@android:id/text1"
     style="?android:attr/spinnerDropDownItemStyle"
     android:layout_width="match_parent"
+    android:background="@drawable/list_item_bg"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:singleLine="true"

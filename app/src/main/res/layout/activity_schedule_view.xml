@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_schedule_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ScheduleViewActivity">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/schedule_view_toolbar"
@@ -21,77 +17,88 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tt"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/schedule_view_toolbar" />
 
-    <View
-        android:id="@+id/tt"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/shadow_btt"
-        app:layout_constraintBottom_toTopOf="@id/navigation"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container" />
-
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/bottom_navigation_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btb_bg"
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tt"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
         app:menu="@menu/navigation" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.venmo.view.TooltipView
+        android:id="@+id/options_tooltip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:padding="12dp"
+        android:text="@string/options_tooltip"
+        android:visibility="invisible"
+        android:textColor="@android:color/white"
+        app:anchoredView="@id/options_fab"
+        app:arrowAlignment="end"
+        app:arrowAlignmentOffset="32dp"
+        app:arrowLocation="bottom"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/options_fab"
+        app:layout_constraintEnd_toEndOf="@+id/options_fab"
+        app:tooltipColor="@color/colorPrimary" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/options_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        fab:fab_colorNormal="@color/orange_color_light"
-        fab:fab_colorPressed="@color/dark_orange_color"
+        android:layout_marginBottom="72dp"
         android:background="@android:color/white"
         android:visibility="invisible"
-        app:fab_icon="@drawable/ic_edit_timeslots_fab"
-        fab:fab_addButtonSize="normal"
-        fab:fab_title="Edit options" />
+        app:backgroundTint="@color/orange_color"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_edit_timeslots_fab" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.venmo.view.TooltipView
+        android:id="@+id/schedule_tooltip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:padding="12dp"
+        android:visibility="invisible"
+        android:text="@string/generate_schedule_tooltip"
+        android:textColor="@android:color/white"
+        app:anchoredView="@id/options_fab"
+        app:arrowAlignment="end"
+        app:arrowAlignmentOffset="32dp"
+        app:arrowLocation="bottom"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_fab"
+        app:layout_constraintEnd_toEndOf="@+id/schedule_fab"
+        app:tooltipColor="@color/colorPrimary" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/schedule_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="72dp"
+        android:background="@android:color/white"
+        android:visibility="invisible"
+        app:backgroundTint="@color/orange_color"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        fab:fab_colorNormal="@color/orange_color_light"
-        fab:fab_colorPressed="@color/dark_orange_color"
-        android:background="@android:color/white"
-        android:visibility="invisible"
-        app:fab_icon="@drawable/ic_generate_schedule_fab"
-        fab:fab_addButtonSize="normal"
-        fab:fab_title="Generate schedule" />
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/copy_group_code_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/schedule_fab"
-        app:layout_constraintEnd_toEndOf="parent"
-        fab:fab_colorNormal="@color/orange_color_light"
-        fab:fab_colorPressed="@color/dark_orange_color"
-        android:background="@android:color/white"
-        android:visibility="invisible"
-        app:fab_icon="@drawable/ic_copy_to_clipboard"
-        fab:fab_addButtonSize="normal"
-        fab:fab_title="Copy group code" />
+        app:srcCompat="@drawable/ic_generate_schedule_fab" />
 
 </android.support.constraint.ConstraintLayout>

@@ -30,15 +30,22 @@
     <color name="silver_color_darker">#5c5c5c</color>
     <color name="material_grey">#d9d9d9</color>
     <color name="shadow_gradient">#1e000000</color>
+    <color name="calendar_div">#ececec</color>
 
     <!-- SnackBar -->
     <color name="snackbar_bg">#e1ffffff</color>
 
     <!-- Calendar -->
     <color name="calendar_cyan">#00838f</color>
-    <color name="calendar_green">#43a047</color>
-    <color name="calendar_yellow">#ffdd00</color>
+    <color name="calendar_light_blue">#64b5f6</color>
+    <color name="calendar_green">#192b19</color>
+    <color name="calendar_yellow">#665e1b</color>
     <color name="calendar_purple">#3949ab</color>
+    <color name="calendar_orange">#ff8a65</color>
+    <color name="calendar_grey">#374248</color>
+    <color name="calendar_brown">#3949ab</color>
+    <color name="calendar_purple_light">#b388ff</color>
+    <color name="calendar_cyan_light">#00202e</color>
     <color name="calendar_pink">#f06292</color>
 
 </resources>

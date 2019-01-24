@@ -221,6 +221,7 @@ public class GroupsIBelongFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent schedule_view = new Intent(context, ScheduleViewActivity.class);
                 schedule_view.putExtra("GROUP_ID", groupsIds.get(position));
+                schedule_view.putExtra("EMPLOYEE_ID", ((GroupListsActivity) getActivity()).getCurrentUser().getUid());
                 startActivity(schedule_view);
             }
         });

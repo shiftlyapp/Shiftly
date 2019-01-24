@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.technion.shiftly.R;
 import com.technion.shiftly.algorithm.ShiftSchedulingSolver;
 import com.technion.shiftly.options.OptionsListActivity;
 import com.technion.shiftly.utility.CustomSnackbar;
+import com.venmo.view.TooltipView;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -38,6 +41,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private DatabaseReference databaseRef;
     private CustomSnackbar mSnackbar;
     private FirebaseAuth mAuth;
+    private String group_id;
+    private BottomNavigationView navigationView;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,6 +56,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 case R.id.navigation_weekly:
                     fragment = new WeeklyViewFragment();
                     break;
+                case R.id.navigation_agenda:
+                    fragment = new AgendaViewFragment();
+                    break;
             }
             return launchFragment(fragment);
         }
@@ -62,6 +70,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
         return true;
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.schedule_menu, menu);
+        return true;
+    }
+
+    private void copyGroupIDToClipboard() {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("group code", group_id);
+        clipboard.setPrimaryClip(clipData);
+        Toast.makeText(ScheduleViewActivity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,15 +93,40 @@ public class ScheduleViewActivity extends AppCompatActivity {
         setSupportActionBar(schedule_view_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        navigationView = findViewById(R.id.bottom_navigation_schedule);
+        schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.copy_to_clipboard_item:
+                        copyGroupIDToClipboard();
+                        break;
+                }
+                return true;
+            }
+        });
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         mAuth = FirebaseAuth.getInstance();
 
-        final String group_id = getIntent().getExtras().getString("GROUP_ID");
+        group_id = getIntent().getExtras().getString("GROUP_ID");
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-        final com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
-        final com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
-        final com.getbase.floatingactionbutton.FloatingActionButton copyCodeFab = findViewById(R.id.copy_group_code_fab);
+        final FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        final FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final TooltipView options_tooltip = findViewById(R.id.options_tooltip);
+        options_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
+            }
+        });
+        final TooltipView schedule_tooltip = findViewById(R.id.schedule_tooltip);
+        schedule_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
+            }
+        });
 
         databaseRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -87,10 +135,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 String logged_in_user_uuid = mAuth.getCurrentUser().getUid();
 
                 if (admin_uuid.equals(logged_in_user_uuid)) {
-                    scheduleFab.setVisibility(View.VISIBLE);
-                    copyCodeFab.setVisibility(View.VISIBLE);
+                    scheduleFab.show();
+                    schedule_tooltip.setVisibility(View.VISIBLE);
+                    navigationView.getMenu().removeItem(R.id.navigation_agenda);
                 } else {
-                    optionsFab.setVisibility(View.VISIBLE);
+                    optionsFab.show();
+                    options_tooltip.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -108,15 +158,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        copyCodeFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("group code", group_id);
-                clipboard.setPrimaryClip(clipData);
-                Toast.makeText(ScheduleViewActivity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
-            }
-        });
+
         scheduleFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,7 +179,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                         if (result) {
 
                             // Present a snackbar of "Schedule generated!" (success)
-                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS,Snackbar.LENGTH_SHORT);
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
                             // Upload schedule to DB
                             List<String> generated_schedule = solver.getFinal_schedule();
                             Map<String, Object> schedule_map = new HashMap<>();
@@ -146,7 +188,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                         } else {
                             // Present a snackbar of "No schedule could be generated" (error)
-                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                         }
                     }
 
@@ -158,10 +200,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        launchFragment(new WeeklyViewFragment());
+        navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        launchFragment(new DailyViewFragment());
     }
+
 
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {

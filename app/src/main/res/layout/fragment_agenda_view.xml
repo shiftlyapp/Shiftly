@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.alamkanak.weekview.WeekView
-        android:id="@+id/weekView"
+        android:id="@+id/agendaView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:columnGap="@dimen/fragment_weekly_column_gap"

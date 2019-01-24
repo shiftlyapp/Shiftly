@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="calendar_colors">
+        <item>#00838f</item>
+        <item>#64b5f6</item>
+        <item>#81c784</item>
+        <item>#fff176</item>
+        <item>#3949ab</item>
+        <item>#ff8a65</item>
+        <item>#90a4ae</item>
+        <item>#3949ab</item>
+        <item>#b388ff</item>
+        <item>#b3e5fc</item>
+        <item>#f06292</item>
+    </array>
+</resources>

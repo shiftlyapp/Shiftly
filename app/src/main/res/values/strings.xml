@@ -86,9 +86,9 @@
     <string name="contact_us_email">course236503@gmail.com</string>
     <string name="credits_title">Credits:</string>
     <string name="options_toolbar_text">Configure Options</string>
-    <string name="group_num_days_hint">Choose the number of days in a week:</string>
-    <string name="group_num_shifts_hint">Choose the number of shifts per day:</string>
-    <string name="group_num_employees_hint">Choose the number of employees per shift:</string>
+    <string name="group_num_days_hint">Number of days in a week:</string>
+    <string name="group_num_shifts_hint">Number of shifts per day:</string>
+    <string name="group_num_employees_hint">Number of employees per shift:</string>
     <string name="menu">MENU</string>
     <string name="done_text">Done</string>
 
@@ -103,7 +103,6 @@
     <string name="continue_text_group_creation_2">Continue</string>
     <string name="group_join_tooltip">Click here to join a group</string>
 
-
     <!-- Share group code -->
     <string name="message1_share_group_code" type="id">You have been invited to join the group</string>
     <string name="message2_share_group_code" type="id">in Shiftly!\nJoin the group with the following code:</string>
@@ -114,9 +113,14 @@
     <string name="remember_checkbox">Remember me</string>
     <string name="schedule_generation_success">Schedule generated successfully!</string>
     <string name="schedule_generation_error">A viable schedule could not be created!</string>
-    <string name="starting_hour_hint">Choose the starting hour of the first shift:</string>
-    <string name="shift_len_hint">Choose the length of every shift (in hours):</string>
-    <string name="err_user_is_admin">You cannot join your own group</string>
-    <string name="copy_group_code_text">Group code was copied!</string>
+    <string name="starting_hour_hint">Starting hour of working day:</string>
+    <string name="shift_len_hint">Length of each shift (in hours):</string>
+    <string name="err_user_is_admin">You cannot join your own group!</string>
+    <string name="copy_group_code_text">Group code was copied to Clipboard!</string>
     <string name="options_updated_text">Your options were recorded successfully!</string>
+
+    <string name="options_tooltip">Submit your options</string>
+    <string name="generate_schedule_tooltip">Generate schedule</string>
+    <string name="copy_to_clipboard_tooltip">Copy to clipboard</string>
+
 </resources>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="list_item_checkbox_left_margin">5dp</dimen>
-    <dimen name="list_item_text_left_margin">20dp</dimen>
-    <dimen name="option_item_text_left_margin">40dp</dimen>
-    <dimen name="spinner_width">32dp</dimen>
-</resources>
