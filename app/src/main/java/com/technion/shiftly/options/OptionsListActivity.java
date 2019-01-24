@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class OptionsListActivity extends AppCompatActivity {
     private List<Pair<String, String>> list_of_texts;
     private Long days_num_param;
     private Long shifts_per_day_param;
+    private Long num_of_employees_per_shift;
     private String options;
     private String group_id;
 
@@ -101,7 +103,8 @@ public class OptionsListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 days_num_param = dataSnapshot.child("days_num").getValue(Long.class);
                 shifts_per_day_param = dataSnapshot.child("shifts_per_day").getValue(Long.class);
-                int total_num_of_shifts = (int) (days_num_param * shifts_per_day_param);
+                num_of_employees_per_shift = dataSnapshot.child("employees_per_shift").getValue(Long.class);
+                int total_num_of_shifts = (int) (days_num_param.intValue() * shifts_per_day_param.intValue());
                 char[] chars = new char[total_num_of_shifts];
                 Arrays.fill(chars, '0');
                 options = new String(chars);
@@ -119,6 +122,7 @@ public class OptionsListActivity extends AppCompatActivity {
         OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                Log.v("TAG", "Item position: " + position);
                 Character c = options.charAt(position);
                 Character newChar;
                 if (c == '0') {
@@ -146,7 +150,8 @@ public class OptionsListActivity extends AppCompatActivity {
                         for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
                             options_map.put(postSnapshot.getKey(), postSnapshot.getValue());
                         }
-                        options_map.put(currentUser.getUid(), options);
+                        String streched = strech_string_by_num_of_employees();
+                        options_map.put(currentUser.getUid(), streched);
 
                         Map<String, Object> options_map_of_db = new HashMap<>();
                         options_map_of_db.put("options", options_map);
@@ -164,7 +169,18 @@ public class OptionsListActivity extends AppCompatActivity {
             }
         });
     }
-
+    private String strech_string_by_num_of_employees() {
+        String streached = "";
+        for (int i=0 ; i<options.length() ; i++) {
+            char charToAdd = options.charAt(i);
+            String str = "";
+            for (int j=0 ; j<num_of_employees_per_shift.intValue() ; j++) {
+                str += charToAdd;
+            }
+            streached = streached.substring(0, i*num_of_employees_per_shift.intValue()) + str;
+        }
+        return streached;
+    }
     private void addShiftsToList() {
         List<String> days_array = new ArrayList<>();
         days_array.add("Sunday");

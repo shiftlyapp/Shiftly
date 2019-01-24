@@ -111,6 +111,7 @@
     </string>
     <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
     <string name="remember_checkbox">Remember me</string>
+    <string name="schedule_no_options">Not all options were filled!</string>
     <string name="schedule_generation_success">Schedule generated successfully!</string>
     <string name="schedule_generation_error">A viable schedule could not be created!</string>
     <string name="starting_hour_hint">Starting hour of working day:</string>
