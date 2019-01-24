@@ -59,6 +59,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
 
 
             itemView.setOnClickListener(this);
+            checkbox.setOnClickListener(this);
         }
 
         @Override
