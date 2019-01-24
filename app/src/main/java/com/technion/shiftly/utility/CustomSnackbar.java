@@ -1,7 +1,6 @@
 package com.technion.shiftly.utility;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;
@@ -59,7 +58,7 @@ public class CustomSnackbar {
                 break;
         }
         snackbar.show();
-        MediaPlayer sound = (type == SNACKBAR_SUCCESS) ? (MediaPlayer.create(context, R.raw.ding)) : (MediaPlayer.create(context, R.raw.error));
-        sound.start();
+//        MediaPlayer sound = (type == SNACKBAR_SUCCESS) ? (MediaPlayer.create(context, R.raw.ding)) : (MediaPlayer.create(context, R.raw.error));
+//        sound.start();
     }
 }
