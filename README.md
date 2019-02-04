@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/oshrinuri/Shiftly/blob/master/img/logo.png" alt="logo" width="30%"/>
+<img src="https://github.com/shiftlyapp/Shiftly/blob/master/img/logo.png" alt="logo" width="30%"/>
 </p>
 
 ### Automatic shift scheduling
