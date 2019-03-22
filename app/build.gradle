@@ -7,14 +7,14 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId 'com.technion.shiftly'
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 2
         versionName "1.0b"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
         multiDexEnabled true
-        signingConfig signingConfigs.config
+//        signingConfig signingConfigs.config
 
     }
     buildTypes {
@@ -56,10 +56,10 @@ dependencies {
     //##############################################################################################
     //          Firebase
     //##############################################################################################
-    implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
-    implementation 'com.google.firebase:firebase-database:16.0.5'
-    implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
     //##############################################################################################
     //          Extra Libraries
