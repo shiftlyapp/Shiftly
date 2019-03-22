@@ -1,0 +1,129 @@
+<resources>
+
+    <!-- General -->
+    <string name="app_name">Shiftly</string>
+    <string name="welcome_msg">Welcome to</string>
+    <string name="user_img">User</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="apply_text">APPLY</string>
+    <string name="skip_text">SKIP</string>
+    <string name="configure_text">Configure</string>
+    <string name="about_toolbar_txt">About</string>
+    <string name="recommend_landscape">Rotate your screen for better visibility</string>
+
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <!-- Signup and Login -->
+    <string name="signup_img">Signup</string>
+    <string name="email_edittext_hint">כתובת דוא״ל</string>
+    <string name="password_edittext_hint">PASSWORD</string>
+    <string name="login_txt">LOGIN</string>
+    <string name="signup_txt">SIGN UP</string>
+    <string name="forgot_password_txt">Forgot Password\u0020</string>
+    <string name="new_txt">New to our app?  Sign Up</string>
+    <string name="signup_header">Register your new\n Shiftly account.</string>
+    <string name="firstname_edittext_hint">FIRST NAME</string>
+    <string name="lastname_edittext_hint">LAST NAME</string>
+    <string name="confirm_password_edittext_hint">CONFIRM PASSWORD</string>
+    <string name="login_clock_animation_alpha">0.075</string>
+
+    <string name="err_firstname">Please enter a vaild name</string>
+    <string name="err_lastname">Please enter a valid name</string>
+    <string name="err_email">Please enter a vaild mail address</string>
+    <string name="err_password">Invalid Password (No spaces allowed. Minimum length: 6) </string>
+    <string name="err_password_confirmation">Password does not match</string>
+    <string name="err_login_email">Please enter a vaild mail address</string>
+    <string name="err_login_password">Please enter a valid password </string>
+    <string name="err_invalid_email">Error: Email does  not exist!</string>
+    <string name="err_invalid_email_2">Error: Invalid Email format</string>
+    <string name="err_invalid_pass">Error: Invalid Password.</string>
+    <string name="err_login_attempts">Error: Too many logins attempts.</string>
+
+    <string name="login_success">Loggged in Successfully!</string>
+    <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">792989287718195</string>
+    <string name="fb_login_protocol_scheme">fb792989287718195</string>
+    <string name="facebook_button_txt">Sign In</string>
+    <string name="sign_in_with">Sign In with:</string>
+
+    <string name="login_err_password">Please type in a Password</string>
+    <string name="reset_pass_text">Password reset will be sent to:\u0020</string>
+    <string name="reset_pass_title">Password Reset</string>
+    <string name="reset_email_sent">Password reset mail sent successfully.</string>
+    <string name="account_created">Account created! Logging you in…</string>
+
+    <!-- GroupCreation -->
+    <string name="group_create_label">Create a new Group</string>
+    <string name="group_create">CREATE</string>
+    <string name="group_create_succeed">%1$s was created successfully! </string>
+    <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
+    <string name="options_configure">Configure Options</string>
+    <string name="fill_options_text">To continue, please select your shifts general preferences:</string>
+    <string name="group_pic_hint">Now, upload your Group picture:</string>
+    <string name="group_name_hint">First, name your Group:</string>
+    <string name="group_name_edittext_hint">GROUP NAME</string>
+    <string name="err_groupname">Invalid group name!</string>
+    <string name="group_create_tooltip">Click here to create a group</string>
+
+    <!-- Calendar -->
+    <string name="title_activity_schedule_view">View schedules</string>
+    <string name="title_home">Daily</string>
+    <string name="title_dashboard">Weekly</string>
+    <string name="title_notifications">Agenda</string>
+    <string name="daily_label">Daily schedule</string>
+    <string name="weekly_label">Weekly schedule</string>
+    <string name="agenda_label">Agenda schedule</string>
+
+    <!-- Group lists -->
+    <string name="groups_i_belong">GROUPS I BELONG</string>
+    <string name="groups_i_manage">GROUPS I MANAGE</string>
+    <string name="groups_empty_belong">You have yet to join a group.</string>
+    <string name="groups_empty_manage">You have yet to create a group.</string>
+    <string name="schedule_generated">A new schedule has been generated!</string>
+    <string name="confirm_schedule">CONFIRM</string>
+
+    <!-- About -->
+    <string name="title_contact_us">Contact us:</string>
+    <string name="contact_us_email">course236503@gmail.com</string>
+    <string name="credits_title">Credits:</string>
+    <string name="options_toolbar_text">Configure Options</string>
+    <string name="group_num_days_hint">Number of days in a week:</string>
+    <string name="group_num_shifts_hint">Number of shifts per day:</string>
+    <string name="group_num_employees_hint">Number of employees per shift:</string>
+    <string name="menu">MENU</string>
+    <string name="done_text">Done</string>
+
+    <!-- Group join -->
+    <string name="join_group_hint">Enter group ID below:</string>
+    <string name="join_group_edittext_hint">GROUP ID</string>
+    <string name="err_groupid">Invalid ID format</string>
+    <string name="group_join_label">Join a Group</string>
+    <string name="err_group_doesnt_exist">The group does not exist</string>
+    <string name="err_group_already_exist">You are already a member of this group.</string>
+    <string name="group_join_success">You successfully joined the group!</string>
+    <string name="continue_text_group_creation_2">Continue</string>
+    <string name="group_join_tooltip">Click here to join a group</string>
+
+    <!-- Share group code -->
+    <string name="message1_share_group_code" type="id">You have been invited to join the group</string>
+    <string name="message2_share_group_code" type="id">in Shiftly!\nJoin the group with the following code:</string>
+    <string name="message3_share_group_code" type="id">Download Shiftly from here:
+        https://play.google.com/store/apps/details?id=com.technion.shiftly
+    </string>
+    <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
+    <string name="remember_checkbox">Remember me</string>
+    <string name="schedule_no_options">Not all options were filled!</string>
+    <string name="schedule_generation_success">Schedule generated successfully!</string>
+    <string name="schedule_generation_error">A viable schedule could not be created!</string>
+    <string name="starting_hour_hint">Starting hour of working day:</string>
+    <string name="shift_len_hint">Length of each shift (in hours):</string>
+    <string name="err_user_is_admin">You cannot join your own group!</string>
+    <string name="copy_group_code_text">Group code was copied to Clipboard!</string>
+    <string name="options_updated_text">Your options were recorded successfully!</string>
+
+    <string name="options_tooltip">Submit your options</string>
+    <string name="generate_schedule_tooltip">Generate schedule</string>
+    <string name="copy_to_clipboard_tooltip">Copy to clipboard</string>
+
+</resources>
