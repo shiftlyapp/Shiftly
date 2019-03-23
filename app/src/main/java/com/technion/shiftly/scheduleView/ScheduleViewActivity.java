@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -111,8 +113,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         group_id = getIntent().getExtras().getString("GROUP_ID");
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-        final FloatingActionButton optionsFab = findViewById(R.id.options_fab);
-        final FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final com.getbase.floatingactionbutton.FloatingActionButton viewOptionsFab = findViewById(R.id.view_options_fab);
+
+        final FloatingActionsMenu menuFab = findViewById(R.id.menu_fab);
         final TooltipView options_tooltip = findViewById(R.id.options_tooltip);
         options_tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,11 +140,20 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 String logged_in_user_uuid = mAuth.getCurrentUser().getUid();
 
                 if (admin_uuid.equals(logged_in_user_uuid)) {
-                    scheduleFab.show();
+                    scheduleFab.setVisibility(View.VISIBLE);
+                    scheduleFab.setIcon(R.drawable.ic_generate_schedule_fab);
+                    scheduleFab.setTitle("Create schedule");
+
+                    viewOptionsFab.setVisibility(View.VISIBLE);
+                    viewOptionsFab.setIcon(R.drawable.ic_view_options);
+                    viewOptionsFab.setTitle("View options");
+
+                    menuFab.setVisibility(View.VISIBLE);
                     schedule_tooltip.setVisibility(View.VISIBLE);
                     navigationView.getMenu().removeItem(R.id.navigation_agenda);
                 } else {
-                    optionsFab.show();
+                    optionsFab.setVisibility(View.VISIBLE);
+                    optionsFab.setIcon(R.drawable.ic_edit_timeslots_fab);
                     options_tooltip.setVisibility(View.VISIBLE);
                 }
             }
@@ -156,6 +170,14 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
                 intent.putExtra("GROUP_ID", group_id);
                 startActivity(intent);
+            }
+        });
+
+        viewOptionsFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Doing nothing yet
+                Toast.makeText(ScheduleViewActivity.this, "Viewing options will be available soon!", Toast.LENGTH_LONG).show();
             }
         });
 
