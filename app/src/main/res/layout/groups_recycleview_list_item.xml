@@ -37,6 +37,7 @@
         android:layout_below="@id/group_name"
         android:layout_toEndOf="@id/group_icon"
         android:layout_toRightOf="@id/group_icon"
+        android:layout_marginEnd="@dimen/text_margin_right"
         android:textColor="@color/members_color"
         android:textSize="@dimen/text_size" />
 </RelativeLayout>

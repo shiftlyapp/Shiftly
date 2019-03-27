@@ -82,6 +82,7 @@
     <string name="groups_empty_manage">You have yet to create a group.</string>
     <string name="schedule_generated">A new schedule has been generated!</string>
     <string name="confirm_schedule">CONFIRM</string>
+    <string name="members">members</string>
 
     <!-- About -->
     <string name="title_contact_us">Contact us:</string>

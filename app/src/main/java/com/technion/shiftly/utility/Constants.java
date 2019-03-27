@@ -9,7 +9,6 @@ public final class Constants {
     public static final int COMPRESSION_QUALITY = 100;
     public static final int GROUPS_I_BELONG_FRAGMENT = 0;
     public static final int GROUPS_I_MANAGE_FRAGMENT = 1;
-    public static final String MEMBERS_COUNT = "%s Members";
     public static final float CLOCK_ANIM_SPEED = 0.6f;
     public static final float CLOCK_ANIM_SCALE = 0.55f;
     public static final float LOADING_ANIM_SCALE = 0.2f;

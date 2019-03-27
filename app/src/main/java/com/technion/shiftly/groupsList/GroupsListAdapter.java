@@ -11,9 +11,8 @@ import android.widget.TextView;
 
 import com.github.abdularis.civ.CircleImageView;
 import com.squareup.picasso.Picasso;
-import com.technion.shiftly.R;
 import com.technion.shiftly.utility.Constants;
-
+import com.technion.shiftly.R;
 import java.util.List;
 
 // An adapter for "Group I belong" and "Groups I manage" lists
@@ -25,6 +24,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private ItemLongClickListener mLongClickListener;
+    private Context context;
 
     // data is passed into the constructor
     GroupsListAdapter(Context context, List<String> names, List<Long> counts, List<String> icons) {
@@ -52,7 +52,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         String count = Long.toString(mCounts.get(position));
         String url = mIconsUrls.get(position);
         holder.myNameView.setText(name);
-        holder.myCountView.setText(String.format(Constants.MEMBERS_COUNT, count));
+        String membersCount = String.format("%s", count) + " " + context.getResources().getString(R.string.members);
+        holder.myCountView.setText(membersCount);
         if (!url.equals("none")) {
             Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(holder.myIconView);
         } else {
@@ -91,6 +92,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
             myIconView = itemView.findViewById(R.id.group_icon);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            context = itemView.getContext();
         }
 
 
