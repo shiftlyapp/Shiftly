@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
-//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +66,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
     };
 
+    private LinkedHashMap<String, String> getGroupOptions(@NonNull DataSnapshot dataSnapshot) {
+        // Get the members in the group
+        LinkedHashMap<String, String> group_options = new LinkedHashMap<>();
+        if (!dataSnapshot.child("options").exists()) {
+            // Case no options are recorded
+            return null;
+        } else {
+            // For each member, get the options
+            for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
+                group_options.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+            }
+        }
+        return group_options;
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -113,9 +128,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         group_id = getIntent().getExtras().getString("GROUP_ID");
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-        final com.getbase.floatingactionbutton.FloatingActionButton optionsFab = findViewById(R.id.options_fab);
-        final com.getbase.floatingactionbutton.FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
-        final com.getbase.floatingactionbutton.FloatingActionButton viewOptionsFab = findViewById(R.id.view_options_fab);
+        final FloatingActionButton optionsFab = findViewById(R.id.options_fab);
+        final FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final FloatingActionButton viewOptionsFab = findViewById(R.id.view_options_fab);
 
         final FloatingActionsMenu menuFab = findViewById(R.id.menu_fab);
         final TooltipView options_tooltip = findViewById(R.id.options_tooltip);
@@ -175,9 +190,38 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         viewOptionsFab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // Doing nothing yet
                 Toast.makeText(ScheduleViewActivity.this, "Viewing options will be available soon!", Toast.LENGTH_LONG).show();
+                // Pull data from db
+                databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        LinkedHashMap<String, String> group_options = getGroupOptions(dataSnapshot);
+                        if (group_options == null) {
+                            // Case no options are recorded
+                            mSnackbar.show(ScheduleViewActivity.this, mLayout,
+                                    getResources().getString(R.string.view_options_no_options),
+                                    CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                        } else {
+                            // Test - Printing the options to the log
+                            String options_string = group_options.toString();
+                            Log.v("options",options_string);
+
+                            // Pass the member's related options to the next activity
+//                            Intent intent = new Intent(view.getContext(), OptionsListActivity.class);
+//                            intent.putExtra("GROUP_ID", group_id);
+//                            intent.putExtra("OPTIONS", group_options);
+//                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -189,15 +233,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        LinkedHashMap<String, String> group_options = new LinkedHashMap<>();
-                        if (!dataSnapshot.child("options").exists()
-                                || dataSnapshot.child("options").getChildrenCount() < (Long)dataSnapshot.child("members_count").getValue()) {
+                        LinkedHashMap<String, String> group_options = getGroupOptions(dataSnapshot);
+                        if (group_options == null ||
+                                group_options.size() < (Long)dataSnapshot.child("members_count").getValue()) {
                             mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                         } else {
-                            for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
-                                group_options.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
-                            }
-
                             String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
                             // Run scheduling algorithm
                             ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
