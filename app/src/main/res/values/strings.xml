@@ -115,6 +115,7 @@
     <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
     <string name="remember_checkbox">Remember me</string>
     <string name="schedule_no_options">Not all options were filled!</string>
+    <string name="view_options_no_options">No options are available!</string>
     <string name="schedule_generation_success">Schedule generated successfully!</string>
     <string name="schedule_generation_error">A viable schedule could not be created!</string>
     <string name="starting_hour_hint">Starting hour of working day:</string>
@@ -126,5 +127,10 @@
     <string name="options_tooltip">Submit your options</string>
     <string name="generate_schedule_tooltip">Generate schedule</string>
     <string name="copy_to_clipboard_tooltip">Copy to clipboard</string>
+    <!-- View Options -->
+    <string name="options_view_toolbar_text">View Sent Options</string>
+    <string name="hour_format">%s:00 - %s:00</string>
+    <string name="options_view_title">Options sent by the members of %s</string>
+    <string name="options_view_subtitle">The following members are yet to send options this week:</string>
 
 </resources>
