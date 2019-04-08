@@ -49,6 +49,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private int shift_length;
     private int shifts_per_day;
     private int days_num;
+    private int workers_in_shift;
 
     private BottomNavigationView navigationView;
 
@@ -214,17 +215,41 @@ public class ScheduleViewActivity extends AppCompatActivity {
                             shift_length = Integer.parseInt(dataSnapshot.child("shift_length").getValue().toString());
                             shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
                             days_num = Integer.parseInt(dataSnapshot.child("days_num").getValue().toString());
+                            workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
+                            String group_name = dataSnapshot.child("group_name").getValue().toString();
+
+
+
+                            // Collect the group members map
+                            LinkedHashMap<String, String> group_members = new LinkedHashMap<>();
+                            // Collect the members that are yet to send options
+                            String workers_without_options = "";
+
+                            for (DataSnapshot postSnapshot : dataSnapshot.child("members").getChildren()) {
+                                group_members.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+                                if (!group_options.containsKey(postSnapshot.getKey().toString())) {
+                                    workers_without_options += (postSnapshot.getValue().toString() + "\n");
+                                }
+                            }
+
+                            // Switch uuids with names
+                            HashMap<String, String> options = new HashMap<>();
+                            for (LinkedHashMap.Entry<String, String> entry : group_options.entrySet()) {
+                                options.put(group_members.get(entry.getKey()), entry.getValue());
+                            }
 
                             // Pass the member's related options to the next activity
                             Intent intent = new Intent(view.getContext(), OptionsViewActivity.class);
-                            intent.putExtra("GROUP_ID", group_id);
 
+                            intent.putExtra("GROUP_NAME", group_name);
                             intent.putExtra("STARTING_TIME", starting_time);
                             intent.putExtra("SHIFT_LENGTH", shift_length);
                             intent.putExtra("SHIFTS_PER_DAY", shifts_per_day);
                             intent.putExtra("DAYS_NUM", days_num);
+                            intent.putExtra("WORKERS_IN_SHIFT", workers_in_shift);
+                            intent.putExtra("WORKERS_WITHOUT_OPTIONS", workers_without_options);
 
-                            intent.putExtra("OPTIONS", group_options);
+                            intent.putExtra("OPTIONS", options);
                             startActivity(intent);
                         }
                     }

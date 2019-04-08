@@ -126,5 +126,10 @@
     <string name="options_tooltip">Submit your options</string>
     <string name="generate_schedule_tooltip">Generate schedule</string>
     <string name="copy_to_clipboard_tooltip">Copy to clipboard</string>
+    <!-- View Options -->
+    <string name="options_view_toolbar_text">View Sent Options</string>
+    <string name="hour_format">%s:00 - %s:00</string>
+    <string name="options_view_title">Options sent by the members of %s</string>
+    <string name="options_view_subtitle">The following members are yet to send options this week:</string>
 
 </resources>
