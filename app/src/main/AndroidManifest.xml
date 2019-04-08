@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".options.OptionsViewActivity"></activity>
+        <activity android:name=".options.OptionsViewActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -61,10 +61,10 @@
         <activity android:name=".groupCreation.GroupCreation3Activity" />
         <activity
             android:name=".groupCreation.GroupCreation4Activity"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".groupsList.GroupListsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".scheduleView.ScheduleViewActivity"
             android:configChanges="screenSize|orientation" />

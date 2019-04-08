@@ -3,8 +3,6 @@
     <dimen name="forgot_pass_size">14sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="elevation_low">4dp</dimen>
-    <dimen name="elevation_medium">8dp</dimen>
     <dimen name="elevation_high">16dp</dimen>
     <!-- Button -->
     <dimen name="button_left_padding">16dp</dimen>
@@ -18,14 +16,12 @@
     <!-- TextView title -->
     <dimen name="text_title_size">20sp</dimen>
     <!-- TextView -->
-    <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_margin_top">8dp</dimen>
     <dimen name="text_margin_bottom">4dp</dimen>
     <dimen name="text_no_margin_bottom">0dp</dimen>
     <dimen name="text_margin_left">8dp</dimen>
     <dimen name="text_margin_right">8dp</dimen>
-    <dimen name="text_margin_top_small">4dp</dimen>
     <!-- EditText -->
     <dimen name="edittext_margin">8dp</dimen>
     <dimen name="edittext_height">50dp</dimen>
@@ -42,30 +38,22 @@
     <dimen name="toolbar_elevation_size">8dp</dimen>
     <!-- Tabs -->
     <dimen name="tab_elevation_size">8dp</dimen>
-    <dimen name="tab_max_width">0dp</dimen>
     <dimen name="tab_padding">0dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
-    <dimen name="tab_margin">5dp</dimen>
     <!-- Pager -->
     <dimen name="pager_height">0dp</dimen>
-    <dimen name="elevation">16dp</dimen>
     <!-- FAB -->
     <dimen name="fab_margin_size">24dp</dimen>
     <!-- Drawer -->
     <dimen name="drawer_header_size">34dp</dimen>
     <!-- Login Page -->
-    <dimen name="anim_container_height">280dp</dimen>
-    <dimen name="anim_container_height_tablet">280dp</dimen>
     <dimen name="logo_width_tablet">205dp</dimen>
     <dimen name="logo_height_tablet">140dp</dimen>
     <dimen name="logo_width">155dp</dimen>
     <dimen name="logo_height">90dp</dimen>
-    <dimen name="user_pic_height">180dp</dimen>
     <dimen name="user_pic_width">180dp</dimen>
     <dimen name="user_pic_width_tablet">280dp</dimen>
-    <dimen name="user_pic_height_tablet">280dp</dimen>
     <dimen name="user_pic_width_tablet_land">220dp</dimen>
-    <dimen name="user_pic_height_tablet_land">220dp</dimen>
     <dimen name="login_email_edittext_width">300dp</dimen>
     <dimen name="login_password_edittext_width">275dp</dimen>
     <dimen name="sign_in_with_text_size">14sp</dimen>
@@ -73,10 +61,6 @@
     <dimen name="facebook_button_width">48dp</dimen>
     <dimen name="google_button_height">48dp</dimen>
     <dimen name="google_button_width">48dp</dimen>
-    <dimen name="login_buttons_right_margin">12dp</dimen>
-    <dimen name="login_forgot_pass_top_margin">4dp</dimen>
-    <dimen name="login_buttons_left_margin">12dp</dimen>
-    <dimen name="sign_in_with_bottom_margin">6dp</dimen>
     <dimen name="sign_up_textview_text_size">16sp</dimen>
     <!-- Signup Page -->
     <dimen name="signup_header_text_size">36sp</dimen>
@@ -84,19 +68,11 @@
     <dimen name="signup_anim_width">180dp</dimen>
     <dimen name="signup_edittext_width">300dp</dimen>
     <!-- Group items -->
-    <dimen name="group_item_height">60dp</dimen>
-    <dimen name="group_item_margin">24dp</dimen>
-    <dimen name="group_item_padding">12dp</dimen>
-    <dimen name="group_item_text_size">22sp</dimen>
     <!-- Fragment weekly view -->
     <dimen name="fragment_weekly_event_text_size">14sp</dimen>
     <dimen name="fragment_weekly_text_size">14sp</dimen>
-    <dimen name="fragment_weekly_hours_height">60dp</dimen>
     <dimen name="fragment_weekly_column_padding">30dp</dimen>
     <dimen name="fragment_weekly_column_gap">0dp</dimen>
 
-    <dimen name="list_item_checkbox_left_margin">5dp</dimen>
-    <dimen name="list_item_text_left_margin">20dp</dimen>
-    <dimen name="option_item_text_left_margin">40dp</dimen>
     <dimen name="spinner_width">32dp</dimen>
 </resources>
