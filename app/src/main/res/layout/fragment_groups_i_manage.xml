@@ -111,6 +111,25 @@
             android:textColor="@color/colorPrimaryDark"
             app:tooltipColor="@android:color/white" />
 
+        <com.venmo.view.TooltipView
+            android:id="@+id/delete_group_tooltip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:elevation="@dimen/elevation_high"
+            android:padding="12dp"
+            android:text="@string/delete_group_tooltip"
+            app:anchoredView="@id/groups_i_manage"
+            app:arrowAlignment="end"
+            app:arrowAlignmentOffset="32dp"
+            app:arrowLocation="bottom"
+            app:cornerRadius="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/join_fab"
+            app:layout_constraintEnd_toEndOf="@+id/join_fab"
+            android:textColor="@android:color/white"
+            app:tooltipColor="@color/orange_color" />
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

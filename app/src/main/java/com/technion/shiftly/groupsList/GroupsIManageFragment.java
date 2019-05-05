@@ -1,13 +1,17 @@
 package com.technion.shiftly.groupsList;
+import com.technion.shiftly.R;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,13 +20,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.technion.shiftly.R;
 import com.technion.shiftly.groupCreation.GroupCreation1Activity;
 import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
@@ -48,24 +53,31 @@ public class GroupsIManageFragment extends Fragment {
     private GroupListsActivity activity;
     private View view;
     private TooltipView manage_tooltip;
+    private TooltipView delete_group_tooltip;
     private FloatingActionButton create_group_fab;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DatabaseReference databaseRef;
 
     private void handleLoadingState(int state) {
         switch (state) {
             case Constants.HIDE_LOADING_ANIMATION:
                 manage_tooltip.setVisibility(View.GONE);
+                delete_group_tooltip.setVisibility(View.VISIBLE);
                 loading_icon.setVisibility(View.GONE);
                 create_group_fab.show();
                 mRecyclerView.setVisibility(View.VISIBLE);
                 break;
             case Constants.SHOW_LOADING_ANIMATION:
                 manage_tooltip.setVisibility(View.GONE);
+                delete_group_tooltip.setVisibility(View.GONE);
                 loading_icon.setVisibility(View.VISIBLE);
                 create_group_fab.hide();
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 break;
             case Constants.EMPTY_GROUPS_COUNT:
                 manage_tooltip.setVisibility(View.VISIBLE);
+                delete_group_tooltip.setVisibility(View.GONE);
                 no_groups_container.setVisibility(View.VISIBLE);
                 loading_icon.setVisibility(View.GONE);
                 create_group_fab.show();
@@ -122,6 +134,8 @@ public class GroupsIManageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
         activity = (GroupListsActivity) getActivity();
         context = getContext();
+        mAuth = FirebaseAuth.getInstance();
+        databaseRef = FirebaseDatabase.getInstance().getReference();
 
         // Getting views loaded with findViewById
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
@@ -139,6 +153,14 @@ public class GroupsIManageFragment extends Fragment {
 
         manage_tooltip = view.findViewById(R.id.manage_tooltip);
         manage_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
+            }
+        });
+
+        delete_group_tooltip = view.findViewById(R.id.delete_group_tooltip);
+        delete_group_tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.GONE);
@@ -175,6 +197,115 @@ public class GroupsIManageFragment extends Fragment {
                 startActivity(schedule_view);
             }
         });
+
+        ((GroupsListAdapter) mAdapter).setLongClickListener(new GroupsListAdapter.ItemLongClickListener() {
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+                presentDeleteDialog(position);
+
+            }
+        });
         return view;
+    }
+
+    public void presentDeleteDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
+        builder.setMessage(R.string.delete_group_dialog);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Delete the group only if the user tapped on YES in the dialog
+                deleteGroup(position);
+                loadRecyclerViewData();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog delete_dialog = builder.create();
+        delete_dialog.show();
+    }
+
+    public void deleteGroup(int position) {
+        // Save the group IDs
+
+        final String group_id = groupsIds.get(position);
+
+        final ArrayList<String> memberIds = new ArrayList<>();
+
+        final DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("Groups");
+        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        groupsRef.child(group_id).child("members").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                showError(databaseError);
+
+            }
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // Go over the group members and save their ID's in a variable
+
+                for (DataSnapshot member : dataSnapshot.getChildren()) {
+                    memberIds.add(member.getKey());
+                }
+
+                // Delete the group entirely
+
+                groupsRef.child(group_id).removeValue();
+
+                // Go over the saved list and for each user go to groups and delete the correct group
+
+                usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        showError(databaseError);
+                    }
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for (final DataSnapshot user : dataSnapshot.getChildren()) {
+
+                            if (memberIds.contains(user.getKey())) {
+
+                                final String old_groups_num = String.valueOf(dataSnapshot.child(user.getKey()).child("groups_count").getValue());
+                                final String new_groups_num = String.valueOf(Long.valueOf(old_groups_num) - 1);
+
+                                final DatabaseReference userGroups = usersRef.child(user.getKey()).child("groups");
+                                userGroups.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        int group_index = 0;
+                                        for (DataSnapshot userGroup : dataSnapshot.getChildren()) {
+                                            if (userGroup.getValue().equals(group_id)) {
+                                                usersRef.child(user.getKey()).child("groups").child(String.valueOf(group_index)).removeValue();
+                                                usersRef.child(user.getKey()).child("groups_count").setValue(new_groups_num);
+                                                break;
+                                            }
+                                            group_index++;
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 }

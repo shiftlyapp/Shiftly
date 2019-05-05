@@ -2,15 +2,20 @@
 
     <!-- General -->
     <string name="app_name">Shiftly</string>
+    <string name="welcome_msg">Welcome to</string>
     <string name="user_img">User</string>
     <string name="continue_text">CONTINUE</string>
     <string name="about_toolbar_txt">About</string>
+    <string name="apply_text">Apply</string>
+    <string name="skip_text">Skip</string>
+    <string name="configure_text">Configure</string>
     <string name="recommend_landscape">Rotate your screen for better visibility</string>
 
     <string name="yes">YES</string>
     <string name="no">NO</string>
 
     <!-- Signup and Login -->
+    <string name="signup_img">Signup</string>
     <string name="email_edittext_hint">EMAIL ADDRESS</string>
     <string name="password_edittext_hint">PASSWORD</string>
     <string name="login_txt">LOGIN</string>
@@ -28,6 +33,7 @@
     <string name="err_email">Please enter a vaild mail address</string>
     <string name="err_password">Invalid Password (No spaces allowed. Minimum length: 6) </string>
     <string name="err_password_confirmation">Password does not match</string>
+    <string name="err_login_password">Please enter a valid password</string>
     <string name="err_login_email">Please enter a vaild mail address</string>
     <string name="err_invalid_email">Error: Email does  not exist!</string>
     <string name="err_invalid_email_2">Error: Invalid Email format</string>
@@ -37,6 +43,8 @@
     <string name="login_success">Loggged in Successfully!</string>
     <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
     <string name="facebook_app_id">792989287718195</string>
+    <string name="fb_login_protocol_scheme">fb792989287718195</string>
+    <string name="facebook_button_txt">Login</string>
     <string name="sign_in_with">Sign In with:</string>
 
     <string name="login_err_password">Please type in a Password</string>
@@ -46,9 +54,12 @@
     <string name="account_created">Account created! Logging you in…</string>
 
     <!-- GroupCreation -->
+    <string name="group_create">Create</string>
     <string name="group_create_label">Create a new Group</string>
     <string name="group_create_succeed">%1$s was created successfully! </string>
     <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
+    <string name="options_configure">Configure Options</string>
+    <string name="fill_options_text">To proceed, please choose general settings for your shifts</string>
     <string name="group_pic_hint">Now, upload your Group picture:</string>
     <string name="group_name_hint">First, name your Group:</string>
     <string name="group_name_edittext_hint">GROUP NAME</string>
@@ -56,6 +67,7 @@
     <string name="group_create_tooltip">Click here to create a group</string>
 
     <!-- Calendar -->
+    <string name="title_activity_schedule_view">View schedules</string>
     <string name="title_home">Daily</string>
     <string name="title_dashboard">Weekly</string>
     <string name="title_notifications">Agenda</string>
@@ -69,6 +81,8 @@
     <string name="groups_empty_belong">You have yet to join a group.</string>
     <string name="groups_empty_manage">You have yet to create a group.</string>
     <string name="members">members</string>
+    <string name="schedule_generated">A new schedule has been generated!</string>
+    <string name="confirm_schedule">Confirm</string>
 
     <!-- About -->
     <string name="title_contact_us">Contact us:</string>
@@ -79,6 +93,7 @@
     <string name="group_num_shifts_hint">Number of shifts per day:</string>
     <string name="group_num_employees_hint">Number of employees per shift:</string>
     <string name="menu">MENU</string>
+    <string name="done_text">Done</string>
 
     <!-- Group join -->
     <string name="join_group_hint">Enter group ID below:</string>
@@ -111,10 +126,18 @@
 
     <string name="options_tooltip">Submit your options</string>
     <string name="generate_schedule_tooltip">Generate schedule</string>
+    <string name="copy_to_clipboard_tooltip">Copy</string>
+
     <!-- View Options -->
     <string name="options_view_toolbar_text">View Sent Options</string>
     <string name="hour_format">%s:00 - %s:00</string>
     <string name="options_view_title">Options sent by the members of %s</string>
     <string name="options_view_subtitle">The following members are yet to send options this week:</string>
+
+    <!-- Group Deletion -->
+
+    <string name="delete_group_dialog">Are you sure you want to delete this group?</string>
+    <string name="delete_group_tooltip">Long click here to delete the group</string>
+
 
 </resources>

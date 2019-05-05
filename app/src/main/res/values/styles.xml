@@ -139,4 +139,5 @@
         <item name="android:layout_marginBottom">@dimen/fab_margin_size</item>
         <item name="android:tint">@android:color/white</item>
     </style>
+
 </resources>

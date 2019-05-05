@@ -22,9 +22,10 @@
         android:roundIcon="@mipmap/ic_shiftly"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m"
+        android:allowBackup="false">
         <activity android:name=".options.OptionsViewActivity" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" /> <!-- <activity -->

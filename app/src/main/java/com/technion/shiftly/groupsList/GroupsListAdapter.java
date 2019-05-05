@@ -72,6 +72,13 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
         }
     }
 
+    public void remove_item(int position) {
+        mNames.remove(position);
+        mCounts.remove(position);
+        mIconsUrls.remove(position);
+        notifyItemRemoved(position);
+    }
+
     // total number of rows
     @Override
     public int getItemCount() {
@@ -114,6 +121,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupsListAdapter.Vi
     String getItem(int id) {
         return mNames.get(id);
     }
+
 
     // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener) {
