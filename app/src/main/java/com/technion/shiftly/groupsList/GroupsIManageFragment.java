@@ -199,10 +199,8 @@ public class GroupsIManageFragment extends Fragment {
         });
 
         ((GroupsListAdapter) mAdapter).setLongClickListener(new GroupsListAdapter.ItemLongClickListener() {
-
             @Override
             public void onItemLongClick(View view, int position) {
-
                 presentDeleteDialog(position);
 
             }
