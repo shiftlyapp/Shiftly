@@ -254,17 +254,14 @@ public class GroupsIManageFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 // Go over the group members and save their ID's in a variable
-
                 for (DataSnapshot member : dataSnapshot.getChildren()) {
                     memberIds.add(member.getKey());
                 }
 
                 // Delete the group entirely
-
                 groupsRef.child(group_id).removeValue();
 
                 // Go over the saved list and for each user go to groups and delete the correct group
-
                 usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
