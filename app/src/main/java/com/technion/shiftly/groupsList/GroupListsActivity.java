@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +37,9 @@ import com.technion.shiftly.R;
 import com.technion.shiftly.entry.LoginActivity;
 import com.technion.shiftly.miscellaneous.AboutActivity;
 import com.technion.shiftly.utility.Constants;
+import com.technion.shiftly.utility.CustomSnackbar;
+
+import java.util.ArrayList;
 
 public class GroupListsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -56,6 +61,10 @@ public class GroupListsActivity extends AppCompatActivity {
     private ViewPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private String fullName;
+    private DatabaseReference databaseRef;
+    private Boolean groupsIManageExist;
+    private CustomSnackbar mSnackbar;
+    private ConstraintLayout mLayout;
 
     public String getFullName() {
         return fullName;
@@ -106,6 +115,9 @@ public class GroupListsActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        groupsIManageExist = false;
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+        mLayout = (ConstraintLayout) findViewById(R.id.group_lists);
 
         if (userDisplayName==null || userDisplayName.isEmpty()) {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
@@ -163,6 +175,10 @@ public class GroupListsActivity extends AppCompatActivity {
                                 gotoAbout();
                                 break;
                             }
+                            case R.id.drawer_delete_user_button: {
+                                presentDeleteUserDialog();
+                                break;
+                            }
                             case R.id.drawer_signout_button: {
                                 AlertDialog.Builder signoutDialogBuilder = new AlertDialog.Builder(navigationView.getContext(), R.style.CustomAlertDialog);
                                 signoutDialogBuilder.setMessage(Constants.SIGNOUT_MESSAGE);
@@ -204,6 +220,102 @@ public class GroupListsActivity extends AppCompatActivity {
         } else if (intent_fragment == Constants.GROUPS_I_BELONG_FRAGMENT) {
             mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
         }
+    }
+
+    public void presentDeleteUserDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GroupListsActivity.this, R.style.CustomAlertDialog);
+        builder.setMessage(R.string.delete_user_dialog);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Delete the user only if the user tapped on YES in the dialog
+                deleteUser();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog delete_dialog = builder.create();
+        delete_dialog.show();
+    }
+
+    public void deleteUser() {
+        groupsIManageExist = false;
+
+        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        final ArrayList<String> groupsUserIsMemberOf = new ArrayList<>();
+
+        // Check if the user still manages one or more groups.
+        final DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("Groups");
+        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot groupToCheckAdmin : dataSnapshot.getChildren()) {
+                    String admin = String.valueOf(groupToCheckAdmin.child("admin").getValue());
+                    if (admin.equals(currentUser.getUid())) {
+                        groupsIManageExist = true;
+                        break;
+                    }
+                }
+                // If yes - present a message saying "you have to delete all of the groups you manage first"
+                if (groupsIManageExist) {
+                    mSnackbar.show(GroupListsActivity.this, mLayout, getResources().getString(R.string.user_deletion_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                // Else
+                } else {
+                    usersRef.child(currentUser.getUid()).child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot groupMemberOf : dataSnapshot.getChildren()) {
+                                String group = String.valueOf(groupMemberOf.getValue());
+                                // Save the groups that the user is a member of
+                                groupsUserIsMemberOf.add(group);
+                            }
+
+                            // Delete the user from her/his groups
+                            groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // For each group - delete the member from the members section
+                                    // And reduce members count by one
+                                    for (DataSnapshot group : dataSnapshot.getChildren()) {
+                                        if (groupsUserIsMemberOf.contains(group.getKey())) {
+                                            final String old_members_count_num = String.valueOf(dataSnapshot.child(group.getKey()).child("members_count").getValue());
+                                            final String new_members_count_num = String.valueOf(Long.valueOf(old_members_count_num) - 1);
+
+                                            // Delete member
+                                            groupsRef.child(group.getKey()).child("members").child(currentUser.getUid()).removeValue();
+                                            // Reduce members_count of group by 1
+                                            groupsRef.child(group.getKey()).child("members_count").setValue(new_members_count_num);
+
+                                        }
+                                    }
+                                    // Delete the user entirely
+                                    mAuth.signOut();
+                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                    usersRef.child(currentUser.getUid()).removeValue();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     public void gotoAbout() {

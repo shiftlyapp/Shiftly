@@ -6,6 +6,11 @@
             android:title="About"
             />
         <item
+            android:id="@+id/drawer_delete_user_button"
+            android:icon="@drawable/ic_drawable_delete_user_24dp"
+            android:title="Delete Account"
+            />
+        <item
             android:id="@+id/drawer_signout_button"
             android:icon="@drawable/ic_drawable_key_24dp"
             android:title="Sign Out" />
