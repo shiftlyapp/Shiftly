@@ -3,15 +3,20 @@
         <item
             android:id="@+id/drawer_about_button"
             android:icon="@drawable/ic_drawable_about_24dp"
-            android:title="About"
+            android:title="@string/about"
+            />
+        <item
+            android:id="@+id/drawer_edit_user_button"
+            android:icon="@drawable/ic_edit_user_24dp"
+            android:title="@string/edit_account"
             />
         <item
             android:id="@+id/drawer_delete_user_button"
             android:icon="@drawable/ic_drawable_delete_user_24dp"
-            android:title="Delete Account"
+            android:title="@string/delete_account"
             />
         <item
             android:id="@+id/drawer_signout_button"
             android:icon="@drawable/ic_drawable_key_24dp"
-            android:title="Sign Out" />
+            android:title="@string/sign_out" />
 </menu>

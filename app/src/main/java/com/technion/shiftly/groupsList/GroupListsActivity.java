@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -173,6 +174,11 @@ public class GroupListsActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.drawer_about_button: {
                                 gotoAbout();
+                                break;
+                            }
+                            case R.id.drawer_edit_user_button: {
+                                //gotoUserUpdateActivity();
+                                Toast.makeText(GroupListsActivity.this, "Available soon!", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case R.id.drawer_delete_user_button: {

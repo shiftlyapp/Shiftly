@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/signup_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/anim_bg"
+        android:isScrollContainer="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:layout_editor_absoluteY="25dp">
+
+        <TextView
+            android:id="@+id/signup_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/signup_header"
+            android:textAlignment="center"
+            android:textSize="@dimen/signup_header_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/signup_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/signup_pic"
+            android:layout_width="@dimen/signup_anim_width"
+            android:layout_height="@dimen/signup_anim_height"
+            app:layout_constraintBottom_toTopOf="@+id/signup_firstname_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_header"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_box" />
+
+        <EditText
+            android:id="@+id/signup_firstname_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/signup_edittext_width"
+            android:drawableEnd="@drawable/baseline_person_pin_black_24"
+            android:hint="@string/firstname_edittext_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/signup_lastname_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_pic" />
+
+        <EditText
+            android:id="@+id/signup_lastname_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/signup_edittext_width"
+            android:drawableEnd="@drawable/baseline_person_pin_black_24"
+            android:hint="@string/lastname_edittext_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/signup_email_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_firstname_edittext" />
+
+        <EditText
+            android:id="@+id/signup_email_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/signup_edittext_width"
+            android:drawableEnd="@drawable/baseline_alternate_email_black_24"
+            android:hint="@string/email_edittext_hint"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/signup_password_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_lastname_edittext" />
+
+        <EditText
+            android:id="@+id/signup_password_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/signup_edittext_width"
+            android:drawableEnd="@drawable/baseline_lock_black_24"
+            android:hint="@string/password_edittext_hint"
+            android:inputType="textPassword"
+            android:maxLength="@integer/pass_max_length"
+            app:layout_constraintBottom_toTopOf="@+id/signup_confirm_password_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_email_edittext" />
+
+        <EditText
+            android:id="@+id/signup_confirm_password_edittext"
+            style="@style/CustomEditText"
+            android:layout_width="@dimen/signup_edittext_width"
+            android:drawableEnd="@drawable/baseline_lock_black_24"
+            android:hint="@string/confirm_password_edittext_hint"
+            android:inputType="textPassword"
+            android:maxLength="@integer/pass_max_length"
+            app:layout_constraintBottom_toTopOf="@+id/signup_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_password_edittext" />
+
+        <Button
+            android:id="@+id/signup_button"
+            style="@style/CustomButton"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
+            android:text="@string/signup_txt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signup_confirm_password_edittext" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -145,6 +145,11 @@
     <string name="user_deletion_error">Delete all the groups you manage first</string>
     <string name="generate_schedule_dialog">Are you sure you want to generate a new schedule? Your current schedule will get deleted</string>
 
+    <!-- Drawer -->
+    <string name="delete_account">Delete Account</string>
+    <string name="edit_account">Edit Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about">About</string>
 
 
 </resources>
