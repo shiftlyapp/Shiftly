@@ -220,8 +220,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
                             workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
                             String group_name = dataSnapshot.child("group_name").getValue().toString();
 
-
-
                             // Collect the group members map
                             LinkedHashMap<String, String> group_members = new LinkedHashMap<>();
                             // Collect the members that are yet to send options
