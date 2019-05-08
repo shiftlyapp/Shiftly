@@ -58,55 +58,35 @@ public class Scheduler {
         this.mColors = mColors;
         this.employee_id_agenda = employee_id_agenda;
         this.events = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        int current_year = cal.get(Calendar.YEAR);
+        int current_month = cal.get(Calendar.MONTH);
+        // Creating the events only once for the current week upon loading
+        pullDatabaseData(current_year, current_month);
+
         MonthLoader.MonthChangeListener listener = new MonthLoader.MonthChangeListener() {
             @Override
-            public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-                pullDatabaseData(newYear, newMonth);
+            public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
                 List<WeekViewEvent> matchedEvents = new ArrayList<>();
                 for (WeekViewEvent event : events) {
                     if (eventMatches(event, newYear, newMonth)) {
                         matchedEvents.add(event);
                     }
                 }
-                if (!employee_id_agenda.isEmpty()) {
-                    List<WeekViewEvent> agendaEvents = new ArrayList<>();
-                    for (WeekViewEvent event: matchedEvents) {
-                        if (event.getName().equals(agendaName)) {
-                            agendaEvents.add(event);
-                        }
-                    }
-                    return agendaEvents;
-                }
+//                if (!employee_id_agenda.isEmpty()) {
+//                    List<WeekViewEvent> agendaEvents = new ArrayList<>();
+//                    for (WeekViewEvent event: matchedEvents) {
+//                        if (event.getName().equals(agendaName)) {
+//                            agendaEvents.add(event);
+//                        }
+//                    }
+//                    return agendaEvents;
+//                }
                 return matchedEvents;
             }
         };
         this.mWeekView.setMonthChangeListener(listener);
-    }
-
-    private void createEvent(int id, String employeeName, int newYear, int newMonth, int day,
-                             int hour, int duration) {
-        // create the event and add it to the calendar
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, hour);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.DAY_OF_WEEK, day);
-        startTime.set(Calendar.MONTH, newMonth);
-        startTime.set(Calendar.YEAR, newYear);
-
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, hour + duration);
-        endTime.set(Calendar.MINUTE, 0);
-        endTime.set(Calendar.DAY_OF_WEEK, day);
-        endTime.set(Calendar.MONTH, newMonth);
-        endTime.set(Calendar.YEAR, newYear);
-
-        WeekViewEvent event = new WeekViewEvent(id, employeeName, startTime, endTime);
-        event.setColor(employeeColors.get(employeeName));
-        events.add(event);
-        if (steps == 0) {
-            mWeekView.notifyDatasetChanged();
-            steps++;
-        }
     }
 
     private void pullDatabaseData(final int newYear, final int newMonth) {
@@ -171,7 +151,34 @@ public class Scheduler {
         }
     }
 
+    private void createEvent(int id, String employeeName, int newYear, int newMonth, int day,
+                             int hour, int duration) {
+
+        // create the event and add it to the calendar
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, hour);
+        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.DAY_OF_WEEK, day);
+        startTime.set(Calendar.MONTH, newMonth);
+        startTime.set(Calendar.YEAR, newYear);
+
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, hour + duration);
+        endTime.set(Calendar.MINUTE, 0);
+        endTime.set(Calendar.DAY_OF_WEEK, day);
+        endTime.set(Calendar.MONTH, newMonth);
+        endTime.set(Calendar.YEAR, newYear);
+
+        WeekViewEvent event = new WeekViewEvent(id, employeeName, startTime, endTime);
+        event.setColor(employeeColors.get(employeeName));
+        events.add(event);
+        if (steps == 0) {
+            mWeekView.notifyDatasetChanged();
+            steps++;
+        }
+    }
+
     private boolean eventMatches(WeekViewEvent event, int year, int month) {
-        return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month - 1) || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month - 1);
+        return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month) || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month);
     }
 }
