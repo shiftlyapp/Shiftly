@@ -25,7 +25,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m"
         android:allowBackup="false">
-        <activity android:name=".options.OptionsViewActivity" />
+        <activity android:name=".optionsView.OptionsViewActivity" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" /> <!-- <activity -->

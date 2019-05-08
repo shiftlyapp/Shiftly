@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
 import com.technion.shiftly.algorithm.ShiftSchedulingSolver;
 import com.technion.shiftly.options.OptionsListActivity;
-import com.technion.shiftly.options.OptionsViewActivity;
+import com.technion.shiftly.optionsView.OptionsViewActivity;
 import com.technion.shiftly.utility.CustomSnackbar;
 import com.venmo.view.TooltipView;
 

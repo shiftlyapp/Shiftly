@@ -1,4 +1,4 @@
-package com.technion.shiftly.options;
+package com.technion.shiftly.optionsView;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
