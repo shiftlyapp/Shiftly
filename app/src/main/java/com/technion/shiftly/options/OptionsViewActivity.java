@@ -3,6 +3,8 @@ package com.technion.shiftly.options;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -105,6 +107,13 @@ public class OptionsViewActivity extends AppCompatActivity {
         setSupportActionBar(optionsViewToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        optionsViewToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
 
         // gets the parameters for table creation
         String group_name = getIntent().getExtras().getString("GROUP_NAME");
