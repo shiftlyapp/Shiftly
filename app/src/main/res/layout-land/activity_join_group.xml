@@ -87,7 +87,6 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:drawableStart="@drawable/apply"
-            android:drawableLeft="@drawable/apply"
             android:text="@string/continue_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

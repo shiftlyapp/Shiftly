@@ -53,6 +53,9 @@
     <string name="reset_email_sent">Password reset mail sent successfully.</string>
     <string name="account_created">Account created! Logging you in…</string>
 
+    <string name="google_login_button">Google login button</string>
+    <string name="facebook_login_button">Facebook login button</string>
+
     <!-- GroupCreation -->
     <string name="group_create">Create</string>
     <string name="group_create_label">Create a new Group</string>
@@ -141,6 +144,7 @@
     <string name="delete_user_dialog">Are you sure you want to delete your account?</string>
     <string name="user_deletion_error">Delete all the groups you manage first</string>
     <string name="generate_schedule_dialog">Are you sure you want to generate a new schedule? Your current schedule will get deleted</string>
+
 
 
 </resources>

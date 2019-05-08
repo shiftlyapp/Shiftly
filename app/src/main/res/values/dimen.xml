@@ -44,6 +44,8 @@
     <dimen name="pager_height">0dp</dimen>
     <!-- FAB -->
     <dimen name="fab_margin_size">24dp</dimen>
+    <dimen name="fab_margin_end">8dp</dimen>
+    <dimen name="fab_margin_bottom">72dp</dimen>
     <!-- Drawer -->
     <dimen name="drawer_header_size">34dp</dimen>
     <!-- Login Page -->

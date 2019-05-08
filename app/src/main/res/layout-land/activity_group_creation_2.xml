@@ -88,7 +88,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/apply"
-                android:drawableLeft="@drawable/apply"
                 android:text="@string/continue_text_group_creation_2"
                 tools:layout_editor_absoluteX="106dp"
                 tools:layout_editor_absoluteY="538dp" />

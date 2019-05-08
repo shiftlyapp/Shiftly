@@ -12,11 +12,8 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/list_item_image_left_margin"
-        android:layout_marginLeft="@dimen/list_item_image_left_margin"
-        />
+        android:layout_marginStart="@dimen/list_item_image_left_margin" />
     <TextView
         android:id="@+id/group_name"
         style="@style/ListTextView"
@@ -25,7 +22,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/list_item_text_margin_top"
         android:layout_toEndOf="@id/group_icon"
-        android:layout_toRightOf="@id/group_icon"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_title_size" />
 
@@ -36,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/group_name"
         android:layout_toEndOf="@id/group_icon"
-        android:layout_toRightOf="@id/group_icon"
         android:layout_marginEnd="@dimen/text_margin_right"
         android:textColor="@color/members_color"
         android:textSize="@dimen/text_size" />

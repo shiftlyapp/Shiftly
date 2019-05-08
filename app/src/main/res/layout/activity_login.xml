@@ -63,7 +63,6 @@
             android:layout_width="@dimen/login_email_edittext_width"
             android:layout_marginTop="188dp"
             android:drawableEnd="@drawable/baseline_alternate_email_black_24"
-            android:drawableRight="@drawable/baseline_alternate_email_black_24"
             android:hint="@string/email_edittext_hint"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
@@ -77,7 +76,6 @@
             style="@style/CustomEditText"
             android:layout_width="@dimen/login_password_edittext_width"
             android:drawableEnd="@drawable/baseline_lock_black_24"
-            android:drawableRight="@drawable/baseline_lock_black_24"
             android:hint="@string/password_edittext_hint"
             android:inputType="textPassword"
             android:maxLength="@integer/pass_max_length"
@@ -96,9 +94,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
             android:drawableEnd="@drawable/forgot_pass"
-            android:drawableRight="@drawable/forgot_pass"
             android:text="@string/forgot_password_txt"
             android:textAlignment="viewEnd"
             android:textSize="@dimen/forgot_pass_size"
@@ -110,7 +106,6 @@
             style="@style/CustomButton"
             android:layout_marginBottom="8dp"
             android:drawableStart="@drawable/key"
-            android:drawableLeft="@drawable/key"
             android:text="@string/login_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +123,6 @@
             android:layout_marginBottom="@dimen/text_no_margin_bottom"
             android:background="@drawable/rounded_button_bottom"
             android:drawableEnd="@drawable/in"
-            android:drawableRight="@drawable/in"
             android:elevation="8dp"
             android:paddingLeft="42dp"
             android:paddingTop="4dp"
@@ -157,20 +151,19 @@
             android:layout_width="@dimen/google_button_width"
             android:layout_height="@dimen/google_button_height"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/google"
             app:layout_constraintBottom_toTopOf="@+id/new_to_our_app"
             app:layout_constraintEnd_toEndOf="@+id/new_to_our_app"
             app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="@+id/new_to_our_app" />
+            app:layout_constraintStart_toStartOf="@+id/new_to_our_app"
+            android:contentDescription="@string/google_login_button" />
 
         <ImageButton
             android:id="@+id/facebook_login_button"
             android:layout_width="@dimen/facebook_button_width"
             android:layout_height="@dimen/facebook_button_height"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="false"
             android:background="@drawable/facebook"
@@ -178,7 +171,8 @@
             app:layout_constraintBottom_toTopOf="@+id/new_to_our_app"
             app:layout_constraintEnd_toEndOf="@+id/new_to_our_app"
             app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toStartOf="@+id/new_to_our_app" />
+            app:layout_constraintStart_toStartOf="@+id/new_to_our_app"
+            android:contentDescription="@string/facebook_login_button" />
 
         <TextView
             android:id="@+id/sign_in_with_textview"
@@ -211,7 +205,6 @@
             android:layout_marginRight="8dp"
             android:button="@drawable/round_checkbox"
             android:paddingStart="4dp"
-            android:paddingLeft="4dp"
             android:scaleX="1.1"
             android:scaleY="1.1"
             android:text="@string/remember_checkbox"

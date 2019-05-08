@@ -191,7 +191,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="@dimen/button_margin"
             android:drawableStart="@drawable/round_arrow_forward_ios_white_18"
-            android:drawableLeft="@drawable/round_arrow_forward_ios_white_18"
             android:paddingStart="16dp"
             android:paddingLeft="16dp"
             android:paddingEnd="16dp"
