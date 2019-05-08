@@ -3,8 +3,11 @@ package com.technion.shiftly.miscellaneous;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import com.technion.shiftly.R;
+import com.technion.shiftly.groupsList.GroupListsActivity;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -17,6 +20,13 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.about_toolbar_txt));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
         // Fetching list of credits and set them in a text view
         String[] creditsList = getResources().getStringArray(R.array.credits_list);
 
