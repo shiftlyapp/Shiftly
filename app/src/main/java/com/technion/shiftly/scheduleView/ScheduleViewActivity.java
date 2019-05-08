@@ -3,6 +3,7 @@ package com.technion.shiftly.scheduleView;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -265,47 +267,68 @@ public class ScheduleViewActivity extends AppCompatActivity {
         scheduleFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Pull data from db
-                databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                // Confirmation dialog before generating
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleViewActivity.this, R.style.CustomAlertDialog);
+                builder.setMessage(R.string.generate_schedule_dialog);
+                builder.setCancelable(true);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        LinkedHashMap<String, String> group_options = getGroupOptions(dataSnapshot);
-                        if (group_options == null ||
-                                group_options.size() < (Long)dataSnapshot.child("members_count").getValue()) {
-                            mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                        } else {
-                            String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
-                            // Run scheduling algorithm
-                            ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
-                            Boolean result = solver.solve();
-                            if (result) {
-
-                                // Present a snackbar of "Schedule generated!" (success)
-                                mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
-                                // Upload schedule to DB
-                                List<String> generated_schedule = solver.getFinal_schedule();
-                                Map<String, Object> schedule_map = new HashMap<>();
-                                schedule_map.put("schedule", generated_schedule);
-                                databaseRef.updateChildren(schedule_map);
-
-                            } else {
-                                // Present a snackbar of "No schedule could be generated" (error)
-                                mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    public void onClick(DialogInterface dialog, int which) {
+                        generateSchedule();
                     }
                 });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog generate_schedule_dialog = builder.create();
+                generate_schedule_dialog.show();
             }
         });
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         launchFragment(new DailyViewFragment());
+    }
+
+    private void generateSchedule() {
+        // Pull data from db
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                LinkedHashMap<String, String> group_options = getGroupOptions(dataSnapshot);
+                if (group_options == null ||
+                        group_options.size() < (Long)dataSnapshot.child("members_count").getValue()) {
+                    mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                } else {
+                    String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
+                    // Run scheduling algorithm
+                    ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
+                    Boolean result = solver.solve();
+                    if (result) {
+
+                        // Present a snackbar of "Schedule generated!" (success)
+                        mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
+                        // Upload schedule to DB
+                        List<String> generated_schedule = solver.getFinal_schedule();
+                        Map<String, Object> schedule_map = new HashMap<>();
+                        schedule_map.put("schedule", generated_schedule);
+                        databaseRef.updateChildren(schedule_map);
+
+                    } else {
+                        // Present a snackbar of "No schedule could be generated" (error)
+                        mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
