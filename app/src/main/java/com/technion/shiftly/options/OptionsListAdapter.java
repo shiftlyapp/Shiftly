@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.technion.shiftly.R;
+
 import java.util.List;
 
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.OptionsViewHolder> {

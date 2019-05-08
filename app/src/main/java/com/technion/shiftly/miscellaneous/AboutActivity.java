@@ -3,11 +3,10 @@ package com.technion.shiftly.miscellaneous;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import com.technion.shiftly.R;
-import com.technion.shiftly.groupsList.GroupListsActivity;
 
 public class AboutActivity extends AppCompatActivity {
 

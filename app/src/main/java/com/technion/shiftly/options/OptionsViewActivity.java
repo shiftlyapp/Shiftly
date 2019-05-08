@@ -3,7 +3,6 @@ package com.technion.shiftly.options;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;

@@ -1,5 +1,4 @@
 package com.technion.shiftly.groupsList;
-import com.technion.shiftly.R;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
 import com.technion.shiftly.groupCreation.GroupCreation1Activity;
 import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;

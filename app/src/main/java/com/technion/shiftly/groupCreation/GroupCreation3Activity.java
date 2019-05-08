@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
 import com.technion.shiftly.R;
 
 // The third activity of the group creation process.

@@ -17,14 +17,13 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
-import com.technion.shiftly.R;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftly.R;
 import com.technion.shiftly.groupJoin.JoinGroupActivity;
 import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.github.abdularis.civ.CircleImageView;
 import com.squareup.picasso.Picasso;
-import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.R;
+
 import java.util.List;
 
 // An adapter for "Group I belong" and "Groups I manage" lists
