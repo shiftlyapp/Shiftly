@@ -1,6 +1,7 @@
 package com.technion.shiftly.optionsView;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,17 +9,28 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OptionsViewActivity extends AppCompatActivity {
 
     TableLayout optionsTable;
-
     HashMap<String, String> group_options;
+    HashMap<String, Float> chart_data;
 
     ArrayList<ArrayList<String>> reorganizeOptionsForTable (HashMap<String, String> options,
                                                             int shifts_per_day, int days_num,
@@ -147,5 +159,43 @@ public class OptionsViewActivity extends AppCompatActivity {
             TextView workers_no_options = findViewById(R.id.options_workers_without_options);
             workers_no_options.setText(workers_without_options);
         }
+
+        BarChart flexibility_chart = findViewById(R.id.flexibility_graph);
+        chart_data = new HashMap<>();
+        getChartData();
+        List<BarEntry> entries = new ArrayList<>();
+        int counter = 0;
+        for (Map.Entry<String, Float> employee : chart_data.entrySet()) {
+            String emp_name = employee.getKey();
+            float flex_rate = employee.getValue();
+            entries.add(new BarEntry(counter, flex_rate));
+            counter++;
+        }
+        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+        BarData data = new BarData(set);
+        data.setBarWidth(0.5f);
+        flexibility_chart.setData(data);
+        flexibility_chart.setFitBars(true);
+        flexibility_chart.invalidate();
+    }
+
+    private void getChartData() {
+        for (Map.Entry<String, String> entry : group_options.entrySet()) {
+            String employee_name = entry.getKey();
+            String employee_options = entry.getValue();
+            Float flexibility_rate = flex_rate(employee_options);
+            chart_data.put(employee_name, flexibility_rate);
+        }
+
+
+    }
+
+    private float flex_rate(String employee_options) {
+        float available_shifts_total = employee_options.length();
+        int available_shifts = 0;
+        for (int i = 0; i < available_shifts_total; i++) {
+            if (employee_options.charAt(i) == '1') available_shifts++;
+        }
+        return available_shifts / available_shifts_total;
     }
 }

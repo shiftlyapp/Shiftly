@@ -1,4 +1,5 @@
 package com.technion.shiftly.groupsList;
+import com.technion.shiftly.R;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.technion.shiftly.R;
 import com.technion.shiftly.groupCreation.GroupCreation1Activity;
 import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
@@ -201,7 +201,6 @@ public class GroupsIManageFragment extends Fragment {
             @Override
             public void onItemLongClick(View view, int position) {
                 presentDeleteDialog(position);
-
             }
         });
         return view;
@@ -216,7 +215,14 @@ public class GroupsIManageFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 // Delete the group only if the user tapped on YES in the dialog
                 deleteGroup(position);
-                loadRecyclerViewData();
+                groupsIds.remove(position);
+                groupsIconsUrls.remove(position);
+                groupsNames.remove(position);
+                groupsMembersCount.remove(position);
+                mRecyclerView.removeViewAt(position);
+                mAdapter.notifyItemRemoved(position);
+                mAdapter.notifyItemRangeChanged(position, groupsIds.size());
+                mAdapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

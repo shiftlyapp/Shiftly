@@ -31,6 +31,10 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //##############################################################################################
@@ -81,4 +85,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'transition'
     }
     implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }

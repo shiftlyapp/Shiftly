@@ -144,6 +144,7 @@
     <string name="delete_user_dialog">Are you sure you want to delete your account?</string>
     <string name="user_deletion_error">Delete all the groups you manage first</string>
     <string name="generate_schedule_dialog">Are you sure you want to generate a new schedule? Your current schedule will get deleted</string>
+    <string name="flexibility_graph">Flexibility of employees</string>
 
 
 
