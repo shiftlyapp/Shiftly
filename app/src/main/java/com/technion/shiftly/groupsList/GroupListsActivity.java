@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.technion.shiftly.R;
 import com.technion.shiftly.entry.LoginActivity;
 import com.technion.shiftly.miscellaneous.AboutActivity;
+import com.technion.shiftly.userUpdate.UserUpdateActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
 
@@ -173,6 +175,11 @@ public class GroupListsActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.drawer_about_button: {
                                 gotoAbout();
+                                break;
+                            }
+                            case R.id.drawer_edit_user_button: {
+                                gotoUserUpdate();
+                                Toast.makeText(GroupListsActivity.this, "Available soon!", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case R.id.drawer_delete_user_button: {
@@ -321,6 +328,11 @@ public class GroupListsActivity extends AppCompatActivity {
     public void gotoAbout() {
         Intent about_intent = new Intent(this, AboutActivity.class);
         startActivity(about_intent);
+    }
+
+    public void gotoUserUpdate() {
+        Intent update_user_intent = new Intent(this, UserUpdateActivity.class);
+        startActivity(update_user_intent);
     }
 
     public void gotoLogin() {
