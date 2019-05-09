@@ -151,5 +151,11 @@
     <string name="sign_out">Sign Out</string>
     <string name="about">About</string>
 
+    <!-- Account update -->
+    <string name="user_update_header">Update your account.</string>
+    <string name="user_update_txt">UPDATE</string>
+    <string name="new_password">NEW PASSWORD</string>
+    <string name="account_updated">Account details updated!</string>
+
 
 </resources>

@@ -77,4 +77,10 @@
     <dimen name="fragment_weekly_column_gap">0dp</dimen>
 
     <dimen name="spinner_width">32dp</dimen>
+    <!-- User update Page -->
+    <dimen name="user_update_header_text_size">36sp</dimen>
+    <dimen name="user_update_anim_height">180dp</dimen>
+    <dimen name="user_update_anim_width">180dp</dimen>
+    <dimen name="user_update_edittext_width">300dp</dimen>
+    
 </resources>

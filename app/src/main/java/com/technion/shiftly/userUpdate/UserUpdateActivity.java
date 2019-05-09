@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,22 @@ import android.widget.EditText;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationHolder;
+import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
 import com.technion.shiftly.dataTypes.User;
 import com.technion.shiftly.groupsList.GroupListsActivity;
@@ -37,9 +46,10 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
 public class UserUpdateActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private ConstraintLayout mLayout;
     private EditText email_edt, password_edt, firstname_edt, lastname_edt;
+    private DatabaseReference databaseRef;
+    private String user_id;
 
     public void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) UserUpdateActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -67,7 +77,7 @@ public class UserUpdateActivity extends AppCompatActivity {
 
     private void pushUserIntoDatabase(String firstname, String lastname, String email) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser mCurrentUser = mAuth.getCurrentUser();
+        FirebaseUser mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = mCurrentUser.getUid();
         User user = new User(firstname, lastname, email);
         DatabaseReference mDatabase = database.getReference().child("Users").child(userId);
@@ -87,73 +97,109 @@ public class UserUpdateActivity extends AppCompatActivity {
         ScaleAnimation t = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         t.setDuration((long) Constants.ANIM_DURATION);
         t.setRepeatCount(Constants.SCALE_ANIMATION_REPEAT_COUNT);
-        LottieAnimationView signup_img = (LottieAnimationView) findViewById(R.id.signup_pic);
+        LottieAnimationView signup_img = (LottieAnimationView) findViewById(R.id.user_update_pic);
         signup_img.startAnimation(t);
-        findViewById(R.id.signup_header).startAnimation(t);
+        findViewById(R.id.user_update_header).startAnimation(t);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_update);
-        mLayout = (ConstraintLayout) findViewById(R.id.signup_cl);
+        mLayout = (ConstraintLayout) findViewById(R.id.user_update_cl);
         setupParent(mLayout);
         runAnimation();
-
-        mAuth = FirebaseAuth.getInstance();
 
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
         addSignUpValidation(mAwesomeValidation, UserUpdateActivity.this);
 
-        findViewById(R.id.signup_button).setOnClickListener(new View.OnClickListener() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user_id = user.getUid();
+
+        email_edt = findViewById(R.id.user_update_email_edittext);
+        password_edt = findViewById(R.id.user_update_password_edittext);
+        firstname_edt = findViewById(R.id.user_update_firstname_edittext);
+        lastname_edt = findViewById(R.id.user_update_lastname_edittext);
+
+        // Get user details to present in the initial form
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String email = dataSnapshot.child("email").getValue().toString();
+                String firstName = dataSnapshot.child("firstname").getValue().toString();
+                String lastName = dataSnapshot.child("lastname").getValue().toString();
+
+                firstname_edt.setText(firstName);
+                lastname_edt.setText(lastName);
+                email_edt.setText(email);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
+        findViewById(R.id.user_update_button).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                CustomSnackbar snackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+
                 if (mAwesomeValidation.validate()) {
-                    email_edt = findViewById(R.id.signup_email_edittext);
-                    password_edt = findViewById(R.id.signup_password_edittext);
-                    firstname_edt = findViewById(R.id.signup_firstname_edittext);
-                    lastname_edt = findViewById(R.id.signup_lastname_edittext);
-                    final String firstname = firstname_edt.getText().toString();
-                    final String lastname = lastname_edt.getText().toString();
-                    final String email = email_edt.getText().toString();
-                    String password = password_edt.getText().toString();
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(UserUpdateActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    CustomSnackbar snackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
-                                    if (task.isSuccessful()) {
-                                        pushUserIntoDatabase(firstname, lastname, email);
-                                        snackbar.show(UserUpdateActivity.this, mLayout, getResources().getString(R.string.account_created),CustomSnackbar.SNACKBAR_SUCCESS ,Snackbar.LENGTH_SHORT);
-                                        Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                updateUI();
-                                            }
-                                        }, Constants.REDIRECTION_DELAY);
-                                    } else {
-                                        try {
-                                            throw task.getException();
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            snackbar.show(UserUpdateActivity.this, mLayout, getResources().getString(R.string.err_invalid_email_2), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
-                                        } catch (Exception e) {
-                                            snackbar.show(UserUpdateActivity.this, mLayout, task.getException().toString(), CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
-                                        }
-                                    }
-                                }
-                            });
+
+                    final String newfirstname = firstname_edt.getText().toString();
+                    final String newlastname = lastname_edt.getText().toString();
+
+                    String newPassword = password_edt.getText().toString();
+
+                    String newemail = email_edt.getText().toString();
+                    user.updateEmail(newemail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                String mail = email_edt.getText().toString();
+                                pushUserIntoDatabase(newfirstname, newlastname, mail);
+                            } else {
+                                Log.d("Failed", "User password not updated.");
+                            }
+                        }
+                    });
+
+                    // If password is empty, it means its unchanged
+                    if (!newPassword.isEmpty()) {
+                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                //Log.d("PASS", "User password updated.");
+                            }
+                        }
+                        });
+                    }
+                    pushUserIntoDatabase(newfirstname, newlastname, user.getEmail());
+
+                    snackbar.show(UserUpdateActivity.this, mLayout, getResources().getString(R.string.account_updated),CustomSnackbar.SNACKBAR_SUCCESS ,Snackbar.LENGTH_SHORT);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateUI();
+                        }
+                    }, Constants.REDIRECTION_DELAY);
+
+
+                } else {
+                    snackbar.show(UserUpdateActivity.this, mLayout, "An error occurred", CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
                 }
             }
         });
     }
 
     public static void addSignUpValidation(AwesomeValidation mAwesomeValidation, Activity activity) {
-        mAwesomeValidation.addValidation(activity, R.id.signup_firstname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
-        mAwesomeValidation.addValidation(activity, R.id.signup_lastname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
-        mAwesomeValidation.addValidation(activity, R.id.signup_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-        mAwesomeValidation.addValidation(activity, R.id.signup_password_edittext, Constants.REGEX_PASSWORD_VALIDATION, R.string.err_password);
-        mAwesomeValidation.addValidation(activity, R.id.signup_confirm_password_edittext, R.id.signup_password_edittext, R.string.err_password_confirmation);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_firstname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_lastname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_password_edittext, Constants.REGEX_PASSWORD_CHANGE_VALIDATION, R.string.err_password);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_confirm_password_edittext, R.id.user_update_password_edittext, R.string.err_password_confirmation);
 
     }
 }
