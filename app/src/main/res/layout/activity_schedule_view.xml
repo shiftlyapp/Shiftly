@@ -49,6 +49,8 @@
         app:arrowAlignmentOffset="32dp"
         app:arrowLocation="bottom"
         app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/options_fab"
+        app:layout_constraintEnd_toEndOf="@+id/options_fab"
         app:tooltipColor="@color/colorPrimary" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
