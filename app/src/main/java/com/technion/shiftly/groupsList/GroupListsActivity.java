@@ -179,7 +179,6 @@ public class GroupListsActivity extends AppCompatActivity {
                             }
                             case R.id.drawer_edit_user_button: {
                                 gotoUserUpdate();
-                                Toast.makeText(GroupListsActivity.this, "Available soon!", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case R.id.drawer_delete_user_button: {

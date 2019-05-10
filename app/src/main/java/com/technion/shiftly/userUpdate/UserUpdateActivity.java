@@ -20,36 +20,31 @@ import android.widget.EditText;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationHolder;
-import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.R;
-import com.technion.shiftly.dataTypes.User;
 import com.technion.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
+
+import java.util.ArrayList;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
 public class UserUpdateActivity extends AppCompatActivity {
 
     private ConstraintLayout mLayout;
-    private EditText email_edt, password_edt, firstname_edt, lastname_edt;
+    private EditText /*email_edt,*/ password_edt, firstname_edt, lastname_edt;
     private DatabaseReference databaseRef;
     private String user_id;
+    private ArrayList<String> groupsUserIsMemberOf;
 
     public void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) UserUpdateActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -73,15 +68,6 @@ public class UserUpdateActivity extends AppCompatActivity {
                 setupParent(innerView);
             }
         }
-    }
-
-    private void pushUserIntoDatabase(String firstname, String lastname, String email) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = mCurrentUser.getUid();
-        User user = new User(firstname, lastname, email);
-        DatabaseReference mDatabase = database.getReference().child("Users").child(userId);
-        mDatabase.setValue(user);
     }
 
     private void updateUI() {
@@ -116,7 +102,7 @@ public class UserUpdateActivity extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user_id = user.getUid();
 
-        email_edt = findViewById(R.id.user_update_email_edittext);
+//        email_edt = findViewById(R.id.user_update_email_edittext);
         password_edt = findViewById(R.id.user_update_password_edittext);
         firstname_edt = findViewById(R.id.user_update_firstname_edittext);
         lastname_edt = findViewById(R.id.user_update_lastname_edittext);
@@ -126,13 +112,19 @@ public class UserUpdateActivity extends AppCompatActivity {
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String email = dataSnapshot.child("email").getValue().toString();
+//                String email = dataSnapshot.child("email").getValue().toString();
                 String firstName = dataSnapshot.child("firstname").getValue().toString();
                 String lastName = dataSnapshot.child("lastname").getValue().toString();
+                groupsUserIsMemberOf = new ArrayList<>();
+                if(dataSnapshot.child("groups").exists()) {
+                    for (DataSnapshot group : dataSnapshot.child("groups").getChildren()) {
+                        groupsUserIsMemberOf.add(group.getValue().toString());
+                    }
+                }
 
                 firstname_edt.setText(firstName);
                 lastname_edt.setText(lastName);
-                email_edt.setText(email);
+//                email_edt.setText(email);
             }
 
             @Override
@@ -148,21 +140,30 @@ public class UserUpdateActivity extends AppCompatActivity {
 
                     final String newfirstname = firstname_edt.getText().toString();
                     final String newlastname = lastname_edt.getText().toString();
-
                     String newPassword = password_edt.getText().toString();
 
-                    String newemail = email_edt.getText().toString();
-                    user.updateEmail(newemail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                String mail = email_edt.getText().toString();
-                                pushUserIntoDatabase(newfirstname, newlastname, mail);
-                            } else {
-                                Log.d("Failed", "User password not updated.");
-                            }
-                        }
-                    });
+                    // Change first and last names
+                    databaseRef.child("firstname").setValue(newfirstname);
+                    databaseRef.child("lastname").setValue(newlastname);
+
+                    databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+                    for (String groupId : groupsUserIsMemberOf) {
+                        databaseRef.child(groupId).child("members").child(user_id)
+                                .setValue(String.format("%s %s", newfirstname, newlastname));
+                    }
+
+//                    String newemail = email_edt.getText().toString();
+//                    user.updateEmail(newemail).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            if (task.isSuccessful()) {
+//                                String mail = email_edt.getText().toString();
+//                                pushUserIntoDatabase(newfirstname, newlastname, mail);
+//                            } else {
+//                                Log.d("Failed", "User password not updated.");
+//                            }
+//                        }
+//                    });
 
                     // If password is empty, it means its unchanged
                     if (!newPassword.isEmpty()) {
@@ -175,7 +176,6 @@ public class UserUpdateActivity extends AppCompatActivity {
                         }
                         });
                     }
-                    pushUserIntoDatabase(newfirstname, newlastname, user.getEmail());
 
                     snackbar.show(UserUpdateActivity.this, mLayout, getResources().getString(R.string.account_updated),CustomSnackbar.SNACKBAR_SUCCESS ,Snackbar.LENGTH_SHORT);
                     Handler handler = new Handler();
@@ -197,7 +197,7 @@ public class UserUpdateActivity extends AppCompatActivity {
     public static void addSignUpValidation(AwesomeValidation mAwesomeValidation, Activity activity) {
         mAwesomeValidation.addValidation(activity, R.id.user_update_firstname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
         mAwesomeValidation.addValidation(activity, R.id.user_update_lastname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
-        mAwesomeValidation.addValidation(activity, R.id.user_update_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
+//        mAwesomeValidation.addValidation(activity, R.id.user_update_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
         mAwesomeValidation.addValidation(activity, R.id.user_update_password_edittext, Constants.REGEX_PASSWORD_CHANGE_VALIDATION, R.string.err_password);
         mAwesomeValidation.addValidation(activity, R.id.user_update_confirm_password_edittext, R.id.user_update_password_edittext, R.string.err_password_confirmation);
 

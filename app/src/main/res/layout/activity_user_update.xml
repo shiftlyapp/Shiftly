@@ -61,23 +61,48 @@
             android:drawableEnd="@drawable/baseline_person_pin_black_24"
             android:hint="@string/lastname_edittext_hint"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@id/user_update_email_edittext"
+            app:layout_constraintBottom_toTopOf="@id/user_update_password_edittext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/user_update_firstname_edittext" />
 
-        <EditText
-            android:id="@+id/user_update_email_edittext"
-            style="@style/CustomEditText"
-            android:layout_width="@dimen/user_update_edittext_width"
-            android:drawableEnd="@drawable/baseline_alternate_email_black_24"
-            android:hint="@string/email_edittext_hint"
-            android:inputType="textEmailAddress"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@id/user_update_password_edittext"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_update_lastname_edittext" />
+        <!--<EditText-->
+            <!--android:id="@+id/user_update_lastname_edittext"-->
+            <!--style="@style/CustomEditText"-->
+            <!--android:layout_width="@dimen/user_update_edittext_width"-->
+            <!--android:drawableEnd="@drawable/baseline_person_pin_black_24"-->
+            <!--android:hint="@string/lastname_edittext_hint"-->
+            <!--android:inputType="textPersonName"-->
+            <!--app:layout_constraintBottom_toTopOf="@id/user_update_email_edittext"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/user_update_firstname_edittext" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/user_update_email_edittext"-->
+            <!--style="@style/CustomEditText"-->
+            <!--android:layout_width="@dimen/user_update_edittext_width"-->
+            <!--android:drawableEnd="@drawable/baseline_alternate_email_black_24"-->
+            <!--android:hint="@string/email_edittext_hint"-->
+            <!--android:inputType="textEmailAddress"-->
+            <!--android:textAlignment="center"-->
+            <!--app:layout_constraintBottom_toTopOf="@id/user_update_password_edittext"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/user_update_lastname_edittext" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/user_update_password_edittext"-->
+            <!--style="@style/CustomEditText"-->
+            <!--android:layout_width="@dimen/user_update_edittext_width"-->
+            <!--android:drawableEnd="@drawable/baseline_lock_black_24"-->
+            <!--android:hint="@string/new_password"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:maxLength="@integer/pass_max_length"-->
+            <!--app:layout_constraintBottom_toTopOf="@id/user_update_confirm_password_edittext"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/user_update_email_edittext" />-->
 
         <EditText
             android:id="@+id/user_update_password_edittext"
@@ -90,7 +115,7 @@
             app:layout_constraintBottom_toTopOf="@id/user_update_confirm_password_edittext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_update_email_edittext" />
+            app:layout_constraintTop_toBottomOf="@id/user_update_lastname_edittext" />
 
         <EditText
             android:id="@+id/user_update_confirm_password_edittext"
