@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +33,7 @@ public class OptionsViewActivity extends AppCompatActivity {
     TableLayout optionsTable;
     HashMap<String, String> group_options;
     HashMap<String, Float> chart_data;
+    ArrayList<String> labels;
 
     ArrayList<ArrayList<String>> reorganizeOptionsForTable (HashMap<String, String> options,
                                                             int shifts_per_day, int days_num,
@@ -160,6 +163,8 @@ public class OptionsViewActivity extends AppCompatActivity {
             workers_no_options.setText(workers_without_options);
         }
 
+        labels = new ArrayList<>();
+
         BarChart flexibility_chart = findViewById(R.id.flexibility_graph);
         chart_data = new HashMap<>();
         getChartData();
@@ -167,15 +172,30 @@ public class OptionsViewActivity extends AppCompatActivity {
         int counter = 0;
         for (Map.Entry<String, Float> employee : chart_data.entrySet()) {
             String emp_name = employee.getKey();
+            labels.add(emp_name);
             float flex_rate = employee.getValue();
-            entries.add(new BarEntry(counter, flex_rate));
+            entries.add(new BarEntry(counter, flex_rate*100));
             counter++;
         }
-        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+        BarDataSet set = new BarDataSet(entries, "Flexibility Rate");
+        set.setDrawValues(true);
+
         BarData data = new BarData(set);
         data.setBarWidth(0.5f);
         flexibility_chart.setData(data);
+
+        flexibility_chart.setDrawValueAboveBar(false);
         flexibility_chart.setFitBars(true);
+        flexibility_chart.getDescription().setEnabled(false);
+
+        flexibility_chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        flexibility_chart.getAxisRight().setAxisMaximum(110.0f);
+        flexibility_chart.getAxisLeft().setAxisMaximum(110.0f);
+        flexibility_chart.getAxisRight().setAxisMinimum(0.0f);
+        flexibility_chart.getAxisLeft().setAxisMinimum(0.0f);
+
+        flexibility_chart.getXAxis().setLabelCount(labels.size());
+        flexibility_chart.getXAxis().setTextColor(R.color.text_color_primary);
         flexibility_chart.invalidate();
     }
 

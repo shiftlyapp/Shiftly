@@ -44,13 +44,11 @@
         android:text="@string/options_tooltip"
         android:visibility="invisible"
         android:textColor="@android:color/white"
-        app:anchoredView="@id/options_fab"
+        app:anchoredView="@id/view_options_fab"
         app:arrowAlignment="end"
         app:arrowAlignmentOffset="32dp"
         app:arrowLocation="bottom"
         app:cornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/options_fab"
-        app:layout_constraintEnd_toEndOf="@+id/options_fab"
         app:tooltipColor="@color/colorPrimary" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -68,24 +66,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.venmo.view.TooltipView
-        android:id="@+id/schedule_tooltip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_horizontal"
-        android:padding="12dp"
-        android:visibility="invisible"
-        android:text="@string/generate_schedule_tooltip"
-        android:textColor="@android:color/white"
-        app:anchoredView="@id/options_fab"
-        app:arrowAlignment="end"
-        app:arrowAlignmentOffset="32dp"
-        app:arrowLocation="bottom"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@id/menu_fab"
-        app:layout_constraintEnd_toEndOf="@id/menu_fab"
-        app:tooltipColor="@color/colorPrimary" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/menu_fab"
@@ -102,6 +82,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" >
 
+        <com.venmo.view.TooltipView
+            android:id="@+id/schedule_tooltip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:visibility="invisible"
+            android:text="@string/generate_schedule_tooltip"
+            android:textColor="@android:color/white"
+            app:anchoredView="@id/schedule_fab"
+            app:arrowAlignment="end"
+            app:arrowAlignmentOffset="32dp"
+            app:arrowLocation="bottom"
+            app:cornerRadius="16dp"
+            app:tooltipColor="@color/colorPrimary" />
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/schedule_fab"
             android:layout_width="wrap_content"
@@ -114,6 +111,23 @@
             fab:fab_size="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.venmo.view.TooltipView
+            android:id="@+id/view_options_tooltip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:visibility="invisible"
+            android:text="@string/view_options_tooltip"
+            android:textColor="@android:color/white"
+            app:anchoredView="@id/view_options_fab"
+            app:arrowAlignment="end"
+            app:arrowAlignmentOffset="32dp"
+            app:arrowLocation="bottom"
+            app:cornerRadius="16dp"
+            app:tooltipColor="@color/colorPrimary" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/view_options_fab"
