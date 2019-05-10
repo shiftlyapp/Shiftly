@@ -21,6 +21,7 @@
     <color name="list_item_bg_pressed">#dedede</color>
     <color name="material_grey">#d9d9d9</color>
     <color name="calendar_div">#ececec</color>
+    <color name="white">#FFFFFF</color>
 
     <!-- SnackBar -->
     <color name="snackbar_bg">#e1ffffff</color>

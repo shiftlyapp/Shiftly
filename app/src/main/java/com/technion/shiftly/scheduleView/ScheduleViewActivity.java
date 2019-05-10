@@ -156,6 +156,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 view.setVisibility(View.GONE);
             }
         });
+        final TooltipView view_options_tooltip = findViewById(R.id.view_options_tooltip);
+        view_options_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
+            }
+        });
 
         databaseRef.child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -175,6 +182,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     menuFab.setVisibility(View.VISIBLE);
 
                     schedule_tooltip.setVisibility(View.VISIBLE);
+                    view_options_tooltip.setVisibility(View.VISIBLE);
                     navigationView.getMenu().removeItem(R.id.navigation_agenda);
                 } else {
                     optionsFab.setVisibility(View.VISIBLE);

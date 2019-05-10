@@ -62,18 +62,24 @@
                 android:layout_height="wrap_content"
                 style="@style/CustomTextView"/>
 
+
+            <TextView
+                android:id="@+id/flexibility_graph_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/flexibility_graph"
+                android:layout_marginStart="@dimen/text_margin_left"
+                android:layout_marginBottom="@dimen/text_margin_bottom"
+                style="@style/CustomTextViewTitle"/>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/flexibility_graph"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/flexibility_chart_height"
+                android:layout_marginBottom="@dimen/chart_margin_bottom"
+                />
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/flexibility_graph_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/flexibility_graph" />
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/flexibility_graph"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </ScrollView>
 
