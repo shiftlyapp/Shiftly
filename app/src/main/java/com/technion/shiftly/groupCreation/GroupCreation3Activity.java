@@ -1,6 +1,8 @@
 package com.technion.shiftly.groupCreation;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,20 +15,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.technion.shiftly.R;
-import com.technion.shiftly.entry.LoginActivity;
+import com.technion.shiftly.dataTypes.Group;
 import com.technion.shiftly.groupsList.GroupListsActivity;
-import com.technion.shiftly.groupsList.GroupsIManageFragment;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
-
-import java.util.concurrent.TimeUnit;
 
 // The third activity of the group creation process.
 // In this activity the future admin sets the group settings.
@@ -37,6 +37,8 @@ public class GroupCreation3Activity extends AppCompatActivity {
     private ConstraintLayout mLayout;
     private FirebaseStorage mStorage;
     private DatabaseReference mGroupsRef;
+    private StorageReference mStorageRef;
+    private UploadTask uploadTask;
 
     @Override
     public void onBackPressed() {
@@ -139,16 +141,23 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 } else {
                     edit_group(group_id, days_num, shifts_per_day, employees_per_shift, starting_hour,
                             shift_len, group_name, group_pic_array);
-                    mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.group_edit_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_LONG);
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent groupsIManageFragment = new Intent(getApplicationContext(), GroupListsActivity.class);
-                            startActivity(groupsIManageFragment);
-                            finish();
+                            mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.group_edit_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_LONG);
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent groupsIManageFragment = new Intent(getApplicationContext(), GroupListsActivity.class);
+                                    startActivity(groupsIManageFragment);
+                                    finish();
+                                }
+                            }, Constants.REDIRECTION_DELAY);
                         }
                     }, Constants.REDIRECTION_DELAY);
+
                 }
 
             }
@@ -156,22 +165,49 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
     }
 
-    private void edit_group(final String group_id, Long days_num, Long shifts_per_day, Long employees_per_shift, String starting_hour, Long shift_len, String group_name, byte[] group_pic_array) {
-        mGroupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Go over the groups and find the correct group
-                for (DataSnapshot group : dataSnapshot.getChildren()) {
-                    if (group.getKey().equals(group_id)) {
+    private void edit_group(final String group_id, Long days_num, Long shifts_per_day, Long employees_per_shift, String starting_time, Long shift_length, String group_name, byte[] group_pic_array) {
+        // Group icon
+        uploadPic(group_id, group_pic_array);
 
-                    }
-                }
-            }
+        // Group characteristics
+        mGroupsRef.child(group_id).child("days_num").setValue(days_num);
+        mGroupsRef.child(group_id).child("employees_per_shift").setValue(employees_per_shift);
+        mGroupsRef.child(group_id).child("shift_length").setValue(shift_length);
+        mGroupsRef.child(group_id).child("shifts_per_day").setValue(shifts_per_day);
+        mGroupsRef.child(group_id).child("starting_time").setValue(starting_time);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        // Group name
+        mGroupsRef.child(group_id).child("group_name").setValue(group_name);
 
-            }
-        });
     }
+
+    private void uploadPic(final String group_id, byte[] group_pic_array) {
+        mStorageRef = mStorage.getReference().child("group_pics/" + group_id + ".png");
+        if (group_pic_array == null) {
+            // No image upload - update image url to be "none"
+            mGroupsRef.child(group_id).child("group_icon_url").setValue("none");
+
+        } else {
+            uploadTask = mStorageRef.putBytes(group_pic_array);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Image upload failed
+                    mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.edit_pic_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            mGroupsRef.child(group_id).child("group_icon_url").setValue(uri.toString());
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+
 }

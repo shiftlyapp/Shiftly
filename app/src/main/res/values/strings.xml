@@ -165,6 +165,7 @@
     <string name="delete_group">Delete Group</string>
     <string name="cancel">Cancel</string>
     <string name="group_edit_success">Group edited successfully!</string>
+    <string name="edit_pic_error">Could not upload picture</string>
 
 
 </resources>
