@@ -2,6 +2,10 @@ package com.technion.shiftly.groupCreation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,12 +13,30 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.technion.shiftly.R;
+import com.technion.shiftly.entry.LoginActivity;
+import com.technion.shiftly.groupsList.GroupListsActivity;
+import com.technion.shiftly.groupsList.GroupsIManageFragment;
+import com.technion.shiftly.utility.Constants;
+import com.technion.shiftly.utility.CustomSnackbar;
+
+import java.util.concurrent.TimeUnit;
 
 // The third activity of the group creation process.
 // In this activity the future admin sets the group settings.
 
 public class GroupCreation3Activity extends AppCompatActivity {
+
+    private CustomSnackbar mSnackbar;
+    private ConstraintLayout mLayout;
+    private FirebaseStorage mStorage;
+    private DatabaseReference mGroupsRef;
 
     @Override
     public void onBackPressed() {
@@ -32,9 +54,16 @@ public class GroupCreation3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_creation_3);
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+        mLayout = (ConstraintLayout) findViewById(R.id.group_creation_3_layout);
+
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_3);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
+
+        final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
+        String action_bar_title = getIntent().getExtras().getString("TITLE");
+
+        getSupportActionBar().setTitle(action_bar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -69,38 +98,80 @@ public class GroupCreation3Activity extends AppCompatActivity {
         shift_len_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shift_len_spinner.setAdapter(shift_len_spinner_adapter);
 
+        mStorage = FirebaseStorage.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mGroupsRef = database.getReference().child(("Groups"));
+
         Button apply_button = findViewById(R.id.continue_button);
         apply_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 view.setEnabled(false);
-                Intent timeslots_config_intent = new Intent(getApplicationContext(), GroupCreation4Activity.class);
-                String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                byte[] group_pic_array = getIntent().getExtras().getByteArray("GROUP_PICTURE");
 
                 Long days_num = Long.parseLong(days_spinner.getSelectedItem().toString());
-
                 Long shifts_per_day = Long.parseLong(shifts_per_day_spinner.getSelectedItem().toString());
-
                 Long employees_per_shift = Long.parseLong(employees_per_shift_spinner.getSelectedItem().toString());
-
                 String starting_hour = starting_hour_spinner.getSelectedItem().toString();
-
                 Long shift_len = Long.parseLong(shift_len_spinner.getSelectedItem().toString());
+                String group_name = getIntent().getExtras().getString("GROUP_NAME");
+                byte[] group_pic_array = getIntent().getExtras().getByteArray("GROUP_PICTURE");
+                // Contains the group_id to edit only in case the user reached this activity via edit, else contains the empty string
+                String group_id = getIntent().getExtras().getString("GROUP_ID");
 
-                timeslots_config_intent.putExtra("GROUP_NAME", group_name);
-                timeslots_config_intent.putExtra("DAYS_NUM", days_num);
-                timeslots_config_intent.putExtra("SHIFTS_PER_DAY", shifts_per_day);
-                timeslots_config_intent.putExtra("EMPLOYEES_PER_SHIFT", employees_per_shift);
-                timeslots_config_intent.putExtra("STARTING_HOUR", starting_hour);
-                timeslots_config_intent.putExtra("SHIFT_LEN", shift_len);
-                if (group_pic_array!=null) {
-                    timeslots_config_intent.putExtra("GROUP_PICTURE", group_pic_array);
+                if (group_action.equals("CREATE")) {
+                    Intent group_creation_4_intent = new Intent(getApplicationContext(), GroupCreation4Activity.class);
+
+                    group_creation_4_intent.putExtra("GROUP_NAME", group_name);
+                    group_creation_4_intent.putExtra("DAYS_NUM", days_num);
+                    group_creation_4_intent.putExtra("SHIFTS_PER_DAY", shifts_per_day);
+                    group_creation_4_intent.putExtra("EMPLOYEES_PER_SHIFT", employees_per_shift);
+                    group_creation_4_intent.putExtra("STARTING_HOUR", starting_hour);
+                    group_creation_4_intent.putExtra("SHIFT_LEN", shift_len);
+                    group_creation_4_intent.putExtra("GROUP_ACTION", group_action);
+
+                    if (group_pic_array!=null) {
+                        group_creation_4_intent.putExtra("GROUP_PICTURE", group_pic_array);
+                    }
+                    startActivity(group_creation_4_intent);
+                    finish();
+
+                } else {
+                    edit_group(group_id, days_num, shifts_per_day, employees_per_shift, starting_hour,
+                            shift_len, group_name, group_pic_array);
+                    mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.group_edit_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_LONG);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent groupsIManageFragment = new Intent(getApplicationContext(), GroupListsActivity.class);
+                            startActivity(groupsIManageFragment);
+                            finish();
+                        }
+                    }, Constants.REDIRECTION_DELAY);
                 }
-                startActivity(timeslots_config_intent);
-                finish();
+
             }
         });
 
+    }
+
+    private void edit_group(final String group_id, Long days_num, Long shifts_per_day, Long employees_per_shift, String starting_hour, Long shift_len, String group_name, byte[] group_pic_array) {
+        mGroupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Go over the groups and find the correct group
+                for (DataSnapshot group : dataSnapshot.getChildren()) {
+                    if (group.getKey().equals(group_id)) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

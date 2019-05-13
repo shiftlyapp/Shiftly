@@ -40,10 +40,9 @@
             app:layout_constraintTop_toTopOf="@+id/group_creation_toolbar_2">
 
             <TextView
-                android:id="@+id/group_pic_text"
+                android:id="@+id/group_pic_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/group_pic_hint"
                 android:textAlignment="center"
                 android:textSize="22sp"
                 tools:layout_editor_absoluteY="308dp" />

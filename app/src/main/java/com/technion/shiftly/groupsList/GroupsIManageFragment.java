@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftly.groupCreation.GroupCreation1Activity;
+import com.technion.shiftly.groupCreation.GroupCreation3Activity;
 import com.technion.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftly.utility.Constants;
 import com.technion.shiftly.utility.CustomSnackbar;
@@ -146,7 +147,9 @@ public class GroupsIManageFragment extends Fragment {
         create_group_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(context,GroupCreation1Activity.class));
+                Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
+                group_edit_creation.putExtra("GROUP_ACTION", "CREATE");
+                startActivity(group_edit_creation);
             }
         });
 
@@ -200,20 +203,29 @@ public class GroupsIManageFragment extends Fragment {
         ((GroupsListAdapter) mAdapter).setLongClickListener(new GroupsListAdapter.ItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                presentDeleteDialog(position);
+                presentEditDeleteDialog(position);
             }
         });
         return view;
     }
 
-    public void presentDeleteDialog(final int position) {
+    public void presentEditDeleteDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
-        builder.setMessage(R.string.delete_group_dialog);
+        builder.setMessage(R.string.edit_delete_group_dialog);
         builder.setCancelable(true);
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.edit_group, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Delete the group only if the user tapped on YES in the dialog
+                Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
+                group_edit_creation.putExtra("GROUP_ACTION", "EDIT");
+                group_edit_creation.putExtra("GROUP_ID", groupsIds.get(position));
+                startActivity(group_edit_creation);
+            }
+        });
+        builder.setNegativeButton(R.string.delete_group, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Delete the group only if the user tapped on "Delete Group" in the dialog
                 deleteGroup(position);
                 groupsIds.remove(position);
                 groupsIconsUrls.remove(position);
@@ -225,10 +237,11 @@ public class GroupsIManageFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
-        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+
             }
         });
         AlertDialog delete_dialog = builder.create();

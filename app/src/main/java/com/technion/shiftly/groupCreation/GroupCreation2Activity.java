@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.abdularis.civ.CircleImageView;
@@ -90,7 +91,21 @@ public class GroupCreation2Activity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_2);
         setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.group_create_label));
+
+        final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
+        String group_id = "";
+
+        final String action_bar_title = getIntent().getExtras().getString("TITLE");
+        TextView group_hint = findViewById(R.id.group_pic_hint);
+
+        if (group_action.equals("CREATE")) {
+            group_hint.setText(R.string.group_pic_create_hint);
+        } else {
+            group_hint.setText(R.string.group_pic_edit_hint);
+            group_id = getIntent().getExtras().getString("GROUP_ID");
+        }
+
+        getSupportActionBar().setTitle(action_bar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -103,16 +118,21 @@ public class GroupCreation2Activity extends AppCompatActivity {
         });
 
         Button continue_button = findViewById(R.id.continue_button_group_creation_2);
+        final String final_group_id = group_id;
+
         continue_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent options_config_intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
+                Intent group_creation_3_intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                options_config_intent.putExtra("GROUP_NAME", group_name);
+                group_creation_3_intent.putExtra("GROUP_NAME", group_name);
+                group_creation_3_intent.putExtra("GROUP_ACTION", group_action);
+                group_creation_3_intent.putExtra("GROUP_ID", final_group_id);
+                group_creation_3_intent.putExtra("TITLE", action_bar_title);
                 if (compressed_group_byte_array != null) {
-                    options_config_intent.putExtra("GROUP_PICTURE", compressed_group_byte_array);
+                    group_creation_3_intent.putExtra("GROUP_PICTURE", compressed_group_byte_array);
                 }
-                startActivity(options_config_intent);
+                startActivity(group_creation_3_intent);
                 finish();
             }
         });
