@@ -1,57 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@drawable/gradient_bg"
-    tools:layout_editor_absoluteY="25dp"
-    android:id="@+id/about" >
+    android:fillViewport="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/about_toolbar"
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/CustomToolBar"
-        app:layout_constraintTop_toTopOf="parent" />
-    <TextView
-        android:id="@+id/contact_title"
-        style="@style/CustomTextViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_contact_us"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/about_toolbar" />
-    <TextView
-        android:id="@+id/contact_email"
-        style="@style/CustomTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/contact_us_email"
-        app:layout_constraintEnd_toEndOf="@id/contact_title"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@id/contact_title" />
-    <TextView
-        android:id="@+id/credits_title"
-        style="@style/CustomTextViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/credits_title"
-        app:layout_constraintEnd_toEndOf="@id/contact_email"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_email" />
-    <TextView
-        android:id="@+id/credits"
-        style="@style/CustomTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@array/credits_list"
-        app:layout_constraintEnd_toEndOf="@id/credits_title"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@id/credits_title" />
+        android:background="@drawable/gradient_bg"
+        android:clipToPadding="false">
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/about_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/CustomToolBar"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/contact_title"
+            style="@style/CustomTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_contact_us"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/about_toolbar" />
+        <TextView
+            android:id="@+id/contact_email"
+            style="@style/CustomTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_us_email"
+            app:layout_constraintEnd_toEndOf="@id/contact_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@id/contact_title" />
+        <TextView
+            android:id="@+id/credits_title"
+            style="@style/CustomTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/credits_title"
+            app:layout_constraintEnd_toEndOf="@id/contact_email"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contact_email" />
+        <TextView
+            android:id="@+id/credits"
+            style="@style/CustomTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@array/credits_list"
+            app:layout_constraintEnd_toEndOf="@id/credits_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@id/credits_title" />
+        <TextView
+            android:id="@+id/privacy_policy_title"
+            style="@style/CustomTextViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy_title"
+            app:layout_constraintEnd_toEndOf="@id/credits"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/credits" />
+        <TextView
+            android:id="@+id/privacy_policy"
+            style="@style/CustomTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy"
+            app:layout_constraintEnd_toEndOf="@id/privacy_policy_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@id/privacy_policy_title"/>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

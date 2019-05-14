@@ -3,6 +3,7 @@ package com.technion.shiftly.miscellaneous;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +20,10 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.about_toolbar_txt));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        TextView privacy_policy = findViewById(R.id.privacy_policy);
+        privacy_policy.setMovementMethod(LinkMovementMethod.getInstance());
+
         mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
