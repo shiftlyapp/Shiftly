@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.technion.shiftly">
+    package="com.technion.shiftlyapp.shiftly">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -25,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m"
         android:allowBackup="false">
-        <activity android:name=".optionsView.OptionsViewActivity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.optionsView.OptionsViewActivity" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" /> <!-- <activity -->
@@ -43,7 +40,7 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".entry.LoginActivity"
+            android:name="com.technion.shiftlyapp.shiftly.entry.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/SplashScreen"
             android:windowSoftInputMode="adjustPan">
@@ -55,24 +52,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".entry.SignupActivity"
+            android:name="com.technion.shiftlyapp.shiftly.entry.SignupActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".groupCreation.GroupCreation1Activity" />
-        <activity android:name=".groupCreation.GroupCreation2Activity" />
-        <activity android:name=".groupCreation.GroupCreation3Activity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation1Activity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation2Activity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation3Activity" />
         <activity
-            android:name=".groupCreation.GroupCreation4Activity"
+            android:name="com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation4Activity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
-            android:name=".groupsList.GroupListsActivity"
+            android:name="com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
-            android:name=".scheduleView.ScheduleViewActivity"
+            android:name="com.technion.shiftlyapp.shiftly.scheduleView.ScheduleViewActivity"
             android:configChanges="screenSize|orientation" />
-        <activity android:name=".miscellaneous.AboutActivity" />
-        <activity android:name=".options.OptionsListActivity" />
-        <activity android:name=".groupJoin.JoinGroupActivity" />
-        <activity android:name=".userUpdate.UserUpdateActivity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.miscellaneous.AboutActivity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.options.OptionsListActivity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.groupJoin.JoinGroupActivity" />
+        <activity android:name="com.technion.shiftlyapp.shiftly.userUpdate.UserUpdateActivity" />
     </application>
 
 </manifest>

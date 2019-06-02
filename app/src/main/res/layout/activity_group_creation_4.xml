@@ -14,8 +14,10 @@
             android:id="@+id/group_creation_confirm_toolbar_3"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:elevation="@dimen/toolbar_elevation_size"
-            android:theme="@style/CustomToolBar" />
+            android:theme="@style/CustomToolBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/signup_header"
@@ -119,26 +121,26 @@
             android:layout_marginBottom="@dimen/image_margin"
             android:src="@drawable/gmail"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sms_share"
+            app:layout_constraintEnd_toStartOf="@+id/etc_share"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/whatsapp_share"
             app:layout_constraintTop_toBottomOf="@+id/group_code"
             app:layout_constraintVertical_bias="0.3" />
 
-        <ImageView
-            android:id="@+id/sms_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
-            android:src="@drawable/sms"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/etc_share"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/email_share"
-            app:layout_constraintTop_toBottomOf="@+id/group_code"
-            app:layout_constraintVertical_bias="0.3" />
+        <!--<ImageView-->
+            <!--android:id="@+id/sms_share"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/image_margin"-->
+            <!--android:layout_marginEnd="@dimen/image_margin"-->
+            <!--android:layout_marginBottom="@dimen/image_margin"-->
+            <!--android:src="@drawable/sms"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/etc_share"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/email_share"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/group_code"-->
+            <!--app:layout_constraintVertical_bias="0.3" />-->
 
         <ImageView
             android:id="@+id/etc_share"
@@ -151,7 +153,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/sms_share"
+            app:layout_constraintStart_toEndOf="@+id/email_share"
             app:layout_constraintTop_toBottomOf="@+id/group_code"
             app:layout_constraintVertical_bias="0.3" />
 

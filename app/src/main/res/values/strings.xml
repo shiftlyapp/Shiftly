@@ -116,14 +116,14 @@
     <string name="message1_share_group_code" type="id">You have been invited to join the group</string>
     <string name="message2_share_group_code" type="id">in Shiftly!\nJoin the group with the following code:</string>
     <string name="message3_share_group_code" type="id">Download Shiftly from here:
-        https://play.google.com/store/apps/details?id=com.technion.shiftly
+        https://play.google.com/store/apps/details?id=com.technion.shiftlyapp.shiftly
     </string>
     <string name="email_subject_message_share_group_code">Shiftly - Group Invitation</string>
     <string name="remember_checkbox">Remember me</string>
     <string name="schedule_no_options">Not all options were filled!</string>
     <string name="view_options_no_options">No options are available!</string>
     <string name="schedule_generation_success">Schedule generated successfully!</string>
-    <string name="schedule_generation_error">A viable schedule could not be created!</string>
+    <string name="schedule_generation_error">A full schedule could not be created!</string>
     <string name="starting_hour_hint">Starting hour of working day:</string>
     <string name="shift_len_hint">Length of each shift (in hours):</string>
     <string name="err_user_is_admin">You cannot join your own group!</string>
