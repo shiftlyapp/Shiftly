@@ -1,0 +1,173 @@
+<resources>
+
+    <!-- General -->
+    <string name="app_name">שיפטלי</string>
+    <string name="welcome_msg">ברוכים הבאים אל</string>
+    <string name="user_img">משתמש</string>
+    <string name="continue_text">המשך</string>
+    <string name="apply_text">אישור</string>
+    <string name="skip_text">דלג/י</string>
+    <string name="configure_text">הגדר/י</string>
+    <string name="about_toolbar_txt">אודות</string>
+    <string name="recommend_landscape">סובב/י את המסך לתצוגה טובה יותר</string>
+
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+
+    <!-- Signup and Login -->
+    <string name="signup_img">הרשמה</string>
+    <string name="email_edittext_hint">כתובת דוא״ל</string>
+    <string name="password_edittext_hint">סיסמה</string>
+    <string name="login_txt">התחברות</string>
+    <string name="signup_txt">הרשמה</string>
+    <string name="forgot_password_txt">שכחתי סיסמה\u0020</string>
+    <string name="new_txt">חדשים באפליקציה? הירשמו</string>
+    <string name="signup_header">הירשמו לשיפטלי</string>
+    <string name="firstname_edittext_hint">שם פרטי</string>
+    <string name="lastname_edittext_hint">שם משפחה</string>
+    <string name="confirm_password_edittext_hint">סיסמה שנית</string>
+    <string name="login_clock_animation_alpha">0.075</string>
+
+    <string name="err_firstname">נא הכניסו שם חוקי</string>
+    <string name="err_lastname">נא הכניסו שם חוקי</string>
+    <string name="err_email">נא הכניסו כתובת דוא״ל חוקית</string>
+    <string name="err_password">סיסמה לא חוקית (אסורים רווחים. אורך מינימלי: 6 תווים)</string>
+    <string name="err_password_confirmation">סיסמאות לא תואמות</string>
+    <string name="err_login_email">נא הכניסו כתובת דוא״ל חוקית</string>
+    <string name="err_login_password">נא הכניסו סיסמה חוקית</string>
+    <string name="err_invalid_email">שגיאה: דוא״ל אינו קיים</string>
+    <string name="err_invalid_email_2">שגיאה: פורמט דוא״ל אינו חוקי</string>
+    <string name="err_invalid_pass">שגיאה: סיסמה אינה חוקית</string>
+    <string name="err_login_attempts">שגיאה: יותר מדי ניסיונות התחברות</string>
+
+    <string name="login_success">התחברת בהצלחה!</string>
+    <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">792989287718195</string>
+    <string name="fb_login_protocol_scheme">fb792989287718195</string>
+    <string name="facebook_button_txt">התחברות</string>
+    <string name="sign_in_with">התחברות באמצעות:</string>
+
+    <string name="login_err_password">נא הקלד/י סיסמה</string>
+    <string name="reset_pass_text">איפוס הסיסמה ישלח אל:\u0020</string>
+    <string name="reset_pass_title">איפוס סיסמה</string>
+    <string name="reset_email_sent">דוא״ל איפוס סיסמה נשלח בהצלחה</string>
+    <string name="account_created">החשבון נוצר! מתחבר...</string>
+
+    <string name="google_login_button">כפתור התחברות לגוגל</string>
+    <string name="facebook_login_button">כפתור התחברות לפייסבוק</string>
+
+    <!-- GroupCreation -->
+    <string name="group_create_label">יצירת קבוצה</string>
+    <string name="group_create">צור/י</string>
+    <string name="group_create_succeed">%1$s נוצר בהצלחה</string>
+    <string name="group_edit_label">עריכת קבוצה</string>
+    <string name="group_share_hint">שתפ/י קוד זה עם העובדים שלך\n כדי שהם יצטרפו לקבוצה: </string>
+    <string name="options_configure">הגדרת אופציות</string>
+    <string name="fill_options_text">להמשיך, אנא בחר/י הגדרות כלליות למשמרות</string>
+    <string name="group_pic_create_hint">כעת, העלה/י תמונה לקבוצה:</string>
+    <string name="group_pic_edit_hint">העלה/י תמונה חדשה לקבוצה:</string>
+    <string name="group_name_create_hint">ראשית, תנ/י שם לקבוצה:</string>
+    <string name="group_name_edit_hint">ערוכ/י את שם הקבוצה שלך:</string>
+    <string name="group_name_edittext_hint">שם קבוצה</string>
+    <string name="err_groupname">שם קבוצה אינו חוקי!</string>
+    <string name="group_create_tooltip">לחצ/י כאן כדי ליצור קבוצה</string>
+
+    <!-- Calendar -->
+    <string name="title_activity_schedule_view">צפייה בסידורים</string>
+    <string name="title_home">יומי</string>
+    <string name="title_dashboard">שבועי</string>
+    <string name="title_notifications">אג׳נדה</string>
+    <string name="daily_label">לוח יומי</string>
+    <string name="weekly_label">לוח שבועי</string>
+    <string name="agenda_label">לוח אג׳נדה</string>
+
+    <!-- Group lists -->
+    <string name="groups_i_belong">קבוצות שאני חבר בהן</string>
+    <string name="groups_i_manage">קבוצת בניהולי</string>
+    <string name="groups_empty_belong">עליך להצטרף לקבוצה</string>
+    <string name="groups_empty_manage">עליך ליצור קבוצה</string>
+    <string name="schedule_generated">סידור חדש נוצר!</string>
+    <string name="confirm_schedule">אישור</string>
+    <string name="members">חברים</string>
+
+    <!-- About -->
+    <string name="title_contact_us">צור קשר:</string>
+    <string name="contact_us_email">course236503@gmail.com</string>
+    <string name="credits_title">קרדיטים:</string>
+    <string name="options_toolbar_text">הגדרת אופציות</string>
+    <string name="group_num_days_hint">מספר ימים בשבוע:</string>
+    <string name="group_num_shifts_hint">מספר משמרות ביום:</string>
+    <string name="group_num_employees_hint">מספר עובדים במשמרת:</string>
+    <string name="menu">תפריט</string>
+    <string name="done_text">סיום</string>
+
+    <!-- Group join -->
+    <string name="join_group_hint">הכנס/י מזהה קבוצה:</string>
+    <string name="join_group_edittext_hint">מזהה קבוצה</string>
+    <string name="err_groupid">פורמט מזהה אינו חוקי</string>
+    <string name="group_join_label">הצטרפ/י לקבוצה</string>
+    <string name="err_group_doesnt_exist">הקבוצה אינה קיימת</string>
+    <string name="err_group_already_exist">הינך כבר חבר/ה בקבוצה זו</string>
+    <string name="group_join_success">הצטרפת לקבוצה בהצלחה!</string>
+    <string name="continue_text_group_creation_2">המשך</string>
+    <string name="group_join_tooltip">לחצ/י כאן כדי להצטרף לקבוצה</string>
+
+    <!-- Share group code -->
+    <string name="message1_share_group_code" type="id">הוזמנת להצטרף לקבוצה בשיפטלי!</string>
+    <string name="message2_share_group_code" type="id">הצטרפ/י לקבוצה עם הקוד הבא:</string>
+    <string name="message3_share_group_code" type="id">הוריד/י את שיפטלי מכאן:
+        https://play.google.com/store/apps/details?id=com.technion.shiftlyapp.shiftly
+    </string>
+    <string name="email_subject_message_share_group_code">שיפטלי - הזמנה לקבוצה</string>
+    <string name="remember_checkbox">זכור אותי</string>
+    <string name="schedule_no_options">לא כל האופציות מולאו!</string>
+    <string name="view_options_no_options">אין אופציות זמינות!</string>
+    <string name="schedule_generation_success">סידור נוצר בהצלחה!</string>
+    <string name="schedule_generation_error">סידור ויאבילי לא קיים!</string>
+    <string name="starting_hour_hint">שעת התחלה של יום העבודה:</string>
+    <string name="shift_len_hint">אורך משמרת (בשעות):</string>
+    <string name="err_user_is_admin">אינך יכול/ה להצטרף לקבוצה בניהולך</string>
+    <string name="copy_group_code_text">קוד הקבוצה הועתק!</string>
+    <string name="options_updated_text">האופציות שלך נרשמו בהצלחה!</string>
+
+    <string name="options_tooltip">הזנת אופציות</string>
+    <string name="generate_schedule_tooltip">יצירת סידור</string>
+    <string name="copy_to_clipboard_tooltip">העתקה</string>
+
+    <!-- View Options -->
+    <string name="options_view_toolbar_text">צפיה באופציות שהתקבלו</string>
+    <string name="hour_format">%s:00 - %s:00</string>
+    <string name="options_view_title">אופציות שנשלחו על ידי %s</string>
+    <string name="options_view_subtitle">העובדים הבאים טרם הגישו אופציות השבוע:</string>
+
+    <!-- Group Deletion -->
+
+    <string name="edit_delete_group_dialog">בחר/י פעולה:</string>
+    <string name="delete_group_tooltip">לחיצה ארוכה כאן כדי לערוך או למחוק את הקבוצה</string>
+    <string name="delete_user_dialog">האם את/ה בטוח/ה שברצונך למחוק את המשתמש שלך?</string>
+    <string name="user_deletion_error">מחק/י את כל הקבוצות שאת/ה מנהל/ת קודם</string>
+    <string name="generate_schedule_dialog">האם את/ה בטוח/ה שברצונך ליצור סידור חדש? הסידור הנוכחי שלך ימחק</string>
+    <string name="flexibility_graph">גמישות העובדים</string>
+    <string name="view_options_tooltip">צפיה באופציות</string>
+
+    <!-- Drawer -->
+    <string name="delete_account">מחיקת משתמש</string>
+    <string name="edit_account">עריכת משתמש</string>
+    <string name="sign_out">יציאה</string>
+    <string name="about">אודות</string>
+
+    <!-- Account update -->
+    <string name="user_update_header">עדכנ/י את החשבון שלך</string>
+    <string name="user_update_txt">עדכון</string>
+    <string name="new_password">סיסמה חדשה</string>
+    <string name="account_updated">פרטי החשבון התעדכנו!</string>
+    <string name="edit_group">עריכת קבוצה</string>
+    <string name="delete_group">מחיקת קבוצה</string>
+    <string name="cancel">ביטול</string>
+    <string name="group_edit_success">הקבוצה נערכה בהצלחה!</string>
+    <string name="edit_pic_error">לא ניתן היה להעלות את התמונה</string>
+    <string name="privacy_policy_title">מדיניות פרטיות:</string>
+    <string name="privacy_policy"><a href="https://github.com/shiftlyapp/Shiftly/wiki/Privacy-Policy">מדיניות הפרטיות של שיפטלי</a></string>
+
+
+</resources>
