@@ -298,7 +298,16 @@ public class GroupListsActivity extends AppCompatActivity {
 
                                         }
                                     }
-                                    // Delete the user entirely
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                    user.delete()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                }
+                                            });
+                                    // Go back to the login activity
                                     mAuth.signOut();
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                     usersRef.child(currentUser.getUid()).removeValue();
