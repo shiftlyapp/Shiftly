@@ -214,10 +214,41 @@ public class GroupsIManageFragment extends Fragment {
         builder.setPositiveButton(R.string.edit_group, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
-                group_edit_creation.putExtra("GROUP_ACTION", "EDIT");
-                group_edit_creation.putExtra("GROUP_ID", groupsIds.get(position));
-                startActivity(group_edit_creation);
+                // Get group details to present in the initial form
+                String group_id = groupsIds.get(position);
+                databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String groupsName = dataSnapshot.child("group_name").getValue().toString();
+                        String daysNum = dataSnapshot.child("days_num").getValue().toString();
+                        String employeesPerShift = dataSnapshot.child("employees_per_shift").getValue().toString();
+                        String shiftsPerDay = dataSnapshot.child("shifts_per_day").getValue().toString();
+                        String shiftLength = dataSnapshot.child("shift_length").getValue().toString();
+                        String startingTime = dataSnapshot.child("starting_time").getValue().toString();
+                        String iconUrl = dataSnapshot.child("group_icon_url").getValue().toString();
+
+                        Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
+                        group_edit_creation.putExtra("GROUP_ACTION", "EDIT");
+                        group_edit_creation.putExtra("GROUP_ID", groupsIds.get(position));
+
+                        group_edit_creation.putExtra("group_name", groupsName);
+                        group_edit_creation.putExtra("days_num", daysNum);
+                        group_edit_creation.putExtra("employees_per_shift", employeesPerShift);
+                        group_edit_creation.putExtra("shifts_per_day", shiftsPerDay);
+                        group_edit_creation.putExtra("shift_length", shiftLength);
+                        group_edit_creation.putExtra("starting_time", startingTime);
+                        group_edit_creation.putExtra("group_icon_url", iconUrl);
+
+                        startActivity(group_edit_creation);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+
+
             }
         });
         builder.setNegativeButton(R.string.delete_group, new DialogInterface.OnClickListener() {
