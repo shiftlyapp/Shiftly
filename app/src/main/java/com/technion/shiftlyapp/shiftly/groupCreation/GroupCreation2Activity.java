@@ -16,6 +16,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.github.abdularis.civ.CircleImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -110,6 +111,11 @@ public class GroupCreation2Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         circleImageView = findViewById(R.id.group_image);
+        // handle uploading group image in case of editing
+        String url = getIntent().getExtras().getString("group_icon_uri");
+        if (url != null && !url.equals("none")) {
+            Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(circleImageView);
+        }
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +135,15 @@ public class GroupCreation2Activity extends AppCompatActivity {
                 group_creation_3_intent.putExtra("GROUP_ACTION", group_action);
                 group_creation_3_intent.putExtra("GROUP_ID", final_group_id);
                 group_creation_3_intent.putExtra("TITLE", action_bar_title);
+
+                if (group_action.equals("EDIT")) {
+                    group_creation_3_intent.putExtra("days_num", getIntent().getExtras().getString("days_num"));
+                    group_creation_3_intent.putExtra("employees_per_shift", getIntent().getExtras().getString("employees_per_shift"));
+                    group_creation_3_intent.putExtra("shifts_per_day", getIntent().getExtras().getString("shifts_per_day"));
+                    group_creation_3_intent.putExtra("shift_length", getIntent().getExtras().getString("shift_length"));
+                    group_creation_3_intent.putExtra("starting_time", getIntent().getExtras().getString("starting_time"));
+                }
+
                 if (compressed_group_byte_array != null) {
                     group_creation_3_intent.putExtra("GROUP_PICTURE", compressed_group_byte_array);
                 }

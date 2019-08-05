@@ -236,21 +236,5 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 startActivity(Intent.createChooser(email_intent, "Send Email"));
             }
         });
-
-        // Text message sharing
-//        sms_share.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
-//                sendIntent.setData(Uri.parse("smsto:"));
-//                sendIntent.putExtra("sms_body", message_share_group_code);
-//
-//                try {
-//                    startActivity(sendIntent);
-//                } catch (android.content.ActivityNotFoundException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        });
     }
 }

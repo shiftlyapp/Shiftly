@@ -226,7 +226,7 @@ public class GroupsIManageFragment extends Fragment {
                         String shiftsPerDay = dataSnapshot.child("shifts_per_day").getValue().toString();
                         String shiftLength = dataSnapshot.child("shift_length").getValue().toString();
                         String startingTime = dataSnapshot.child("starting_time").getValue().toString();
-                        String iconUrl = dataSnapshot.child("group_icon_url").getValue().toString();
+                        String iconUri = dataSnapshot.child("group_icon_url").getValue().toString();
 
                         Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
                         group_edit_creation.putExtra("GROUP_ACTION", "EDIT");
@@ -238,7 +238,7 @@ public class GroupsIManageFragment extends Fragment {
                         group_edit_creation.putExtra("shifts_per_day", shiftsPerDay);
                         group_edit_creation.putExtra("shift_length", shiftLength);
                         group_edit_creation.putExtra("starting_time", startingTime);
-                        group_edit_creation.putExtra("group_icon_url", iconUrl);
+                        group_edit_creation.putExtra("group_icon_uri", iconUri);
 
                         startActivity(group_edit_creation);
 

@@ -39,6 +39,7 @@ public class GroupCreation1Activity extends AppCompatActivity {
 
         final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
         String group_id = "";
+        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
 
         String action_bar_title = "";
         TextView group_hint = findViewById(R.id.group_name_hint);
@@ -50,6 +51,9 @@ public class GroupCreation1Activity extends AppCompatActivity {
             action_bar_title = getResources().getString(R.string.group_edit_label);
             group_hint.setText(R.string.group_name_edit_hint);
             group_id = getIntent().getExtras().getString("GROUP_ID");
+
+            // Set current group name
+            group_name_edittext.setText(getIntent().getExtras().getString("group_name"));
         }
 
         getSupportActionBar().setTitle(action_bar_title);
@@ -57,7 +61,6 @@ public class GroupCreation1Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
         final AwesomeValidation mAwesomeValidation = new AwesomeValidation(BASIC);
         mAwesomeValidation.addValidation(GroupCreation1Activity.this, R.id.group_name_edittext, "^[a-zA-Z0-9\u0590-\u05fe][a-zA-Z0-9\u0590-\u05fe\\s]*$", R.string.err_groupname);
 
@@ -75,6 +78,16 @@ public class GroupCreation1Activity extends AppCompatActivity {
                     group_creation_2_intent.putExtra("GROUP_ACTION", group_action);
                     group_creation_2_intent.putExtra("GROUP_ID", final_group_id);
                     group_creation_2_intent.putExtra("TITLE", final_action_bar_title);
+
+                    if (group_action.equals("EDIT")) {
+                        group_creation_2_intent.putExtra("days_num", getIntent().getExtras().getString("days_num"));
+                        group_creation_2_intent.putExtra("employees_per_shift", getIntent().getExtras().getString("employees_per_shift"));
+                        group_creation_2_intent.putExtra("shifts_per_day", getIntent().getExtras().getString("shifts_per_day"));
+                        group_creation_2_intent.putExtra("shift_length", getIntent().getExtras().getString("shift_length"));
+                        group_creation_2_intent.putExtra("starting_time", getIntent().getExtras().getString("starting_time"));
+                        group_creation_2_intent.putExtra("group_icon_uri", getIntent().getExtras().getString("group_icon_uri"));
+                    }
+
                     startActivity(group_creation_2_intent);
                 }
             }
