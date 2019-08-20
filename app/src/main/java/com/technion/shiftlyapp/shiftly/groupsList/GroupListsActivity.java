@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -201,6 +203,7 @@ public class GroupListsActivity extends AppCompatActivity {
                                                                 gotoLogin();
                                                             }
                                                         });
+                                                LoginManager.getInstance().logOut();
                                                 gotoLogin();
                                             }
                                         });
@@ -308,7 +311,12 @@ public class GroupListsActivity extends AppCompatActivity {
                                                 }
                                             });
                                     // Go back to the login activity
-                                    mAuth.signOut();
+                                    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                                    if (accessToken != null) {
+                                        LoginManager.getInstance().logOut();
+                                    } else {
+                                        mAuth.signOut();
+                                    }
                                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                     usersRef.child(currentUser.getUid()).removeValue();
                                 }
