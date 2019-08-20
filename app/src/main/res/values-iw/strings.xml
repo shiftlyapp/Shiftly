@@ -41,9 +41,9 @@
     <string name="err_login_attempts">שגיאה: יותר מדי ניסיונות התחברות</string>
 
     <string name="login_success">התחברת בהצלחה!</string>
-    <string name="web_client_id">660636259153-pv59b1cou8cindonlkh7k4fuajk21anp.apps.googleusercontent.com</string>
-    <string name="facebook_app_id">792989287718195</string>
-    <string name="fb_login_protocol_scheme">fb792989287718195</string>
+    <string name="web_client_id">660636259153-f2u2698ccq3mk5hj7q99qpisulcu7f3b.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">479690842852700</string>
+    <string name="fb_login_protocol_scheme">fb479690842852700</string>
     <string name="facebook_button_txt">התחברות</string>
     <string name="sign_in_with">התחברות באמצעות:</string>
 

@@ -95,10 +95,10 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        loadPreferneces();
+        loadPreferences();
     }
 
-    private void loadPreferneces() {
+    private void loadPreferences() {
         if (prefs != null) {
             String email_pref = prefs.getString("EMAIL", "");
             String pwd_pref = prefs.getString("PWD", "");
@@ -129,8 +129,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GOOGLE_LOGIN_SUCCESS) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -144,11 +144,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        startActivity(new Intent(getApplicationContext(), GroupListsActivity.class));
+        Intent i = new Intent(getApplicationContext(), GroupListsActivity.class);
+        i.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_BELONG_FRAGMENT);
+        startActivity(i);
         finish();
     }
 
     private void signInWithGoogle() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         Intent signInWithGoogleIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInWithGoogleIntent, Constants.GOOGLE_LOGIN_SUCCESS);
     }
@@ -191,9 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             updateUI();
                         } else {
-                            Toast.makeText(LoginActivity.this, task.getException().toString()
-                                    ,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -258,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                 fb_button_hidden.performClick();
             }
         });
-        fb_button_hidden.setReadPermissions(Arrays.asList("email", "public_profile"));
+        fb_button_hidden.setPermissions(Arrays.asList("email", "public_profile"));
         fb_button_hidden.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -279,6 +281,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         fb_button_hidden.setSoundEffectsEnabled(false);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         ImageButton google_login = findViewById(R.id.google_login_button);
         google_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,14 +299,6 @@ public class LoginActivity extends AppCompatActivity {
         TextView signup_txt = (TextView) findViewById(R.id.new_to_our_app);
         email_edt = findViewById(R.id.email_edittext);
         password_edt = findViewById(R.id.password_edittext);
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Animation bounce_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce_anim);
         logo.startAnimation(bounce_anim);
