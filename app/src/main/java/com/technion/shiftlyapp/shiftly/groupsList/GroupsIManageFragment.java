@@ -303,8 +303,7 @@ public class GroupsIManageFragment extends Fragment {
                     memberIds.add(member.getKey());
                 }
 
-                // Delete the group entirely
-                groupsRef.child(group_id).removeValue();
+
 
                 // Go over the saved list and for each user go to groups and delete the correct group
                 usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -315,13 +314,16 @@ public class GroupsIManageFragment extends Fragment {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                        // for each user, reduce the decrease the groups number by 1
                         for (final DataSnapshot user : dataSnapshot.getChildren()) {
 
                             if (memberIds.contains(user.getKey())) {
 
                                 final String old_groups_num = String.valueOf(dataSnapshot.child(user.getKey()).child("groups_count").getValue());
                                 final String new_groups_num = String.valueOf(Long.valueOf(old_groups_num) - 1);
+
+                                // Delete the group entirely
+                                groupsRef.child(group_id).removeValue();
 
                                 final DatabaseReference userGroups = usersRef.child(user.getKey()).child("groups");
                                 userGroups.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -330,6 +332,7 @@ public class GroupsIManageFragment extends Fragment {
                                         int group_index = 0;
                                         for (DataSnapshot userGroup : dataSnapshot.getChildren()) {
                                             if (userGroup.getValue().equals(group_id)) {
+                                                // remove the group from each user
                                                 usersRef.child(user.getKey()).child("groups").child(String.valueOf(group_index)).removeValue();
                                                 usersRef.child(user.getKey()).child("groups_count").setValue(new_groups_num);
                                                 break;
@@ -345,6 +348,7 @@ public class GroupsIManageFragment extends Fragment {
                                 });
                             }
                         }
+
                     }
                 });
             }
