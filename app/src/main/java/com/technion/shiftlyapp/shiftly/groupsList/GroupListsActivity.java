@@ -291,13 +291,21 @@ public class GroupListsActivity extends AppCompatActivity {
                                     // And reduce members count by one
                                     for (DataSnapshot group : dataSnapshot.getChildren()) {
                                         if (groupsUserIsMemberOf.contains(group.getKey())) {
-                                            final String old_members_count_num = String.valueOf(dataSnapshot.child(group.getKey()).child("members_count").getValue());
-                                            final String new_members_count_num = String.valueOf(Long.valueOf(old_members_count_num) - 1);
+                                            final Long old_members_count_num = (Long)dataSnapshot.child(group.getKey()).child("members_count").getValue();
+                                            final Long new_members_count_num = (Long)Long.valueOf(old_members_count_num) - 1;
 
                                             // Delete member
                                             groupsRef.child(group.getKey()).child("members").child(currentUser.getUid()).removeValue();
                                             // Reduce members_count of group by 1
                                             groupsRef.child(group.getKey()).child("members_count").setValue(new_members_count_num);
+
+                                            // Remove the options & schedule from the group
+                                            if(dataSnapshot.child("options").exists()) {
+                                                dataSnapshot.child("options").getRef().removeValue();
+                                            }
+                                            if(dataSnapshot.child("schedule").exists()) {
+                                                dataSnapshot.child("schedule").getRef().removeValue();
+                                            }
 
                                         }
                                     }
