@@ -299,12 +299,17 @@ public class GroupListsActivity extends AppCompatActivity {
                                             // Reduce members_count of group by 1
                                             groupsRef.child(group.getKey()).child("members_count").setValue(new_members_count_num);
 
-                                            // Remove the options & schedule from the group
+                                            // Remove the user from options & schedule in the group
                                             if(dataSnapshot.child("options").exists()) {
-                                                dataSnapshot.child("options").getRef().removeValue();
+                                                dataSnapshot.child("options").child(currentUser.getUid()).getRef().removeValue();
                                             }
                                             if(dataSnapshot.child("schedule").exists()) {
-                                                dataSnapshot.child("schedule").getRef().removeValue();
+                                                for(DataSnapshot current_shift : dataSnapshot.child("schedule").getChildren()) {
+                                                    String currentEmployeeId = current_shift.getValue(String.class);
+                                                    if(currentEmployeeId == currentUser.getUid()) {
+                                                        current_shift.getRef().setValue("null");
+                                                    }
+                                                }
                                             }
 
                                         }
