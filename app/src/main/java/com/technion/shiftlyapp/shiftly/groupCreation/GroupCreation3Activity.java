@@ -16,8 +16,11 @@ import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -180,12 +183,35 @@ public class GroupCreation3Activity extends AppCompatActivity {
                             }, Constants.REDIRECTION_DELAY);
                         }
                     }, Constants.REDIRECTION_DELAY);
-
                 }
 
             }
         });
 
+    }
+
+
+    interface GroupUpdateCallback {
+        void onCallBack();
+    }
+
+    // A wrapper which handles the options & schedule deletion after editing a group
+    private void deleteOptionsAndSchedule(GroupUpdateCallback updateCallback, String group_id) {
+        mGroupsRef.child(group_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("options").exists()) {
+                    dataSnapshot.child("options").getRef().removeValue();
+                }
+                if(dataSnapshot.child("schedule").exists()) {
+                    dataSnapshot.child("schedule").getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        updateCallback.onCallBack();
     }
 
     private void edit_group(final String group_id, Long days_num, Long shifts_per_day, Long employees_per_shift, String starting_time, Long shift_length, String group_name, byte[] group_pic_array) {
@@ -201,6 +227,12 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
         // Group name
         mGroupsRef.child(group_id).child("group_name").setValue(group_name);
+
+        // Remove current schedule and options
+        deleteOptionsAndSchedule(new GroupUpdateCallback() {
+            @Override
+            public void onCallBack() { }
+        }, group_id);
 
     }
 
