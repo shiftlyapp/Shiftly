@@ -2,11 +2,11 @@ package com.technion.shiftlyapp.shiftly.utility;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.technion.shiftlyapp.shiftly.R;
 
 public class CustomSnackbar {
@@ -40,7 +40,7 @@ public class CustomSnackbar {
     public void show(Context context, View v, String msg, int type, int length) {
         Snackbar snackbar = Snackbar.make(v, msg, length);
         View snackbarView = snackbar.getView();
-        TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView tv = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         } else {

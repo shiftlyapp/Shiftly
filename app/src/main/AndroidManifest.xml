@@ -75,6 +75,7 @@
         <activity android:name="com.technion.shiftlyapp.shiftly.options.OptionsListActivity" />
         <activity android:name="com.technion.shiftlyapp.shiftly.groupJoin.JoinGroupActivity" />
         <activity android:name="com.technion.shiftlyapp.shiftly.userUpdate.UserUpdateActivity" />
+
     </application>
 
 </manifest>

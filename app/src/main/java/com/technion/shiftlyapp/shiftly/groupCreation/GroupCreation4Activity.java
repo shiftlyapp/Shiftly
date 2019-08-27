@@ -1,5 +1,6 @@
 package com.technion.shiftlyapp.shiftly.groupCreation;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -8,9 +9,6 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -18,9 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +36,7 @@ import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
+import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 
 import static com.technion.shiftlyapp.shiftly.utility.Constants.SHOW_LOADING_ANIMATION;
 
@@ -52,6 +57,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
     private ImageView whatsapp_share, email_share, /*sms_share,*/ etc_share;
     private EditText group_code_edittext;
     private boolean back_pressed_locked;
+    private ConstraintLayout mLayout;
+    private CustomSnackbar mSnackbar;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -152,6 +159,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
         mainToolbar = findViewById(R.id.group_creation_confirm_toolbar_3);
         loading_animation = findViewById(R.id.loading_icon_creation);
         loading_animation.setScale(Constants.LOADING_ANIM_SCALE);
+        mLayout = (ConstraintLayout) findViewById(R.id.anim_bg);
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
 
         done_animation = findViewById(R.id.success_img);
         whatsapp_share = findViewById(R.id.whatsapp_share);
@@ -186,7 +195,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         Long days_num = extras.getLong("DAYS_NUM");
         Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
         Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
-        String starting_hour = extras.getString("STARTING_HOUR");
+        final String starting_hour = extras.getString("STARTING_HOUR");
         Long shift_length = extras.getLong("SHIFT_LEN");
 
         pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, admin_UID, group_name, group_UID);
@@ -228,12 +237,35 @@ public class GroupCreation4Activity extends AppCompatActivity {
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent email_intent = new Intent(Intent.ACTION_SEND);
-                email_intent.setType("text/html");
-                email_intent.putExtra(Intent.EXTRA_EMAIL, "");
+
+
+                Intent email_intent = new Intent(Intent.ACTION_SENDTO);
+
+                email_intent.setData(Uri.parse("mailto:"));
+                email_intent.putExtra(Intent.EXTRA_EMAIL, new String[]{});
                 email_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
                 email_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
-                startActivity(Intent.createChooser(email_intent, "Send Email"));
+
+                try {
+                    startActivity(email_intent);
+                } catch (ActivityNotFoundException e) {
+                    // In case no email app is available
+                    mSnackbar.show(GroupCreation4Activity.this, mLayout, getResources().getString(R.string.no_email_app), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
+
+                }
+            }
+        });
+
+        // Other sharing
+        etc_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent etc_intent = new Intent(Intent.ACTION_SEND);
+                etc_intent.setType("text/html");
+                etc_intent.putExtra(Intent.EXTRA_EMAIL, "");
+                etc_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
+                etc_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
+                startActivity(Intent.createChooser(etc_intent, "Share"));
             }
         });
     }

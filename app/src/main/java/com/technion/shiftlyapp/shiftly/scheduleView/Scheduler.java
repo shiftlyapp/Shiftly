@@ -1,6 +1,6 @@
 package com.technion.shiftlyapp.shiftly.scheduleView;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;

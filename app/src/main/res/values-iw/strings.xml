@@ -179,5 +179,6 @@
     <string name="thursday">חמישי</string>
     <string name="friday">שישי</string>
     <string name="saturday">שבת</string>
+    <string name="no_email_app">אין אפליקצית מייל מותקנת</string>
 
 </resources>

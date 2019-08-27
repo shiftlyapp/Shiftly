@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/groups_i_manage_container"
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/loading" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/groups_i_manage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:scrollbars="vertical" />
         </RelativeLayout>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_fab"
             style="@style/FAB"
             android:layout_width="wrap_content"
@@ -130,6 +130,6 @@
             android:textColor="@android:color/white"
             app:tooltipColor="@color/orange_color" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
