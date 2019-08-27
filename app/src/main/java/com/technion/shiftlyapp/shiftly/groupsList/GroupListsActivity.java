@@ -300,15 +300,18 @@ public class GroupListsActivity extends AppCompatActivity {
                                             groupsRef.child(group.getKey()).child("members_count").setValue(new_members_count_num);
 
                                             // Remove the user from options & schedule in the group
-                                            if(dataSnapshot.child("options").exists()) {
-                                                dataSnapshot.child("options").child(currentUser.getUid()).getRef().removeValue();
+                                            if(group.child("options").exists()) {
+                                                group.child("options").child(currentUser.getUid()).getRef().removeValue();
                                             }
-                                            if(dataSnapshot.child("schedule").exists()) {
-                                                for(DataSnapshot current_shift : dataSnapshot.child("schedule").getChildren()) {
+                                            if(group.child("schedule").exists()) {
+                                                int i=0;
+                                                for(DataSnapshot current_shift : group.child("schedule").getChildren()) {
                                                     String currentEmployeeId = current_shift.getValue(String.class);
-                                                    if(currentEmployeeId == currentUser.getUid()) {
-                                                        current_shift.getRef().setValue("null");
+                                                    if(currentEmployeeId.equals(currentUser.getUid())) {
+//                                                        current_shift.getRef().setValue("null");
+                                                        group.child("schedule").getRef().child(String.valueOf(i)).setValue("null");
                                                     }
+                                                    i++;
                                                 }
                                             }
 
