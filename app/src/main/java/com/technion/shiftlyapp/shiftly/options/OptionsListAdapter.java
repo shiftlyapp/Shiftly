@@ -40,8 +40,10 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
         // - replace the contents of the view with that element
         holder.day_textview.setText(day);
         holder.shift_textview.setText(time);
+        holder.checkbox.setChecked(state_array.get(position));
 
         (holder.options_layout).setBackgroundColor(Color.WHITE);
+
     }
 
     public class OptionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -59,9 +61,9 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
             checkbox = itemView.findViewById(R.id.options_checkbox);
             options_layout = itemView.findViewById(R.id.options_list_item);
 
-
             itemView.setOnClickListener(this);
             checkbox.setOnClickListener(this);
+
         }
 
         @Override
@@ -78,6 +80,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
                 checkbox.setChecked(false);
                 state_array.put(adapterPosition, false);
             }
+
         }
     }
 
@@ -93,6 +96,7 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if (options == null) return 0;
         return options.size();
     }
 
@@ -104,4 +108,5 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
 }
