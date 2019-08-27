@@ -171,6 +171,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 String logged_in_user_uuid = mAuth.getCurrentUser().getUid();
 
                 if (admin_uuid.equals(logged_in_user_uuid)) {
+                    navigationView.getMenu().removeItem(R.id.navigation_agenda);
+
                     scheduleFab.setVisibility(View.VISIBLE);
                     scheduleFab.setIcon(R.drawable.ic_generate_schedule_fab);
                     scheduleFab.setTitle("Create schedule");
@@ -183,11 +185,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                     schedule_tooltip.setVisibility(View.VISIBLE);
                     view_options_tooltip.setVisibility(View.VISIBLE);
-                    navigationView.getMenu().removeItem(R.id.navigation_agenda);
+
                 } else {
                     optionsFab.setVisibility(View.VISIBLE);
                     optionsFab.setIcon(R.drawable.ic_edit_timeslots_fab);
                     options_tooltip.setVisibility(View.VISIBLE);
+
+
                 }
             }
 

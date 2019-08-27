@@ -222,11 +222,11 @@ public class GroupListsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        int intent_fragment = getIntent().getExtras().getInt("FRAGMENT_TO_LOAD");
-        if (intent_fragment == Constants.GROUPS_I_MANAGE_FRAGMENT) {
-            mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
-        } else if (intent_fragment == Constants.GROUPS_I_BELONG_FRAGMENT) {
+        if (getIntent().getExtras() == null ||
+                getIntent().getExtras().getInt("FRAGMENT_TO_LOAD") == Constants.GROUPS_I_BELONG_FRAGMENT) {
             mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
+        } else {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
         }
     }
 

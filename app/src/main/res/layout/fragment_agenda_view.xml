@@ -5,33 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.alamkanak.weekview.WeekView
-        android:id="@+id/agendaView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/users_shifts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:columnGap="@dimen/fragment_weekly_column_gap"
-        app:dayNameLength="length_short"
-        app:eventPadding="20dp"
-        app:eventCornerRadius="30dp"
-        app:eventTextColor="@android:color/white"
-        app:dayBackgroundColor="@android:color/white"
-        app:eventTextSize="@dimen/fragment_weekly_event_text_size"
-        app:firstDayOfWeek="sunday"
-        app:futureBackgroundColor="@android:color/white"
-        app:futureWeekendBackgroundColor="@android:color/white"
-        app:headerColumnBackground="@color/colorPrimary"
-        app:headerColumnPadding="@dimen/fragment_weekly_column_padding"
-        app:headerColumnTextColor="@color/text_color_primary"
-        app:headerRowPadding="5dp"
-        app:headerRowBackgroundColor="@color/colorPrimary"
-        app:hourHeight="25dp"
-        app:scrollDuration="0"
-        app:hourSeparatorColor="@color/calendar_div"
-        app:minHourHeight="25dp"
-        app:pastBackgroundColor="@android:color/white"
-        app:pastWeekendBackgroundColor="@android:color/white"
-        app:textSize="@dimen/fragment_weekly_text_size"
-        app:todayBackgroundColor="@android:color/white"
-        app:todayHeaderTextColor="@color/text_color_primary" />
+        android:layout_marginTop="0dp"
+        android:elevation="@dimen/elevation_high"
+        android:outlineProvider="bounds"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

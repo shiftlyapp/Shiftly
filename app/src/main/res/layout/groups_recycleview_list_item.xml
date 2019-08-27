@@ -19,7 +19,6 @@
         style="@style/ListTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/list_item_text_margin_top"
         android:layout_toEndOf="@id/group_icon"
         android:textColor="@color/colorPrimaryDark"

@@ -74,12 +74,12 @@
 
     <!-- Calendar -->
     <string name="title_activity_schedule_view">צפייה בסידורים</string>
-    <string name="title_home">יומי</string>
-    <string name="title_dashboard">שבועי</string>
-    <string name="title_notifications">אג׳נדה</string>
+    <string name="daily">יומי</string>
+    <string name="weekly">שבועי</string>
+    <string name="agenda">אג׳נדה</string>
     <string name="daily_label">לוח יומי</string>
     <string name="weekly_label">לוח שבועי</string>
-    <string name="agenda_label">לוח אג׳נדה</string>
+    <string name="agenda_label">אג׳נדה</string>
 
     <!-- Group lists -->
     <string name="groups_i_belong">קבוצות שאני חבר בהן</string>
@@ -168,6 +168,16 @@
     <string name="edit_pic_error">לא ניתן היה להעלות את התמונה</string>
     <string name="privacy_policy_title">מדיניות פרטיות:</string>
     <string name="privacy_policy"><a href="https://github.com/shiftlyapp/Shiftly/wiki/Privacy-Policy">מדיניות הפרטיות של שיפטלי</a></string>
+    <string name="start_time">התחלה: </string>
+    <string name="end_time">סיום: </string>
 
+    <!-- Week days -->
+    <string name="sunday">ראשון</string>
+    <string name="monday">שני</string>
+    <string name="tuesday">שלישי</string>
+    <string name="wednesday">רביעי</string>
+    <string name="thursday">חמישי</string>
+    <string name="friday">שישי</string>
+    <string name="saturday">שבת</string>
 
 </resources>
