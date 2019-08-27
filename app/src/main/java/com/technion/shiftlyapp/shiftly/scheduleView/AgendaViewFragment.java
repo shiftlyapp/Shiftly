@@ -70,11 +70,15 @@ public class AgendaViewFragment extends Fragment {
 
                     for (int shift = 0; shift < shifts_per_day; shift++) {
 
-                        Long current_shift_num = (day * shifts_per_day) + shift;
-                        if (shift_nums.contains(current_shift_num)) {
-                            days.add(num_to_day(day));
-                            start_times.add(num_to_start_time(shift, shift_length, starting_time));
-                            end_times.add(num_to_end_time(shift, shift_length, starting_time));
+                        for (int sub_shift = 0; sub_shift < employees_per_shift; sub_shift++) {
+
+                            Long current_shift_num = day * (shifts_per_day * employees_per_shift) + (shift * employees_per_shift) + sub_shift;
+
+                            if (shift_nums.contains(current_shift_num)) {
+                                days.add(num_to_day(day));
+                                start_times.add(num_to_start_time(shift, shift_length, starting_time));
+                                end_times.add(num_to_end_time(shift, shift_length, starting_time));
+                            }
                         }
                     }
                 }
@@ -95,7 +99,7 @@ public class AgendaViewFragment extends Fragment {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Long employees_per_shift = dataSnapshot.child(groupId).child("groups_count").getValue(Long.class);
+                Long employees_per_shift = dataSnapshot.child(groupId).child("employees_per_shift").getValue(Long.class);
                 Long days_num = dataSnapshot.child(groupId).child("days_num").getValue(Long.class);
                 Long shift_length = dataSnapshot.child(groupId).child("shift_length").getValue(Long.class);
                 Long shifts_per_day = dataSnapshot.child(groupId).child("shifts_per_day").getValue(Long.class);

@@ -39,9 +39,9 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     public void onBindViewHolder(@NonNull final ShiftsListAdapter.ViewHolder holder, int position) {
         String dayName = mDaysNames.get(position);
         holder.mDayNameView.setText(dayName);
-        String startingHour = context.getResources().getString(R.string.start_time) + String.format("%s", String.valueOf(mStartTimes.get(position)));
+        String startingHour = context.getResources().getString(R.string.start_time) + " " + String.format("%s", String.valueOf(mStartTimes.get(position)));
         holder.mStartHourView.setText(startingHour);
-        String endingHour = context.getResources().getString(R.string.end_time) + String.format("%s", String.valueOf(mEndTimes.get(position)));
+        String endingHour = context.getResources().getString(R.string.end_time) + " " + String.format("%s", String.valueOf(mEndTimes.get(position)));
         holder.mEndHourView.setText(endingHour);
 
         if (position == 0) { // Do this if first item (Remove top line)

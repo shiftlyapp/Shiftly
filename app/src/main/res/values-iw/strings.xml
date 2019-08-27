@@ -168,8 +168,8 @@
     <string name="edit_pic_error">לא ניתן היה להעלות את התמונה</string>
     <string name="privacy_policy_title">מדיניות פרטיות:</string>
     <string name="privacy_policy"><a href="https://github.com/shiftlyapp/Shiftly/wiki/Privacy-Policy">מדיניות הפרטיות של שיפטלי</a></string>
-    <string name="start_time">התחלה: </string>
-    <string name="end_time">סיום: </string>
+    <string name="start_time">התחלה:</string>
+    <string name="end_time">סיום:</string>
 
     <!-- Week days -->
     <string name="sunday">ראשון</string>

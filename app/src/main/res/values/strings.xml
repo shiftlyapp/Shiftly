@@ -168,8 +168,8 @@
     <string name="edit_pic_error">Could not upload picture</string>
     <string name="privacy_policy_title">Privacy policy:</string>
     <string name="privacy_policy"><a href="https://github.com/shiftlyapp/Shiftly/wiki/Privacy-Policy">Shiftly Privacy Policy</a></string>
-    <string name="start_time">Start: </string>
-    <string name="end_time">End: </string>
+    <string name="start_time">Start:</string>
+    <string name="end_time">End:</string>
 
     <!-- Week days -->
     <string name="sunday">Sunday</string>
