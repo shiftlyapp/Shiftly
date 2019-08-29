@@ -3,20 +3,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -314,41 +315,43 @@ public class GroupsIManageFragment extends Fragment {
 
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        // for each user, reduce the decrease the groups number by 1
-                        for (final DataSnapshot user : dataSnapshot.getChildren()) {
+                        if (memberIds.isEmpty()) {
+                            groupsRef.child(group_id).removeValue();
+                        } else {
+                            // for each user, decrease the groups number by 1
+                            for (final DataSnapshot user : dataSnapshot.getChildren()) {
+                                if (memberIds.contains(user.getKey())) {
 
-                            if (memberIds.contains(user.getKey())) {
+                                    final String old_groups_num = String.valueOf(dataSnapshot.child(user.getKey()).child("groups_count").getValue());
+                                    final String new_groups_num = String.valueOf(Long.valueOf(old_groups_num) - 1);
 
-                                final String old_groups_num = String.valueOf(dataSnapshot.child(user.getKey()).child("groups_count").getValue());
-                                final String new_groups_num = String.valueOf(Long.valueOf(old_groups_num) - 1);
+                                    // Delete the group entirely
+                                    groupsRef.child(group_id).removeValue();
 
-                                // Delete the group entirely
-                                groupsRef.child(group_id).removeValue();
-
-                                final DatabaseReference userGroups = usersRef.child(user.getKey()).child("groups");
-                                userGroups.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        int group_index = 0;
-                                        for (DataSnapshot userGroup : dataSnapshot.getChildren()) {
-                                            if (userGroup.getValue().equals(group_id)) {
-                                                // remove the group from each user
-                                                usersRef.child(user.getKey()).child("groups").child(String.valueOf(group_index)).removeValue();
-                                                usersRef.child(user.getKey()).child("groups_count").setValue(new_groups_num);
-                                                break;
+                                    final DatabaseReference userGroups = usersRef.child(user.getKey()).child("groups");
+                                    userGroups.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            int group_index = 0;
+                                            for (DataSnapshot userGroup : dataSnapshot.getChildren()) {
+                                                if (userGroup.getValue().equals(group_id)) {
+                                                    // remove the group from each user
+                                                    usersRef.child(user.getKey()).child("groups").child(String.valueOf(group_index)).removeValue();
+                                                    usersRef.child(user.getKey()).child("groups_count").setValue(new_groups_num);
+                                                    break;
+                                                }
+                                                group_index++;
                                             }
-                                            group_index++;
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
-
                     }
                 });
             }
