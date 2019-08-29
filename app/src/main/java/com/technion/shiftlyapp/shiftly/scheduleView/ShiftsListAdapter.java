@@ -1,26 +1,29 @@
 package com.technion.shiftlyapp.shiftly.scheduleView;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.technion.shiftlyapp.shiftly.R;
+
 import java.util.List;
 
 class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolder> {
 
     private List<String> mDaysNames;
-    private List<Long> mStartTimes;
-    private List<Long> mEndTimes;
+    private List<String> mStartTimes;
+    private List<String> mEndTimes;
     private LayoutInflater mInflater;
     private Context context;
 
     // data is passed into the constructor
-    ShiftsListAdapter(Context context, List<String> names, List<Long> start_times, List<Long> end_times) {
+    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times) {
         this.mInflater = LayoutInflater.from(context);
         this.mDaysNames = names;
         this.mStartTimes = start_times;
@@ -39,9 +42,13 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     public void onBindViewHolder(@NonNull final ShiftsListAdapter.ViewHolder holder, int position) {
         String dayName = mDaysNames.get(position);
         holder.mDayNameView.setText(dayName);
-        String startingHour = context.getResources().getString(R.string.start_time) + " " + String.format("%s", String.valueOf(mStartTimes.get(position)));
+
+        String startingHour = String.format("%s", mStartTimes.get(position));
+        if (!startingHour.equals("")) startingHour = context.getResources().getString(R.string.start_time) + " " + startingHour;
         holder.mStartHourView.setText(startingHour);
-        String endingHour = context.getResources().getString(R.string.end_time) + " " + String.format("%s", String.valueOf(mEndTimes.get(position)));
+
+        String endingHour = String.format("%s", mEndTimes.get(position));
+        if (!endingHour.equals("")) endingHour = context.getResources().getString(R.string.end_time) + " " + endingHour;
         holder.mEndHourView.setText(endingHour);
 
         if (position == 0) { // Do this if first item (Remove top line)

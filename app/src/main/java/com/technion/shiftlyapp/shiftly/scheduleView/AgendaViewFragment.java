@@ -2,18 +2,19 @@ package com.technion.shiftlyapp.shiftly.scheduleView;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,8 +33,8 @@ public class AgendaViewFragment extends Fragment {
     private Context context;
     private List<Long> shift_nums;
     private List<String> days;
-    private List<Long> start_times;
-    private List<Long> end_times;
+    private List<String> start_times;
+    private List<String> end_times;
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
@@ -83,6 +84,11 @@ public class AgendaViewFragment extends Fragment {
                     }
                 }
 
+                if (days.isEmpty()) {
+                    days.add(context.getResources().getString(R.string.agenda_no_shifts_message));
+                    start_times.add("");
+                    end_times.add("");
+                }
                 mAdapter = new ShiftsListAdapter(context, days, start_times, end_times);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
@@ -137,12 +143,12 @@ public class AgendaViewFragment extends Fragment {
         mRecyclerView.setLayoutAnimation(controller);
     }
 
-    private Long num_to_start_time(int shift, Long shift_length, String starting_time) {
-        return Long.valueOf(starting_time) + (shift_length * shift);
+    private String num_to_start_time(int shift, Long shift_length, String starting_time) {
+        return String.valueOf(Long.valueOf(starting_time) + (shift_length * shift));
     }
 
-    private Long num_to_end_time(int shift, Long shift_length, String starting_time) {
-        return Long.valueOf(starting_time) + (shift_length * shift) + shift_length;
+    private String num_to_end_time(int shift, Long shift_length, String starting_time) {
+        return String.valueOf(Long.valueOf(starting_time) + (shift_length * shift) + shift_length);
     }
 
     private String num_to_day(int day) {
