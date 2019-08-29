@@ -1,11 +1,10 @@
 //package com.technion.shiftlyapp.shiftly;
 //
-//import android.support.test.espresso.Espresso;
-//import android.support.test.espresso.action.ViewActions;
-//import android.support.test.espresso.intent.Intents;
-//import android.support.test.espresso.matcher.ViewMatchers;
-//import android.support.test.rule.ActivityTestRule;
-//import android.support.test.runner.AndroidJUnit4;
+//import androidx.test.espresso.Espresso;
+//import androidx.test.espresso.action.ViewActions;
+//import androidx.test.espresso.intent.Intents;
+//import androidx.test.espresso.matcher.ViewMatchers;
+//import androidx.test.rule.ActivityTestRule;
 //
 //import com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation3Activity;
 //import com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation4Activity;
@@ -15,12 +14,10 @@
 //import org.junit.BeforeClass;
 //import org.junit.Rule;
 //import org.junit.Test;
-//import org.junit.runner.RunWith;
 //
-//import static android.support.test.espresso.intent.Intents.intended;
-//import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+//import static androidx.test.espresso.intent.Intents.intended;
+//import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 //
-//@RunWith(AndroidJUnit4.class)
 //public class GroupCreation3Test {
 //
 //    @Rule
