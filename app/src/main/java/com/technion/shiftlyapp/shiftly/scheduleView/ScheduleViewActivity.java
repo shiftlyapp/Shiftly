@@ -6,21 +6,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +47,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private CustomSnackbar mSnackbar;
     private FirebaseAuth mAuth;
     private String group_id;
+    private Fragment currentFragment;
+    private String currentFragmentName;
 
     private int starting_time;
     private int shift_length;
@@ -59,19 +62,22 @@ public class ScheduleViewActivity extends AppCompatActivity {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment = null;
+            currentFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_daily:
-                    fragment = new DailyViewFragment();
+                    currentFragment = new DailyViewFragment();
+                    currentFragmentName = "daily";
                     break;
                 case R.id.navigation_weekly:
-                    fragment = new WeeklyViewFragment();
+                    currentFragment = new WeeklyViewFragment();
+                    currentFragmentName = "weekly";
                     break;
                 case R.id.navigation_agenda:
-                    fragment = new AgendaViewFragment();
+                    currentFragment = new AgendaViewFragment();
+                    currentFragmentName = "agenda";
                     break;
             }
-            return launchFragment(fragment);
+            return launchFragment(currentFragment);
         }
     };
 
@@ -119,6 +125,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
         setSupportActionBar(schedule_view_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        currentFragment = new DailyViewFragment();
+        currentFragmentName = "daily";
         navigationView = findViewById(R.id.bottom_navigation_schedule);
         schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -299,7 +307,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        launchFragment(new DailyViewFragment());
+        launchFragment(currentFragment);
     }
 
     private void generateSchedule() {
@@ -335,6 +343,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
                         // Upload schedule to DB
                     }
 
+                    if (currentFragmentName.equals("daily")) {
+                        navigationView.getMenu().performIdentifierAction(R.id.navigation_daily, 0);
+                    } else if (currentFragmentName.equals("weekly")) {
+                        navigationView.getMenu().performIdentifierAction(R.id.navigation_weekly, 0);
+                    } else if (currentFragmentName.equals("agenda")) {
+                        navigationView.getMenu().performIdentifierAction(R.id.navigation_agenda, 0);
+                    }
                 }
             }
 

@@ -2,13 +2,14 @@ package com.technion.shiftlyapp.shiftly.scheduleView;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.alamkanak.weekview.WeekView;
 import com.technion.shiftlyapp.shiftly.R;
@@ -26,7 +27,7 @@ public class DailyViewFragment extends Fragment {
         String groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.daily_label));
         WeekView mDayView = (WeekView) v.findViewById(R.id.dayView);
-        Scheduler daily_schedule = new Scheduler(mDayView,groupId,mColors,1,"");
+        Scheduler daily_schedule = new Scheduler(mDayView,groupId,mColors,1);
         return v;
     }
 }

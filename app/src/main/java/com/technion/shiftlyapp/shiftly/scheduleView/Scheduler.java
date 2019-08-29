@@ -29,9 +29,6 @@ public class Scheduler {
     private Long duration;
     private Map<String, Integer> employeeColors;
     private int steps = 0;
-    private String employee_id_agenda;
-    private String agendaName;
-    private boolean foundAgendaName = false;
 
     private int[] mColors;
 
@@ -51,12 +48,11 @@ public class Scheduler {
         this.events = events;
     }
 
-    Scheduler(WeekView mWeekView, String groupId, int[] mColors, int num_of_days_to_show, final String employee_id_agenda) {
+    Scheduler(WeekView mWeekView, String groupId, int[] mColors, int num_of_days_to_show) {
         this.mWeekView = mWeekView;
         this.mWeekView.setNumberOfVisibleDays(num_of_days_to_show);
         this.groupId = groupId;
         this.mColors = mColors;
-        this.employee_id_agenda = employee_id_agenda;
         this.events = new ArrayList<>();
 
         Calendar cal = Calendar.getInstance();
@@ -74,15 +70,6 @@ public class Scheduler {
                         matchedEvents.add(event);
                     }
                 }
-//                if (!employee_id_agenda.isEmpty()) {
-//                    List<WeekViewEvent> agendaEvents = new ArrayList<>();
-//                    for (WeekViewEvent event: matchedEvents) {
-//                        if (event.getName().equals(agendaName)) {
-//                            agendaEvents.add(event);
-//                        }
-//                    }
-//                    return agendaEvents;
-//                }
                 return matchedEvents;
             }
         };
@@ -114,10 +101,10 @@ public class Scheduler {
                 for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                     String employeeId = current_employee.getValue(String.class);
                     String employeeName = (employeeId.equals("null")) ? "N/A" : dataSnapshot.child("members").child(employeeId).getValue().toString();
-                    if (employeeId.equals(employee_id_agenda) && !foundAgendaName) {
-                        agendaName = employeeName;
-                        foundAgendaName = true;
-                    }
+//                    if (employeeId.equals(employee_id_agenda) && !foundAgendaName) {
+//                        agendaName = employeeName;
+//                        foundAgendaName = true;
+//                    }
                     employeeNamesList.add(employeeName);
                     employeeColors.put(employeeName, mColors[x++ % mColors.length]);
                 }
