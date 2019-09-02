@@ -181,5 +181,7 @@
     <string name="saturday">שבת</string>
     <string name="no_email_app">אין אפליקצית מייל מותקנת</string>
     <string name="agenda_no_shifts_message">אין משמרות קרובות</string>
+    <string name="copy_group_code">העתק קוד קבוצה</string>
+    <string name="share">שתף</string>
 
 </resources>

@@ -14,8 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -40,7 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ScheduleViewActivity extends AppCompatActivity {
+public class ScheduleViewActivity extends AppCompatActivity implements ShareActionProvider.OnShareTargetSelectedListener{
 
     private ConstraintLayout mLayout;
     private DatabaseReference databaseRef;
@@ -102,11 +104,23 @@ public class ScheduleViewActivity extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.schedule_menu, menu);
+
+        ShareActionProvider myShareActionProvider =
+                (ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.share_item));
+
+        Intent myShareIntent = new Intent(Intent.ACTION_SEND);
+
+
+        myShareIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        myShareIntent.setType("text/plain");
+        myShareActionProvider.setShareIntent(myShareIntent);
+
+//        myShareActionProvider.setOnShareTargetSelectedListener(this);
+
         return true;
     }
 
@@ -115,6 +129,15 @@ public class ScheduleViewActivity extends AppCompatActivity {
         ClipData clipData = ClipData.newPlainText("group code", group_id);
         clipboard.setPrimaryClip(clipData);
         Toast.makeText(ScheduleViewActivity.this, R.string.copy_group_code_text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onShareTargetSelected(ShareActionProvider source,
+                                         Intent intent) {
+        Toast.makeText(this, intent.getComponent().toString(),
+                Toast.LENGTH_LONG).show();
+
+        return(false);
     }
 
     @Override
@@ -128,12 +151,19 @@ public class ScheduleViewActivity extends AppCompatActivity {
         currentFragment = new DailyViewFragment();
         currentFragmentName = "daily";
         navigationView = findViewById(R.id.bottom_navigation_schedule);
+
         schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.copy_to_clipboard_item:
                         copyGroupIDToClipboard();
+                        break;
+                    case R.id.share_item:
+
+
+//                        startActivity(Intent.createChooser(myShareIntent, "Share schedule"));
+
                         break;
                 }
                 return true;
@@ -282,6 +312,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
+        // FAB
         scheduleFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

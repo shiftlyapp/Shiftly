@@ -6,6 +6,12 @@
         android:id="@+id/copy_to_clipboard_item"
         android:icon="@drawable/ic_copy_to_clipboard"
         app:showAsAction="ifRoom"
-        android:title="Copy Group Code" />
+        android:title="@string/copy_group_code" />
+    <item
+        android:id="@+id/share_item"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
 
 </menu>
