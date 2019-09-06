@@ -131,7 +131,7 @@
     <string name="options_updated_text">Your options were recorded successfully!</string>
 
     <string name="options_tooltip">Submit your options</string>
-    <string name="generate_schedule_tooltip">Generate schedule</string>
+    <string name="generate_schedule_tooltip">Generate Schedule</string>
     <string name="copy_to_clipboard_tooltip">Copy</string>
 
     <!-- View Options -->
@@ -163,6 +163,7 @@
     <string name="account_updated">Account details updated!</string>
     <string name="edit_group">Edit Group</string>
     <string name="delete_group">Delete Group</string>
+    <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="group_edit_success">Group edited successfully!</string>
     <string name="edit_pic_error">Could not upload picture</string>
@@ -179,7 +180,12 @@
     <string name="thursday">Thursday</string>
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
+
+    <!-- Agenda -->
     <string name="no_email_app">No email app is installed</string>
     <string name="agenda_no_shifts_message">No upcoming shifts</string>
+    <string name="edit_schedule_label">Edit Schedule</string>
+    <string name="schedule_tooltip">Tap a shift to choose the employee</string>
+    <string name="edit_schedule_tooltip">Edit Schedule</string>
 
 </resources>

@@ -2,20 +2,21 @@ package com.technion.shiftlyapp.shiftly.options;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -183,13 +184,13 @@ public class OptionsListActivity extends AppCompatActivity {
     }
     private void addShiftsToList() {
         List<String> days_array = new ArrayList<>();
-        days_array.add("Sunday");
-        days_array.add("Monday");
-        days_array.add("Tuesday");
-        days_array.add("Wednesday");
-        days_array.add("Thursday");
-        days_array.add("Friday");
-        days_array.add("Saturday");
+        days_array.add(getResources().getString(R.string.sunday));
+        days_array.add(getResources().getString(R.string.monday));
+        days_array.add(getResources().getString(R.string.tuesday));
+        days_array.add(getResources().getString(R.string.wednesday));
+        days_array.add(getResources().getString(R.string.thursday));
+        days_array.add(getResources().getString(R.string.friday));
+        days_array.add(getResources().getString(R.string.saturday));
         for (int i = 1; i < days_num_param + 1; i++) {
             for (int j = 1; j < shifts_per_day_param + 1; j++) {
                 String shift_as_string = Integer.toString(j);

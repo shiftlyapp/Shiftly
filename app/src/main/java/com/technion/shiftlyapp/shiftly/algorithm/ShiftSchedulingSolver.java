@@ -45,11 +45,7 @@ public class ShiftSchedulingSolver {
                     only_worker_available = entry;
                 }
             }
-            // No needed anymore for best achievable schedule
-            // The i'th shift cannot be assigned. Schedule is unsolvable.
-//            if (num_of_employees_can_work_this_shift == 0) {
-//                return false;
-//            }
+
             if (num_of_employees_can_work_this_shift == 1) {
                 if (i>0) {
                     if (only_worker_available.getValue().charAt(i-workers_in_shift) == '1') {
@@ -158,6 +154,9 @@ public class ShiftSchedulingSolver {
         return result;
     }
 
+    /*
+    This function
+     */
     @Override
     public String toString() {
         String sched = "";

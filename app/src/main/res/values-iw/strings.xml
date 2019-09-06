@@ -163,6 +163,7 @@
     <string name="account_updated">פרטי החשבון התעדכנו!</string>
     <string name="edit_group">עריכת קבוצה</string>
     <string name="delete_group">מחיקת קבוצה</string>
+    <string name="save">שמירה</string>
     <string name="cancel">ביטול</string>
     <string name="group_edit_success">הקבוצה נערכה בהצלחה!</string>
     <string name="edit_pic_error">לא ניתן היה להעלות את התמונה</string>
@@ -179,7 +180,12 @@
     <string name="thursday">חמישי</string>
     <string name="friday">שישי</string>
     <string name="saturday">שבת</string>
+
+    <!-- Agenda -->
     <string name="no_email_app">אין אפליקצית מייל מותקנת</string>
     <string name="agenda_no_shifts_message">אין משמרות קרובות</string>
+    <string name="edit_schedule_label">עריכת סידור</string>
+    <string name="schedule_tooltip">לחצ/י על משמרת כדי לבחור עובד/ת</string>
+    <string name="edit_schedule_tooltip">עריכת סידור</string>
 
 </resources>

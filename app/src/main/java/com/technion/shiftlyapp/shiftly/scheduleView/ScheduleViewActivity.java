@@ -147,11 +147,20 @@ public class ScheduleViewActivity extends AppCompatActivity {
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
         final FloatingActionButton optionsFab = findViewById(R.id.options_fab);
         final FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
+        final FloatingActionButton editScheduleFab = findViewById(R.id.edit_schedule_fab);
         final FloatingActionButton viewOptionsFab = findViewById(R.id.view_options_fab);
 
         final FloatingActionsMenu menuFab = findViewById(R.id.menu_fab);
+
         final TooltipView options_tooltip = findViewById(R.id.options_tooltip);
         options_tooltip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setVisibility(View.GONE);
+            }
+        });
+        final TooltipView edit_schedule_tooltip = findViewById(R.id.edit_schedule_tooltip);
+        edit_schedule_tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.GONE);
@@ -185,6 +194,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     scheduleFab.setIcon(R.drawable.ic_generate_schedule_fab);
                     scheduleFab.setTitle("Create schedule");
 
+                    editScheduleFab.setVisibility(View.VISIBLE);
+                    editScheduleFab.setIcon(R.drawable.ic_edit_schedule_fab);
+                    editScheduleFab.setTitle("Edit schedule");
+
                     viewOptionsFab.setVisibility(View.VISIBLE);
                     viewOptionsFab.setIcon(R.drawable.ic_view_options);
                     viewOptionsFab.setTitle("View options");
@@ -192,6 +205,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     menuFab.setVisibility(View.VISIBLE);
 
                     schedule_tooltip.setVisibility(View.VISIBLE);
+                    edit_schedule_tooltip.setVisibility(View.VISIBLE);
                     view_options_tooltip.setVisibility(View.VISIBLE);
 
                 } else {
@@ -303,6 +317,15 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 });
                 AlertDialog generate_schedule_dialog = builder.create();
                 generate_schedule_dialog.show();
+            }
+        });
+
+        editScheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ScheduleEditActivity.class);
+                intent.putExtra("GROUP_ID", group_id);
+                startActivity(intent);
             }
         });
 

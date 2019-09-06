@@ -3,16 +3,13 @@ package com.technion.shiftlyapp.shiftly.scheduleView;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +19,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
+import com.venmo.view.TooltipView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgendaViewFragment extends Fragment {
+public class ScheduleEditActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private ShiftsListAdapter mAdapter;
@@ -39,19 +38,27 @@ public class AgendaViewFragment extends Fragment {
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
+    private CustomSnackbar mSnackbar;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_agenda_view, container, false);
-        context = inflater.getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_schedule_edit);
+        Toolbar schedule_edit_toolbar = (Toolbar) findViewById(R.id.schedule_edit_toolbar);
+        setSupportActionBar(schedule_edit_toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mRecyclerView = view.findViewById(R.id.users_shifts);
+        context = getApplicationContext();
 
-        groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
-        employeeId = getActivity().getIntent().getExtras().getString("EMPLOYEE_ID");
+        mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.agenda_label));
+        mRecyclerView = findViewById(R.id.group_shifts);
+
+        groupId = getIntent().getExtras().getString("GROUP_ID");
+
+        getSupportActionBar().setTitle(getResources().getString(R.string.edit_schedule_label));
 
         // Configuring RecyclerView with A LinearLayout and adding dividers
         initializeRecyclerAnimation();
@@ -65,6 +72,15 @@ public class AgendaViewFragment extends Fragment {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
         groupsRef = firebaseRootRef.child("Groups");
+
+
+        final TooltipView schedule_tooltip = findViewById(R.id.schedule_edit_shifts_tooltip);
+        schedule_tooltip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view){
+                view.setVisibility(View.GONE);
+            }
+        });
 
         readData(new FirebaseCallback() {
             @Override
@@ -99,10 +115,9 @@ public class AgendaViewFragment extends Fragment {
             }
         });
 
-        return view;
-
     }
 
+    // TODO leave only this
     private void readData(final FirebaseCallback firebaseCallback) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -115,9 +130,8 @@ public class AgendaViewFragment extends Fragment {
 
                 Long counter = 0L;
                 for (DataSnapshot postSnapshot : dataSnapshot.child(groupId).child("schedule").getChildren()) {
-                    if (postSnapshot.getValue().equals(employeeId)) {
-                        shift_nums.add(counter);
-                    }
+                    shift_nums.add(counter);
+                    employees_ids.add((String) postSnapshot.getValue());
                     counter++;
                 }
 

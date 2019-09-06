@@ -38,4 +38,17 @@
         android:layout_marginEnd="@dimen/text_margin_right"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/agenda_time_size" />
+
+    <TextView
+        android:id="@+id/employee_id"
+        style="@style/ListTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/shift_starting_hour"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/list_item_image_left_margin"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/agenda_day_text_size" />
+
 </RelativeLayout>
