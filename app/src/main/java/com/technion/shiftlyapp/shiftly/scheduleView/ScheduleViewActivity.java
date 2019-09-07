@@ -160,10 +160,6 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                         copyGroupIDToClipboard();
                         break;
                     case R.id.share_item:
-
-
-//                        startActivity(Intent.createChooser(myShareIntent, "Share schedule"));
-
                         break;
                 }
                 return true;
@@ -234,9 +230,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
         optionsFab.setOnClickListener(new View.OnClickListener() {
@@ -263,44 +257,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                                     getResources().getString(R.string.view_options_no_options),
                                     CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                         } else {
-                            starting_time = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
-                            shift_length = Integer.parseInt(dataSnapshot.child("shift_length").getValue().toString());
-                            shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
-                            days_num = Integer.parseInt(dataSnapshot.child("days_num").getValue().toString());
-                            workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
-                            String group_name = dataSnapshot.child("group_name").getValue().toString();
-
-                            // Collect the group members map
-                            LinkedHashMap<String, String> group_members = new LinkedHashMap<>();
-                            // Collect the members that are yet to send options
-                            String workers_without_options = "";
-
-                            for (DataSnapshot postSnapshot : dataSnapshot.child("members").getChildren()) {
-                                group_members.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
-                                if (!group_options.containsKey(postSnapshot.getKey().toString())) {
-                                    workers_without_options += (postSnapshot.getValue().toString() + "\n");
-                                }
-                            }
-
-                            // Switch uuids with names
-                            HashMap<String, String> options = new HashMap<>();
-                            for (LinkedHashMap.Entry<String, String> entry : group_options.entrySet()) {
-                                options.put(group_members.get(entry.getKey()), entry.getValue());
-                            }
-
-                            // Pass the member's related options to the next activity
-                            Intent intent = new Intent(view.getContext(), OptionsViewActivity.class);
-
-                            intent.putExtra("GROUP_NAME", group_name);
-                            intent.putExtra("STARTING_TIME", starting_time);
-                            intent.putExtra("SHIFT_LENGTH", shift_length);
-                            intent.putExtra("SHIFTS_PER_DAY", shifts_per_day);
-                            intent.putExtra("DAYS_NUM", days_num);
-                            intent.putExtra("WORKERS_IN_SHIFT", workers_in_shift);
-                            intent.putExtra("WORKERS_WITHOUT_OPTIONS", workers_without_options);
-
-                            intent.putExtra("OPTIONS", options);
-                            startActivity(intent);
+                            presentOptions(dataSnapshot, group_options, view);
                         }
                     }
 
@@ -341,6 +298,47 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         launchFragment(currentFragment);
     }
 
+    private void presentOptions(@NonNull DataSnapshot dataSnapshot, LinkedHashMap<String, String> group_options, View view) {
+        starting_time = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
+        shift_length = Integer.parseInt(dataSnapshot.child("shift_length").getValue().toString());
+        shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
+        days_num = Integer.parseInt(dataSnapshot.child("days_num").getValue().toString());
+        workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
+        String group_name = dataSnapshot.child("group_name").getValue().toString();
+
+        // Collect the group members map
+        LinkedHashMap<String, String> group_members = new LinkedHashMap<>();
+        // Collect the members that are yet to send options
+        String workers_without_options = "";
+
+        for (DataSnapshot postSnapshot : dataSnapshot.child("members").getChildren()) {
+            group_members.put(postSnapshot.getKey(), postSnapshot.getValue().toString());
+            if (!group_options.containsKey(postSnapshot.getKey().toString())) {
+                workers_without_options += (postSnapshot.getValue().toString() + "\n");
+            }
+        }
+
+        // Switch uuids with names
+        HashMap<String, String> options = new HashMap<>();
+        for (LinkedHashMap.Entry<String, String> entry : group_options.entrySet()) {
+            options.put(group_members.get(entry.getKey()), entry.getValue());
+        }
+
+        // Pass the member's related options to the next activity
+        Intent intent = new Intent(view.getContext(), OptionsViewActivity.class);
+
+        intent.putExtra("GROUP_NAME", group_name);
+        intent.putExtra("STARTING_TIME", starting_time);
+        intent.putExtra("SHIFT_LENGTH", shift_length);
+        intent.putExtra("SHIFTS_PER_DAY", shifts_per_day);
+        intent.putExtra("DAYS_NUM", days_num);
+        intent.putExtra("WORKERS_IN_SHIFT", workers_in_shift);
+        intent.putExtra("WORKERS_WITHOUT_OPTIONS", workers_without_options);
+
+        intent.putExtra("OPTIONS", options);
+        startActivity(intent);
+    }
+
     private void generateSchedule() {
         // Pull data from db
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
@@ -348,10 +346,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 LinkedHashMap<String, String> group_options = getGroupOptions(dataSnapshot);
-                if (group_options == null ||
-                        group_options.size() < (Long)dataSnapshot.child("members_count").getValue()) {
-                    mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                } else {
+                if (group_options != null && group_options.size() >= (Long) dataSnapshot.child("members_count").getValue()) {
                     String employees_per_shift = (dataSnapshot.child("employees_per_shift").getValue()).toString();
                     // Run scheduling algorithm
                     ShiftSchedulingSolver solver = new ShiftSchedulingSolver(group_options, Integer.parseInt(employees_per_shift));
@@ -359,7 +354,6 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     // result is always true
 
                     List<String> generated_schedule = solver.getFinal_schedule();
-                    System.out.println(generated_schedule.size());
                     Map<String, Object> schedule_map = new HashMap<>();
                     schedule_map.put("schedule", generated_schedule);
                     databaseRef.updateChildren(schedule_map);
@@ -367,27 +361,30 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     if (generated_schedule.contains("null")) {
                         // Present a snackbar of "A full schedule could not be created" (warning)
                         mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-
                     } else {
                         // Present a snackbar of "Schedule generated!" (success)
                         mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
                         // Upload schedule to DB
                     }
 
-                    if (currentFragmentName.equals("daily")) {
-                        navigationView.getMenu().performIdentifierAction(R.id.navigation_daily, 0);
-                    } else if (currentFragmentName.equals("weekly")) {
-                        navigationView.getMenu().performIdentifierAction(R.id.navigation_weekly, 0);
-                    } else if (currentFragmentName.equals("agenda")) {
-                        navigationView.getMenu().performIdentifierAction(R.id.navigation_agenda, 0);
+                    switch (currentFragmentName) {
+                        case "daily":
+                            navigationView.getMenu().performIdentifierAction(R.id.navigation_daily, 0);
+                            break;
+                        case "weekly":
+                            navigationView.getMenu().performIdentifierAction(R.id.navigation_weekly, 0);
+                            break;
+                        case "agenda":
+                            navigationView.getMenu().performIdentifierAction(R.id.navigation_agenda, 0);
+                            break;
                     }
+                } else {
+                    mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_no_options), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
