@@ -233,7 +233,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         scheduleTable.addView(row);
     }
 
-    private void createTable(ArrayList<ArrayList<String>> table, int rowLength) {
+    private void createTableBody(ArrayList<ArrayList<String>> table, int rowLength) {
         for (int i = 0; i < table.size(); i++) {
             ArrayList<String> row = table.get(i);
             // Shift starting time is calculated for each shift
@@ -344,14 +344,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                                         // Clear the old share table
                                         scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
                                         scheduleTable.removeAllViewsInLayout();
-
-                                        // Prepare the schedule array
-                                        ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable();
-
-                                        // Prepare the table's header
-                                        createHeader(days_num +1);
-                                        // Prepare the schedule table itself
-                                        createTable(scheduleArray, (days_num*workers_in_shift +1));
+                                        createWeeklyScheduleTableLayout();
 
                                         scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                                             @Override
@@ -500,6 +493,15 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         launchFragment(currentFragment);
+    }
+
+    private void createWeeklyScheduleTableLayout() {
+        // Prepare the schedule array
+        ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable();
+        // Prepare the table's header
+        createHeader(days_num +1);
+        // Prepare the schedule table itself
+        createTableBody(scheduleArray, (days_num*workers_in_shift +1));
     }
 
     private void getGroupParameters() {
