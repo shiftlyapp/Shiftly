@@ -173,6 +173,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
                 text.setPadding(16, 8, 16, 8);
                 text.setTextSize(16);
+                text.setBackground(getDrawable(R.drawable.table_cell_shape));
 
                 header.addView(text);
 
@@ -186,16 +187,16 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                 text.setPadding(16, 8, 16, 8);
                 text.setTextSize(16);
                 text.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+                text.setBackground(getDrawable(R.drawable.table_cell_shape));
+
                 header.addView(text);
 
                 TableRow.LayoutParams params = (TableRow.LayoutParams) header.getChildAt(i).getLayoutParams();
                 params.span = workers_in_shift; //amount of columns you will span
-                params.width = TableRow.LayoutParams.WRAP_CONTENT;
                 header.getChildAt(i).setLayoutParams(params);
             }
 
         }
-        header.setBackground(getDrawable(R.drawable.table_cell_shape));
         scheduleTable.addView(header);
     }
 
@@ -230,6 +231,8 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         TableRow row = new TableRow(ScheduleViewActivity.this);
         for (int i=0 ; i<rowLength ; i++) {
             TextView text = new TextView(ScheduleViewActivity.this);
+            text.setBackground(getDrawable(R.drawable.table_cell_shape));
+
             if (i == 0) {
                 text.setText(String.format(getString(R.string.hour_format), shiftStartingTime < 10 ?
                         ("0" + shiftStartingTime) : (shiftStartingTime), ((shiftLength + shiftStartingTime) % 24) < 10 ?
@@ -237,8 +240,8 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
             } else {
                 text.setText(arrayRow.get(i-1));
             }
-            text.setPadding(16, 8, 16, 8);
-            text.setTextSize(16);
+            text.setPadding(28, 8, 28, 8);
+            text.setTextSize(18);
             row.addView(text);
         }
         row.setBackground(getDrawable(R.drawable.table_cell_shape));
