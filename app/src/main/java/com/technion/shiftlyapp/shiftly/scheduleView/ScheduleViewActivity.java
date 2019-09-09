@@ -28,6 +28,7 @@ import androidx.appcompat.widget.ShareActionProvider;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -240,16 +241,16 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         }
     }
 
-    Bitmap getBitmapFromView() {
-        Bitmap weeklyScheduleBitmap = Bitmap.createBitmap(scheduleTable.getWidth(), scheduleTable.getHeight(),Bitmap.Config.ARGB_8888);
+    Bitmap getBitmapFromView(View view) {
+        Bitmap weeklyScheduleBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(weeklyScheduleBitmap);
-        Drawable background = scheduleTable.getBackground();
+        Drawable background = view.getBackground();
         if (background != null) {
             background.draw(canvas);
         } else {
             canvas.drawColor(Color.WHITE);
         }
-        scheduleTable.draw(canvas);
+        view.draw(canvas);
 
         return weeklyScheduleBitmap;
     }
@@ -326,35 +327,46 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                         copyGroupIDToClipboard();
                         break;
                     case R.id.share_item:
-                        // call share methods
-                        fetchSchedule(new FetchSchedulecallback() {
-                            @Override
-                            public void onCallBack(boolean isSuccessful) {
-                                if (isSuccessful) {
-                                    // Clear the old share table
-                                    scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
-                                    scheduleTable.removeAllViewsInLayout();
-
-                                    // Prepare the schedule array
-                                    ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable();
-
-                                    // Prepare the table's header
-                                    createHeader(days_num +1);
-                                    // Prepare the schedule table itself
-                                    createTable(scheduleArray, (days_num*workers_in_shift +1));
-
-                                    scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                        @Override
-                                        public void onLayoutChange(View v, int left, int top, int right,
-                                                                   int bottom, int oldLeft, int oldTop,
-                                                                   int oldRight, int oldBottom) {
-                                            Bitmap scheduleBitMap = getBitmapFromView();
-                                            sendImage(scheduleBitMap);
-                                        }
-                                    });
-                                }
+                        if (currentFragmentName.equals("agenda")) {
+                            RecyclerView agendaView = findViewById(R.id.users_shifts);
+                            if (agendaView.getChildCount() > 0) {
+                                Bitmap scheduleAgendaBitMap = getBitmapFromView(agendaView);
+                                sendImage(scheduleAgendaBitMap);
+                            } else {
+                                Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
                             }
-                        });
+                        } else {
+                            // call share methods
+                            fetchSchedule(new FetchSchedulecallback() {
+                                @Override
+                                public void onCallBack(boolean isSuccessful) {
+                                    if (isSuccessful) {
+                                        // Clear the old share table
+                                        scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
+                                        scheduleTable.removeAllViewsInLayout();
+
+                                        // Prepare the schedule array
+                                        ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable();
+
+                                        // Prepare the table's header
+                                        createHeader(days_num +1);
+                                        // Prepare the schedule table itself
+                                        createTable(scheduleArray, (days_num*workers_in_shift +1));
+
+                                        scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                                            @Override
+                                            public void onLayoutChange(View v, int left, int top, int right,
+                                                                       int bottom, int oldLeft, int oldTop,
+                                                                       int oldRight, int oldBottom) {
+                                                Bitmap scheduleBitMap = getBitmapFromView(scheduleTable);
+                                                sendImage(scheduleBitMap);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+
                         break;
                 }
                 return true;
