@@ -118,7 +118,6 @@ public class OptionsViewActivity extends AppCompatActivity {
         optionsViewToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 finish();
             }
         });

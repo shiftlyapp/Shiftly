@@ -184,6 +184,7 @@
     <!-- Schedule View -->
     <string name="copy_group_code">Copy Group Code</string>
     <string name="share">Share</string>
+    <string name="no_schedule_available">There\'s no schedule available</string>
 
 
 </resources>

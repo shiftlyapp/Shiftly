@@ -68,12 +68,11 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
     private int shifts_per_day;
     private int days_num;
     private int workers_in_shift;
-
-    // table creation
-    TableLayout scheduleTable;
     private String group_name;
-    private ArrayList<String> employeeNamesList;
 
+    // Weekly schedule table creation
+    TableLayout scheduleTable;
+    private ArrayList<String> employeeNamesList;
 
     private BottomNavigationView navigationView;
 
@@ -132,19 +131,9 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
         mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-
-            @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean hasSchedule = dataSnapshot.hasChild("schedule");
                 if (hasSchedule) {
-                    // Load the weekly schedule parameters
-                    workers_in_shift = ((Long)(dataSnapshot.child("employees_per_shift").getValue())).intValue();
-                    starting_time = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
-                    shift_length = ((Long) dataSnapshot.child("shift_length").getValue()).intValue();
-                    days_num = ((Long) dataSnapshot.child("days_num").getValue()).intValue();
-                    group_name = dataSnapshot.child("group_name").getValue().toString();
-                    shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
                     // Load the ids of the employees from the schedule
                     employeeNamesList = new ArrayList<>();
                     for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
@@ -154,107 +143,143 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                         employeeNamesList.add(employeeName);
                     }
                 } else {
-                    Toast.makeText(ScheduleViewActivity.this, "There's no schedule available", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
                 }
                 updateCallback.onCallBack(hasSchedule);
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
     }
 
-    /* --------------- Table Creation --------------- */
-    private void createHeader(int rowLength) {
-        TableRow header = new TableRow(ScheduleViewActivity.this);
-        String[] days = getResources().getStringArray(R.array.week_days);
-        for (int i=0 ; i<rowLength ; i++) {
-            TextView text = new TextView(ScheduleViewActivity.this);
-            if (i == 0) {
-                text.setText("");
-
-                text.setPadding(16, 8, 16, 8);
-                text.setTextSize(16);
-                text.setBackground(getDrawable(R.drawable.table_cell_shape));
-
-                header.addView(text);
-
-                TableRow.LayoutParams params = (TableRow.LayoutParams) header.getChildAt(i).getLayoutParams();
-                params.span = 1; //amount of columns you will span
-                params.width = TableRow.LayoutParams.WRAP_CONTENT;
-                header.getChildAt(i).setLayoutParams(params);
-            } else {
-                text.setText(days[i-1]);
-
-                text.setPadding(16, 8, 16, 8);
-                text.setTextSize(16);
-                text.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
-                text.setBackground(getDrawable(R.drawable.table_cell_shape));
-
-                header.addView(text);
-
-                TableRow.LayoutParams params = (TableRow.LayoutParams) header.getChildAt(i).getLayoutParams();
-                params.span = workers_in_shift; //amount of columns you will span
-                header.getChildAt(i).setLayoutParams(params);
-            }
-
-        }
-        scheduleTable.addView(header);
-    }
-
-    ArrayList<ArrayList<String>> parseScheduleToTable(int shifts_per_day, int days_num,
-                                                      int workers_in_shift) {
+    /* --------------- Weekly table Creation --------------- */
+    ArrayList<ArrayList<String>> parseScheduleToTable() {
         // Sets up the schedule list
         ArrayList<ArrayList<String>> scheduleByRows = new ArrayList<>();
-        for (int i=0 ; i<shifts_per_day ; i++) {
+        for (int i=0 ; i< shifts_per_day ; i++) {
             ArrayList<String> rowList = new ArrayList<>();
-            for (int j=0; j<days_num*workers_in_shift ; j++) {
+            for (int j=0; j< days_num * workers_in_shift ; j++) {
                 rowList.add("");
             }
             scheduleByRows.add(rowList);
         }
         // Iterate over the schedule map and convert it to a list arranged by rows
-        int day = 0;
-        int shiftInDay = 0;
         for (int i = 0; i < employeeNamesList.size(); i++) {
             String employee = employeeNamesList.get(i);
 
-            day = i / (shifts_per_day * workers_in_shift);
-            shiftInDay = i % (shifts_per_day);
-
+            int day = i / (shifts_per_day * workers_in_shift);
+            int shiftInDay = i % (shifts_per_day);
             int positionInDay = ((i%workers_in_shift) + day*workers_in_shift);
+
             // Append the worker's name to the list of name
             scheduleByRows.get(shiftInDay).set(positionInDay, employee);
         }
         return scheduleByRows;
     }
 
-    private void createRow(ArrayList<String> arrayRow, int rowLength, int shiftStartingTime, int shiftLength) {
-        TableRow row = new TableRow(ScheduleViewActivity.this);
+    private void createHeader(int rowLength) {
+        TableRow header = new TableRow(ScheduleViewActivity.this);
+        String[] days = getResources().getStringArray(R.array.week_days);
         for (int i=0 ; i<rowLength ; i++) {
-            TextView text = new TextView(ScheduleViewActivity.this);
-            text.setBackground(getDrawable(R.drawable.table_cell_shape));
+            int span = 1;
+
+            // Set a new cell in header
+            TextView cell = new TextView(ScheduleViewActivity.this);
+            cell.setPadding(16, 8, 16, 8);
+            cell.setTextSize(16);
+            cell.setBackground(getDrawable(R.drawable.table_cell_shape));
 
             if (i == 0) {
-                text.setText(String.format(getString(R.string.hour_format), shiftStartingTime < 10 ?
-                        ("0" + shiftStartingTime) : (shiftStartingTime), ((shiftLength + shiftStartingTime) % 24) < 10 ?
-                        "0" + ((shiftLength + shiftStartingTime) % 24) : ((shiftLength + shiftStartingTime) % 24)));
+                cell.setText("");
             } else {
-                text.setText(arrayRow.get(i-1));
+                span = workers_in_shift;
+                cell.setText(days[i-1]);
+                cell.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
             }
-            text.setPadding(28, 8, 28, 8);
-            text.setTextSize(18);
-            row.addView(text);
+            header.addView(cell);
+
+            // Set layout parameters
+            TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) header.getChildAt(i).getLayoutParams();
+            layoutParams.span = span; //amount of columns you will span
+            header.getChildAt(i).setLayoutParams(layoutParams);
+
+        }
+        scheduleTable.addView(header);
+    }
+
+    private void createRow(ArrayList<String> rowCells, int rowLength, int shiftStartingTime) {
+        TableRow row = new TableRow(ScheduleViewActivity.this);
+        for (int i=0 ; i<rowLength ; i++) {
+            TextView cell = new TextView(ScheduleViewActivity.this);
+            cell.setBackground(getDrawable(R.drawable.table_cell_shape));
+            cell.setPadding(28, 8, 28, 8);
+            cell.setTextSize(18);
+
+            if (i == 0) {
+                cell.setText(String.format(getString(R.string.hour_format), shiftStartingTime < 10 ?
+                        ("0" + shiftStartingTime) :
+                        (shiftStartingTime), ((shift_length + shiftStartingTime) % 24) < 10 ?
+                        "0" + ((shift_length + shiftStartingTime) % 24) :
+                        ((shift_length + shiftStartingTime) % 24)));
+            } else {
+                cell.setText(rowCells.get(i-1));
+            }
+            row.addView(cell);
         }
         row.setBackground(getDrawable(R.drawable.table_cell_shape));
         scheduleTable.addView(row);
     }
 
-    private void createTable(ArrayList<ArrayList<String>> table, int rowlength, int firstShiftStartingTime, int ShiftLength) {
-        int count = 0;
-        for (ArrayList<String> row : table) {
+    private void createTable(ArrayList<ArrayList<String>> table, int rowLength) {
+        for (int i = 0; i < table.size(); i++) {
+            ArrayList<String> row = table.get(i);
             // Shift starting time is calculated for each shift
-            createRow(row, rowlength, (firstShiftStartingTime +(ShiftLength * count++))%24, ShiftLength);
+            createRow(row, rowLength, (starting_time + (shift_length * i++)) % 24);
         }
     }
+
+    Bitmap getBitmapFromView() {
+        Bitmap weeklyScheduleBitmap = Bitmap.createBitmap(scheduleTable.getWidth(), scheduleTable.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(weeklyScheduleBitmap);
+        Drawable background = scheduleTable.getBackground();
+        if (background != null) {
+            background.draw(canvas);
+        } else {
+            canvas.drawColor(Color.WHITE);
+        }
+        scheduleTable.draw(canvas);
+
+        return weeklyScheduleBitmap;
+    }
+
+    private void sendImage(Bitmap weeklyScheduleBitmap) {
+        // Sharing sequence
+        Intent shareScheduleIntent = new Intent(Intent.ACTION_SEND);
+        shareScheduleIntent.setType("image/jpeg");
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "title");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        OutputStream outstream;
+        try {
+            outstream = getContentResolver().openOutputStream(uri);
+            weeklyScheduleBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+            outstream.close();
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+
+        shareScheduleIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(shareScheduleIntent, "Share Image"));
+        weeklyScheduleBitmap.recycle();
+        weeklyScheduleBitmap = null;
+    }
+
+    /* --------------- Weekly table Creation --------------- */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -277,19 +302,6 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                 Toast.LENGTH_LONG).show();
 
         return(false);
-    }
-
-    Bitmap getBitmapFromView() {
-        Bitmap returnedBitmap = Bitmap.createBitmap(scheduleTable.getWidth(), scheduleTable.getHeight(),Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable =scheduleTable.getBackground();
-        if (bgDrawable!=null)
-            bgDrawable.draw(canvas);
-        else
-            canvas.drawColor(Color.WHITE);
-        scheduleTable.draw(canvas);
-
-        return returnedBitmap;
     }
 
     @Override
@@ -324,14 +336,12 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                                     scheduleTable.removeAllViewsInLayout();
 
                                     // Prepare the schedule array
-                                    ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable(
-                                            shifts_per_day, days_num, workers_in_shift);
+                                    ArrayList<ArrayList<String>> scheduleArray = parseScheduleToTable();
 
                                     // Prepare the table's header
                                     createHeader(days_num +1);
                                     // Prepare the schedule table itself
-                                    createTable(scheduleArray, (days_num*workers_in_shift +1),
-                                            starting_time, shift_length);
+                                    createTable(scheduleArray, (days_num*workers_in_shift +1));
 
                                     scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                                         @Override
@@ -353,15 +363,14 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         mAuth = FirebaseAuth.getInstance();
+        getGroupParameters();
 
-
-        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
         final FloatingActionButton optionsFab = findViewById(R.id.options_fab);
         final FloatingActionButton scheduleFab = findViewById(R.id.schedule_fab);
         final FloatingActionButton viewOptionsFab = findViewById(R.id.view_options_fab);
-
         final FloatingActionsMenu menuFab = findViewById(R.id.menu_fab);
         final TooltipView options_tooltip = findViewById(R.id.options_tooltip);
+
         options_tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -409,8 +418,6 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     optionsFab.setVisibility(View.VISIBLE);
                     optionsFab.setIcon(R.drawable.ic_edit_timeslots_fab);
                     options_tooltip.setVisibility(View.VISIBLE);
-
-
                 }
             }
 
@@ -483,40 +490,25 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         launchFragment(currentFragment);
     }
 
-    private void sendImage(Bitmap scheduleBitMap) {
-        // Sharing sequence
-        Intent myShareIntent = new Intent(Intent.ACTION_SEND);
-        myShareIntent.setType("image/jpeg");
+    private void getGroupParameters() {
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                starting_time = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
+                shift_length = Integer.parseInt(dataSnapshot.child("shift_length").getValue().toString());
+                shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
+                days_num = Integer.parseInt(dataSnapshot.child("days_num").getValue().toString());
+                workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
+                group_name = dataSnapshot.child("group_name").getValue().toString();
+            }
 
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "title");
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values);
-
-        OutputStream outstream;
-        try {
-            outstream = getContentResolver().openOutputStream(uri);
-            scheduleBitMap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
-            outstream.close();
-        } catch (Exception e) {
-            System.err.println(e.toString());
-        }
-
-        myShareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(myShareIntent, "Share Image"));
-        scheduleBitMap.recycle();
-        scheduleBitMap = null;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
     }
 
     private void presentOptions(@NonNull DataSnapshot dataSnapshot, LinkedHashMap<String, String> group_options, View view) {
-        starting_time = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
-        shift_length = Integer.parseInt(dataSnapshot.child("shift_length").getValue().toString());
-        shifts_per_day = Integer.parseInt(dataSnapshot.child("shifts_per_day").getValue().toString());
-        days_num = Integer.parseInt(dataSnapshot.child("days_num").getValue().toString());
-        workers_in_shift = Integer.parseInt(dataSnapshot.child("employees_per_shift").getValue().toString());
-        String group_name = dataSnapshot.child("group_name").getValue().toString();
-
         // Collect the group members map
         LinkedHashMap<String, String> group_members = new LinkedHashMap<>();
         // Collect the members that are yet to send options
@@ -545,8 +537,8 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         intent.putExtra("DAYS_NUM", days_num);
         intent.putExtra("WORKERS_IN_SHIFT", workers_in_shift);
         intent.putExtra("WORKERS_WITHOUT_OPTIONS", workers_without_options);
-
         intent.putExtra("OPTIONS", options);
+
         startActivity(intent);
     }
 
@@ -598,8 +590,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
-
-
+    
     private boolean launchFragment(Fragment fragment) {
         if (fragment == null) {
             return false;

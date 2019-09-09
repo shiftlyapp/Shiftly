@@ -68,13 +68,9 @@ public class AgendaViewFragment extends Fragment {
             @Override
             public void populateShiftsLists(Long employees_per_shift, Long days_num, Long shift_length, Long shifts_per_day, String starting_time) {
                 for (int day = 0; day < days_num; day++) {
-
                     for (int shift = 0; shift < shifts_per_day; shift++) {
-
                         for (int sub_shift = 0; sub_shift < employees_per_shift; sub_shift++) {
-
                             Long current_shift_num = day * (shifts_per_day * employees_per_shift) + (shift * employees_per_shift) + sub_shift;
-
                             if (shift_nums.contains(current_shift_num)) {
                                 days.add(num_to_day(day));
                                 start_times.add(num_to_start_time(shift, shift_length, starting_time));
