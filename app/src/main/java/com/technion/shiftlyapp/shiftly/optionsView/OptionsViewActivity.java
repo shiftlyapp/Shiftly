@@ -1,12 +1,13 @@
 package com.technion.shiftlyapp.shiftly.optionsView;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -41,7 +42,7 @@ public class OptionsViewActivity extends AppCompatActivity {
             optionsList.add(rowList);
         }
         // Iterate over the options map and convert it to a list arranged by rows
-        for (LinkedHashMap.Entry<String, String> entry : options.entrySet()) {
+        for (LinkedHashMap.Entry<String, String> employee : options.entrySet()) { //for every employee
             int day;
             int shiftInDay;
             for (int i = 0 ; i < days_num*shifts_per_day ; i++) {
@@ -50,9 +51,9 @@ public class OptionsViewActivity extends AppCompatActivity {
                 shiftInDay = i%shifts_per_day;
                 // day is i/shifts_per_day
                 day = i/shifts_per_day;
-                if (entry.getValue().charAt(i*workers_in_shift) == '1') {
+                if (employee.getValue().charAt(i*workers_in_shift) == '1') {
                     // Append the worker's name to the list of name
-                    optionsList.get(shiftInDay).set(day, optionsList.get(shiftInDay).get(day) + entry.getKey() + "\n");
+                    optionsList.get(shiftInDay).set(day, optionsList.get(shiftInDay).get(day) + employee.getKey() + "\n");
                 }
             }
         }
