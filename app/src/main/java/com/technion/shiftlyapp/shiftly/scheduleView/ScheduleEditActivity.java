@@ -45,8 +45,11 @@ public class ScheduleEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_edit);
-        Toolbar schedule_edit_toolbar = (Toolbar) findViewById(R.id.schedule_edit_toolbar);
+
+        Toolbar schedule_edit_toolbar = findViewById(R.id.schedule_edit_toolbar);
+
         setSupportActionBar(schedule_edit_toolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.edit_schedule_label));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -58,7 +61,6 @@ public class ScheduleEditActivity extends AppCompatActivity {
 
         groupId = getIntent().getExtras().getString("GROUP_ID");
 
-        getSupportActionBar().setTitle(getResources().getString(R.string.edit_schedule_label));
 
         // Configuring RecyclerView with A LinearLayout and adding dividers
         initializeRecyclerAnimation();
