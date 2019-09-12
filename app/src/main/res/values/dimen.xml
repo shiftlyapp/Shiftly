@@ -85,5 +85,8 @@
     <dimen name="user_update_anim_height">180dp</dimen>
     <dimen name="user_update_anim_width">180dp</dimen>
     <dimen name="user_update_edittext_width">300dp</dimen>
-    
+    <!-- Table -->
+    <dimen name="table_cell_text_size">16sp</dimen>
+    <dimen name="table_cell_padding_left_right">16dp</dimen>
+    <dimen name="table_cell_padding_top_bottom">8dp</dimen>
 </resources>

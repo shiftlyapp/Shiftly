@@ -83,9 +83,7 @@ public class Scheduler {
 
         mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,10 +99,6 @@ public class Scheduler {
                 for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                     String employeeId = current_employee.getValue(String.class);
                     String employeeName = (employeeId.equals("null")) ? "N/A" : dataSnapshot.child("members").child(employeeId).getValue().toString();
-//                    if (employeeId.equals(employee_id_agenda) && !foundAgendaName) {
-//                        agendaName = employeeName;
-//                        foundAgendaName = true;
-//                    }
                     employeeNamesList.add(employeeName);
                     employeeColors.put(employeeName, mColors[x++ % mColors.length]);
                 }

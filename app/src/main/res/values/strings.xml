@@ -141,7 +141,6 @@
     <string name="options_view_subtitle">The following members are yet to send options this week:</string>
 
     <!-- Group Deletion -->
-
     <string name="edit_delete_group_dialog">Choose an action:</string>
     <string name="delete_group_tooltip">Long click here to edit or delete the group</string>
     <string name="delete_user_dialog">Are you sure you want to delete your account?</string>
@@ -181,5 +180,13 @@
     <string name="saturday">Saturday</string>
     <string name="no_email_app">No email app is installed</string>
     <string name="agenda_no_shifts_message">No upcoming shifts</string>
+
+    <!-- Schedule View -->
+    <string name="copy_group_code">Copy Group Code</string>
+
+    <!-- Sharing -->
+    <string name="share">Share</string>
+    <string name="no_schedule_available">There\'s no schedule available</string>
+
 
 </resources>
