@@ -22,23 +22,26 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:theme="@style/CustomToolBar"
-            app:layout_constraintBottom_toBottomOf="@id/group_shifts"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_shifts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:elevation="@dimen/elevation_high"
-            android:outlineProvider="bounds"
+            android:layout_height="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
             android:scrollbars="vertical"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/schedule_edit_toolbar"
-            app:layout_constraintBottom_toTopOf="@id/cancel_schedule_update_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_edit_toolbar"
             />
 
         <com.venmo.view.TooltipView
@@ -61,47 +64,33 @@
             app:layout_constraintStart_toStartOf="parent"
             />
 
-        <Button
-            android:id="@+id/save_schedule_update_button"
-            style="@style/CustomButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="@dimen/button_margin"
-            android:paddingStart="16dp"
-            android:paddingLeft="16dp"
-            android:paddingEnd="16dp"
-            android:paddingRight="16dp"
-            android:text="@string/save"
-            app:layout_constraintTop_toBottomOf="@id/group_shifts"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/save_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/orange_color"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@id/cancel_fab"
             app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_check_white" />
 
-            />
-
-        <Button
-            android:id="@+id/cancel_schedule_update_button"
-            style="@style/CustomButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="@dimen/button_margin"
-            android:paddingStart="16dp"
-            android:paddingLeft="16dp"
-            android:paddingEnd="16dp"
-            android:paddingRight="16dp"
-            android:text="@string/cancel"
-            app:layout_constraintTop_toBottomOf="@id/group_shifts"
-            app:layout_constraintStart_toStartOf="parent"
-
-            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cancel_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/orange_color"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_cancel_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

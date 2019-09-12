@@ -19,17 +19,17 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     private List<String> mDaysNames;
     private List<String> mStartTimes;
     private List<String> mEndTimes;
-    private List<String> mEmployeesIds;
+    private List<String> mEmployeesNames;
     private LayoutInflater mInflater;
     private Context context;
 
     // data is passed into the constructor
-    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_ids) {
+    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names) {
         this.mInflater = LayoutInflater.from(context);
         this.mDaysNames = names;
         this.mStartTimes = start_times;
         this.mEndTimes = end_times;
-        this.mEmployeesIds = employees_ids;
+        this.mEmployeesNames = employees_names;
     }
 
     // inflates the row layout from xml when needed
@@ -52,6 +52,9 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         String endingHour = String.format("%s", mEndTimes.get(position));
         if (!endingHour.equals("")) endingHour = context.getResources().getString(R.string.end_time) + " " + endingHour;
         holder.mEndHourView.setText(endingHour);
+
+        String employeeName = String.format("%s", mEmployeesNames.get(position));
+        holder.mEmployeeName.setText(employeeName);
 
         if (position == 0) { // Do this if first item (Remove top line)
             ViewGroup.MarginLayoutParams marginLayoutParams =
@@ -78,14 +81,14 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         TextView mDayNameView;
         TextView mStartHourView;
         TextView mEndHourView;
-        TextView mEmployeeId;
+        TextView mEmployeeName;
 
         ViewHolder(View itemView) {
             super(itemView);
             mDayNameView = itemView.findViewById(R.id.shift_day);
             mStartHourView = itemView.findViewById(R.id.shift_starting_hour);
             mEndHourView = itemView.findViewById(R.id.shift_ending_hour);
-            mEmployeeId = itemView.findViewById(R.id.employee_id);
+            mEmployeeName = itemView.findViewById(R.id.employee_name);
             context = itemView.getContext();
         }
     }

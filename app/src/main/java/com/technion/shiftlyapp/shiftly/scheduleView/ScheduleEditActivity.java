@@ -34,7 +34,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
     private List<String> days;
     private List<String> start_times;
     private List<String> end_times;
-    private List<String> employees_ids;
+    private List<String> employees_names;
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
@@ -69,7 +69,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
         days = new ArrayList<>();
         start_times = new ArrayList<>();
         end_times = new ArrayList<>();
-        employees_ids = new ArrayList<>();
+        employees_names = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -109,7 +109,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
                     start_times.add("");
                     end_times.add("");
                 }
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_ids);
+                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -133,7 +133,8 @@ public class ScheduleEditActivity extends AppCompatActivity {
                 Long counter = 0L;
                 for (DataSnapshot postSnapshot : dataSnapshot.child(groupId).child("schedule").getChildren()) {
                     shift_nums.add(counter);
-                    employees_ids.add((String) postSnapshot.getValue());
+                    String employee_id = ((String) postSnapshot.getValue());
+                    employees_names.add((String) dataSnapshot.child(groupId).child("members").child(employee_id).getValue());
                     counter++;
                 }
 
