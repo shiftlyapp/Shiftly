@@ -188,8 +188,11 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
             // Set a new cell in header
             TextView cell = new TextView(ScheduleViewActivity.this);
-            cell.setPadding(16, 8, 16, 8);
-            cell.setTextSize(16);
+            cell.setPadding((int)getResources().getDimension(R.dimen.table_cell_padding_left_right),
+                    (int)getResources().getDimension(R.dimen.table_cell_padding_top_bottom),
+                    (int)getResources().getDimension(R.dimen.table_cell_padding_left_right),
+                    (int)getResources().getDimension(R.dimen.table_cell_padding_top_bottom));
+            cell.setTextSize((int)getResources().getDimension(R.dimen.table_cell_text_size));
             cell.setBackground(getDrawable(R.drawable.table_cell_shape));
 
             if (i == 0) {
@@ -319,52 +322,8 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
         group_id = getIntent().getExtras().getString("GROUP_ID");
 
-        schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.copy_to_clipboard_item:
-                        copyGroupIDToClipboard();
-                        break;
-                    case R.id.share_item:
-                        if (currentFragmentName.equals("agenda")) {
-                            RecyclerView agendaView = findViewById(R.id.users_shifts);
-                            if (agendaView.getChildCount() > 0) {
-                                Bitmap scheduleAgendaBitMap = getBitmapFromView(agendaView);
-                                sendImage(scheduleAgendaBitMap);
-                            } else {
-                                Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            // call share methods
-                            fetchSchedule(new FetchSchedulecallback() {
-                                @Override
-                                public void onCallBack(boolean isSuccessful) {
-                                    if (isSuccessful) {
-                                        // Clear the old share table
-                                        scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
-                                        scheduleTable.removeAllViewsInLayout();
-                                        createWeeklyScheduleTableLayout();
+        setToolbarMenuItems(schedule_view_toolbar);
 
-                                        scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                            @Override
-                                            public void onLayoutChange(View v, int left, int top, int right,
-                                                                       int bottom, int oldLeft, int oldTop,
-                                                                       int oldRight, int oldBottom) {
-                                                Bitmap scheduleBitMap = getBitmapFromView(scheduleTable);
-                                                sendImage(scheduleBitMap);
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
-
-                        break;
-                }
-                return true;
-            }
-        });
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         mAuth = FirebaseAuth.getInstance();
@@ -493,6 +452,56 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         launchFragment(currentFragment);
+    }
+
+    // Toolbar menu items
+    private void setToolbarMenuItems(Toolbar schedule_view_toolbar) {
+        schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.copy_to_clipboard_item:
+                        copyGroupIDToClipboard();
+                        break;
+                    case R.id.share_item:
+                        if (currentFragmentName.equals("agenda")) {
+                            RecyclerView agendaView = findViewById(R.id.users_shifts);
+                            if (agendaView.getChildCount() > 0) {
+                                Bitmap scheduleAgendaBitMap = getBitmapFromView(agendaView);
+                                sendImage(scheduleAgendaBitMap);
+                            } else {
+                                Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            // call share methods
+                            fetchSchedule(new FetchSchedulecallback() {
+                                @Override
+                                public void onCallBack(boolean isSuccessful) {
+                                    if (isSuccessful) {
+                                        // Clear the old share table
+                                        scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
+                                        scheduleTable.removeAllViewsInLayout();
+                                        createWeeklyScheduleTableLayout();
+
+                                        scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                                            @Override
+                                            public void onLayoutChange(View v, int left, int top, int right,
+                                                                       int bottom, int oldLeft, int oldTop,
+                                                                       int oldRight, int oldBottom) {
+                                                Bitmap scheduleBitMap = getBitmapFromView(scheduleTable);
+                                                sendImage(scheduleBitMap);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void createWeeklyScheduleTableLayout() {
