@@ -134,6 +134,8 @@
     <string name="generate_schedule_tooltip">Generate Schedule</string>
     <string name="copy_to_clipboard_tooltip">Copy</string>
 
+    <string name="no_email_app">No email app is installed</string>
+
     <!-- View Options -->
     <string name="options_view_toolbar_text">View Sent Options</string>
     <string name="hour_format">%s:00 - %s:00</string>
@@ -182,10 +184,13 @@
     <string name="saturday">Saturday</string>
 
     <!-- Agenda -->
-    <string name="no_email_app">No email app is installed</string>
     <string name="agenda_no_shifts_message">No upcoming shifts</string>
+
+    <!-- Edit Schedule -->
+
     <string name="edit_schedule_label">Edit Schedule</string>
-    <string name="schedule_tooltip">Tap a shift to choose the employee</string>
-    <string name="edit_schedule_tooltip">Edit Schedule</string>
+    <string name="edit_schedule_tooltip">Tap a shift to choose the employee</string>
+    <string name="schedule_updated_text">The schedule was updated successfully!</string>
+
 
 </resources>

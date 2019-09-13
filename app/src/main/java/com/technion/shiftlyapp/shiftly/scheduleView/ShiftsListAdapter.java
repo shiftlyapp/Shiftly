@@ -22,6 +22,8 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     private List<String> mEmployeesNames;
     private LayoutInflater mInflater;
     private Context context;
+    private ShiftsListAdapter.ItemClickListener shifts_listener;
+
 
     // data is passed into the constructor
     ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names) {
@@ -69,15 +71,9 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         }
     }
 
-    // total number of rows
-    @Override
-    public int getItemCount() {
-        if (mDaysNames == null) return 0;
-        return mDaysNames.size();
-    }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mDayNameView;
         TextView mStartHourView;
         TextView mEndHourView;
@@ -90,7 +86,31 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
             mEndHourView = itemView.findViewById(R.id.shift_ending_hour);
             mEmployeeName = itemView.findViewById(R.id.employee_name);
             context = itemView.getContext();
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            return;
+
         }
     }
 
+
+    void setClickListener(ShiftsListAdapter.ItemClickListener itemClickListener) {
+        this.shifts_listener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+
+    // total number of rows
+    @Override
+    public int getItemCount() {
+        if (mDaysNames == null) return 0;
+        return mDaysNames.size();
+    }
 }

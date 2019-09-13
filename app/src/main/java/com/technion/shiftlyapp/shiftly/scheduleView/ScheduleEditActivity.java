@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -113,6 +114,49 @@ public class ScheduleEditActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            }
+        });
+
+
+        FloatingActionButton saveFab = findViewById(R.id.save_fab);
+        saveFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Push schedule to DB
+
+//                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        Map<String, Object> options_map = new HashMap<>();
+//                        for (DataSnapshot postSnapshot : dataSnapshot.child("schedule").getChildren()) {
+//                            options_map.put(postSnapshot.getKey(), postSnapshot.getValue());
+//                        }
+//                        String streched = strech_string_by_num_of_employees();
+//                        schedule_map.put(currentUser.getUid(), streched);
+//
+//                        Map<String, Object> schedule_map_of_db = new HashMap<>();
+//                        schedule_map_of_db.put("options", options_map);
+//
+//                        databaseRef.updateChildren(schedule_map_of_db);
+//
+//                        Toast.makeText(ScheduleEditActivity.this, R.string.schedule_updated_text, Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+            }
+        });
+
+        FloatingActionButton cancelFab = findViewById(R.id.cancel_fab);
+        cancelFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Cancel action
+                finish();
 
             }
         });
