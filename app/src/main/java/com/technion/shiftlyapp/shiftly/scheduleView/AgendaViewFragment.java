@@ -36,6 +36,7 @@ public class AgendaViewFragment extends Fragment {
     private List<String> start_times;
     private List<String> end_times;
     private List<String> employees_ids;
+    private List<String> employees_list;
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
@@ -61,6 +62,7 @@ public class AgendaViewFragment extends Fragment {
         start_times = new ArrayList<>();
         end_times = new ArrayList<>();
         employees_ids = new ArrayList<>();
+        employees_list = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -91,7 +93,7 @@ public class AgendaViewFragment extends Fragment {
                     start_times.add("");
                     end_times.add("");
                 }
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_ids);
+                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_ids, employees_list);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));

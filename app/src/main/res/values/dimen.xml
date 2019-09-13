@@ -85,5 +85,7 @@
     <dimen name="user_update_anim_height">180dp</dimen>
     <dimen name="user_update_anim_width">180dp</dimen>
     <dimen name="user_update_edittext_width">300dp</dimen>
-    
+    <!-- Edit Schedule -->
+    <dimen name="edit_schedule_spinner_margin">16dp</dimen>
+
 </resources>

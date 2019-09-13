@@ -39,13 +39,20 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/agenda_time_size" />
 
-    <TextView
-        android:id="@+id/employee_name"
-        style="@style/ListTextView"
+    <Spinner
+        android:id="@+id/employee_name_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/ListItemView"
+        android:paddingRight="@dimen/spinner_width"
+        android:paddingStart="@dimen/spinner_width"
+        android:paddingLeft="@dimen/spinner_width"
+        android:paddingEnd="@dimen/spinner_width"
+        android:layout_marginStart="@dimen/edit_schedule_spinner_margin"
         android:layout_toEndOf="@id/shift_ending_hour"
         android:layout_marginEnd="@dimen/text_margin_right"
+        android:background="@drawable/spinner_stroke"
+        android:popupBackground="@color/colorPrimary"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/agenda_employee_name_size" />
 

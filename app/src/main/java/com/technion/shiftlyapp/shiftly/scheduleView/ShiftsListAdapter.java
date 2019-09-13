@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,18 +22,23 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     private List<String> mStartTimes;
     private List<String> mEndTimes;
     private List<String> mEmployeesNames;
+    private List<String> mEmployeesList;
     private LayoutInflater mInflater;
     private Context context;
     private ShiftsListAdapter.ItemClickListener shifts_listener;
-
+    private ArrayAdapter<String> employees_name_spinner_adapter;
 
     // data is passed into the constructor
-    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names) {
+    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names, List<String> employees_list) {
         this.mInflater = LayoutInflater.from(context);
         this.mDaysNames = names;
         this.mStartTimes = start_times;
         this.mEndTimes = end_times;
         this.mEmployeesNames = employees_names;
+        this.mEmployeesList = employees_list;
+
+        employees_name_spinner_adapter = new ArrayAdapter<>(context, R.layout.custom_spinner_item, employees_list);
+        employees_name_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     // inflates the row layout from xml when needed
@@ -55,8 +62,13 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         if (!endingHour.equals("")) endingHour = context.getResources().getString(R.string.end_time) + " " + endingHour;
         holder.mEndHourView.setText(endingHour);
 
-        String employeeName = String.format("%s", mEmployeesNames.get(position));
-        holder.mEmployeeName.setText(employeeName);
+        if (mEmployeesList.isEmpty()) {
+            holder.mEmployeeNameSpinner.setVisibility(View.GONE);
+        } else {
+            String employeeName = String.format("%s", mEmployeesNames.get(position));
+            holder.mEmployeeNameSpinner.setAdapter(employees_name_spinner_adapter);
+            holder.mEmployeeNameSpinner.setSelection(getEmployeePosition(employeeName));
+        }
 
         if (position == 0) { // Do this if first item (Remove top line)
             ViewGroup.MarginLayoutParams marginLayoutParams =
@@ -71,20 +83,24 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         }
     }
 
+    private int getEmployeePosition(String employeeName) {
+        return mEmployeesList.indexOf(employeeName);
+    }
+
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mDayNameView;
         TextView mStartHourView;
         TextView mEndHourView;
-        TextView mEmployeeName;
+        Spinner mEmployeeNameSpinner;
 
         ViewHolder(View itemView) {
             super(itemView);
             mDayNameView = itemView.findViewById(R.id.shift_day);
             mStartHourView = itemView.findViewById(R.id.shift_starting_hour);
             mEndHourView = itemView.findViewById(R.id.shift_ending_hour);
-            mEmployeeName = itemView.findViewById(R.id.employee_name);
+            mEmployeeNameSpinner = itemView.findViewById(R.id.employee_name_spinner);
             context = itemView.getContext();
             itemView.setOnClickListener(this);
 
@@ -92,7 +108,7 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
 
         @Override
         public void onClick(View view) {
-            return;
+
 
         }
     }

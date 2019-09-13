@@ -189,7 +189,7 @@
     <!-- Edit Schedule -->
 
     <string name="edit_schedule_label">Edit Schedule</string>
-    <string name="edit_schedule_tooltip">Tap a shift to choose the employee</string>
+    <string name="edit_schedule_tooltip">Tap employee name to change it</string>
     <string name="schedule_updated_text">The schedule was updated successfully!</string>
 
 

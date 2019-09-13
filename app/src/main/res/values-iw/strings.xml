@@ -187,7 +187,7 @@
 
     <string name="agenda_no_shifts_message">אין משמרות קרובות</string>
     <string name="edit_schedule_label">עריכת סידור</string>
-    <string name="edit_schedule_tooltip">לחצ/י על משמרת כדי לבחור עובד/ת</string>
+    <string name="edit_schedule_tooltip">לחצ/י על שם העובד/ת בכדי לשנותו</string>
     <string name="schedule_updated_text">הסידור נשמר בהצלחה!</string>
 
 </resources>

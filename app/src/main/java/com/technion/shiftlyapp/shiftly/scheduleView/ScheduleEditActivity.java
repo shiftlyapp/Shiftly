@@ -36,6 +36,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
     private List<String> start_times;
     private List<String> end_times;
     private List<String> employees_names;
+    private List<String> employees_list;
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
@@ -71,6 +72,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
         start_times = new ArrayList<>();
         end_times = new ArrayList<>();
         employees_names = new ArrayList<>();
+        employees_list = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -109,8 +111,9 @@ public class ScheduleEditActivity extends AppCompatActivity {
                     days.add(context.getResources().getString(R.string.agenda_no_shifts_message));
                     start_times.add("");
                     end_times.add("");
+                    employees_list.add("");
                 }
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names);
+                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -182,8 +185,13 @@ public class ScheduleEditActivity extends AppCompatActivity {
                     counter++;
                 }
 
+                for (DataSnapshot postSnapshot : dataSnapshot.child(groupId).child("members").getChildren()) {
+                    employees_list.add((String) postSnapshot.getValue());
+                }
+
                 firebaseCallback.populateShiftsLists(employees_per_shift, days_num, shift_length,
                         shifts_per_day, starting_time);
+
             }
 
             @Override
