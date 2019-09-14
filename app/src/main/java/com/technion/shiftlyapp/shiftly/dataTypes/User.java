@@ -17,12 +17,22 @@ public class User {
     public User() {
     }
 
+    // C'tor that is used for a new user creation
     public User(String firstname_p, String lastname_p, String email_p) {
         this.firstname = firstname_p;
         this.lastname = lastname_p;
         this.email = email_p;
         this.groups_count = 0L;
         this.groups = new ArrayList<>();
+    }
+
+    // Copy C'tor
+    public User(User u) {
+        this.firstname = u.firstname;
+        this.lastname = u.lastname;
+        this.email = u.email;
+        this.groups_count = u.groups_count;
+        this.groups.addAll(u.groups);
     }
 
     public String getFirstname() {
@@ -56,4 +66,5 @@ public class User {
     public List<String> getGroups() {
         return groups;
     }
+
 }

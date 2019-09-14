@@ -1,6 +1,7 @@
 package com.technion.shiftlyapp.shiftly.dataTypes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 // A class that represents a group in the app.
@@ -10,7 +11,7 @@ public class Group {
 
     private String admin;
     private String group_name;
-    private Map<String, Boolean> members;
+    private Map<String, String> members;
     private Long members_count;
     private Long days_num;
     private Long shifts_per_day;
@@ -18,10 +19,12 @@ public class Group {
     private String group_icon_url;
     private String starting_time;
     private Long shift_length;
-    private Map<String, String> options; // Keys = UUID's, Values = binary vectors
+    private HashMap<String, String> options; // Keys = UUID's, Values = binary vectors
     private ArrayList<String> schedule; // UUID's: at the i'th position works shift i
 
     public Group() {
+        this.options = new HashMap<>();
+        this.schedule= new ArrayList<>();
     }
 
     public Group(String admin, String group_name, Long members_count,
@@ -36,6 +39,26 @@ public class Group {
         this.starting_time = starting_time;
         this.shift_length = shift_length;
         this.group_icon_url = group_icon_url;
+        this.options = new HashMap<>();
+        this.schedule= new ArrayList<>();
+    }
+
+    // Copy C'tor
+    public Group(Group g) {
+        this.admin = g.admin;
+        this.group_name = g.group_name;
+        this.members_count = g.members_count;
+        this.days_num = g.days_num;
+        this.shifts_per_day = g.shifts_per_day;
+        this.employees_per_shift = g.employees_per_shift;
+        this.starting_time = g.starting_time;
+        this.shift_length = g.shift_length;
+        this.group_icon_url = g.group_icon_url;
+
+//        this.options = cloneMap(g.options);
+        this.members = new HashMap<>(g.members);
+        this.options = new HashMap<>(g.options);
+        this.schedule = cloneList(g.schedule);
     }
 
     public ArrayList<String> getSchedule() {
@@ -70,7 +93,7 @@ public class Group {
         return group_name;
     }
 
-    public Map<String, Boolean> getMembers() {
+    public Map<String, String> getMembers() {
         return members;
     }
 
@@ -98,7 +121,7 @@ public class Group {
         this.group_name = group_name;
     }
 
-    public void setMembers(Map<String, Boolean> members) {
+    public void setMembers(Map<String, String> members) {
         this.members = members;
     }
 
@@ -118,7 +141,7 @@ public class Group {
         return employees_per_shift;
     }
 
-    public void setOptions(Map<String, String> options) {
+    public void setOptions(HashMap<String, String> options) {
         this.options = options;
     }
 
@@ -132,5 +155,17 @@ public class Group {
 
     public void setEmployees_per_shift(Long employees_per_shift) {
         this.employees_per_shift = employees_per_shift;
+    }
+
+    private ArrayList<String> cloneList(ArrayList<String> list) {
+        ArrayList<String> clone = new ArrayList<String>(list.size());
+        clone.addAll(list);
+        return clone;
+    }
+
+    private HashMap<String, String> cloneMap(HashMap<String, String> map) {
+        HashMap<String, String> clone = new HashMap<>(map.size());
+        clone.putAll(map);
+        return clone;
     }
 }

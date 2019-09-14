@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
 import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -82,11 +83,17 @@ public class GroupCreation4Activity extends AppCompatActivity {
                                      final Long employees_per_shift, final String starting_hour, final Long shift_length, final String admin_UID,
                                      final String group_name, final String group_UID) {
         mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
+        final DataAccess dataAccess = new DataAccess();
+
+        final Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day,
+                employees_per_shift, starting_hour, shift_length, "none");
+
         if (compressed_bitmap == null) {
             // No image upload
             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "none");
-            mGroupRef.child(group_UID).setValue(group);
+
+            dataAccess.updateGroup(group_UID, group);
+
             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
             success_sound.start();
         } else {
@@ -96,8 +103,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
                     handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                    Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, "none");
-                    mGroupRef.child(group_UID).setValue(group);
+                    dataAccess.updateGroup(group_UID, group);
+
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -107,13 +114,14 @@ public class GroupCreation4Activity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                            Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, uri.toString());
-                            mGroupRef.child(group_UID).setValue(group);
+
+                            group.setGroup_icon_url(uri.toString());
+                            dataAccess.updateGroup(group_UID, group);
+
                             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
                             success_sound.start();
                         }
                     });
-
                 }
             });
         }
@@ -129,7 +137,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
             done_animation.setVisibility(View.GONE);
             email_share.setVisibility(View.GONE);
             whatsapp_share.setVisibility(View.GONE);
-//            sms_share.setVisibility(View.GONE);
             group_code_edittext.setVisibility(View.GONE);
             etc_share.setVisibility(View.GONE);
             share_with_friends_txt.setVisibility(View.GONE);
@@ -144,7 +151,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
             done_animation.playAnimation();
             email_share.setVisibility(View.VISIBLE);
             whatsapp_share.setVisibility(View.VISIBLE);
-//            sms_share.setVisibility(View.VISIBLE);
             group_code_edittext.setVisibility(View.VISIBLE);
             etc_share.setVisibility(View.VISIBLE);
             share_with_friends_txt.setVisibility(View.VISIBLE);
@@ -165,7 +171,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
         done_animation = findViewById(R.id.success_img);
         whatsapp_share = findViewById(R.id.whatsapp_share);
         email_share = findViewById(R.id.email_share);
-//        sms_share = findViewById(R.id.sms_share);
         etc_share = findViewById(R.id.etc_share);
         group_code_edittext = findViewById(R.id.group_code);
         signup_text = findViewById(R.id.signup_header);
