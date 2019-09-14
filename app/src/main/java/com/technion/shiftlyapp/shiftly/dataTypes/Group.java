@@ -6,7 +6,6 @@ import java.util.Map;
 
 // A class that represents a group in the app.
 // This group syncs with the firebase database
-
 public class Group {
 
     private String admin;
@@ -43,28 +42,9 @@ public class Group {
         this.schedule= new ArrayList<>();
     }
 
-    // Copy C'tor
-    public Group(Group g) {
-        this.admin = g.admin;
-        this.group_name = g.group_name;
-        this.members_count = g.members_count;
-        this.days_num = g.days_num;
-        this.shifts_per_day = g.shifts_per_day;
-        this.employees_per_shift = g.employees_per_shift;
-        this.starting_time = g.starting_time;
-        this.shift_length = g.shift_length;
-        this.group_icon_url = g.group_icon_url;
-
-//        this.options = cloneMap(g.options);
-        this.members = new HashMap<>(g.members);
-        this.options = new HashMap<>(g.options);
-        this.schedule = cloneList(g.schedule);
-    }
-
     public ArrayList<String> getSchedule() {
         return schedule;
     }
-
     public void setSchedule(ArrayList<String> schedule) {
         this.schedule = schedule;
     }
@@ -72,15 +52,13 @@ public class Group {
     public String getStarting_time() {
         return starting_time;
     }
-
-    public Long getShift_length() {
-        return shift_length;
-    }
-
     public void setStarting_time(String starting_time) {
         this.starting_time = starting_time;
     }
 
+    public Long getShift_length() {
+        return shift_length;
+    }
     public void setShift_length(Long shift_length) {
         this.shift_length = shift_length;
     }
@@ -88,71 +66,62 @@ public class Group {
     public String getAdmin() {
         return admin;
     }
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
 
     public String getGroup_name() {
         return group_name;
+    }
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
     }
 
     public Map<String, String> getMembers() {
         return members;
     }
+    public void setMembers(Map<String, String> members) {
+        this.members = members;
+    }
 
     public Long getMembers_count() {
         return members_count;
+    }
+    public void setMembers_count(Long member_count) {
+        this.members_count = member_count;
     }
 
     public String getGroup_icon_url() {
         return group_icon_url;
     }
-
     public void setGroup_icon_url(String group_icon_url) {
         this.group_icon_url = group_icon_url;
     }
 
-    public Map<String, String> getOptions() {
+    public HashMap<String, String> getOptions() {
         return options;
     }
-
-    public void setAdmin(String admin) {
-        this.admin = admin;
-    }
-
-    public void setGroup_name(String group_name) {
-        this.group_name = group_name;
-    }
-
-    public void setMembers(Map<String, String> members) {
-        this.members = members;
-    }
-
-    public void setMembers_count(Long member_count) {
-        this.members_count = member_count;
+    public void setOptions(HashMap<String, String> options) {
+        this.options = options;
     }
 
     public Long getDays_num() {
         return days_num;
     }
+    public void setDays_num(Long days_num) {
+        this.days_num = days_num;
+    }
 
     public Long getShifts_per_day() {
         return shifts_per_day;
+    }
+    public void setShifts_per_day(Long shifts_per_day) {
+        this.shifts_per_day = shifts_per_day;
     }
 
     public Long getEmployees_per_shift() {
         return employees_per_shift;
     }
-
-    public void setOptions(HashMap<String, String> options) {
-        this.options = options;
-    }
-
-    public void setDays_num(Long days_num) {
-        this.days_num = days_num;
-    }
-
-    public void setShifts_per_day(Long shifts_per_day) {
-        this.shifts_per_day = shifts_per_day;
-    }
-
     public void setEmployees_per_shift(Long employees_per_shift) {
         this.employees_per_shift = employees_per_shift;
     }

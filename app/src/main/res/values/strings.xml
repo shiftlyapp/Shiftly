@@ -63,6 +63,7 @@
     <string name="group_create_succeed">%1$s was created successfully! </string>
     <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
     <string name="options_configure">Configure Options</string>
+    <string name="shift_number_title">Shift number:</string>
     <string name="fill_options_text">To proceed, please choose general settings for your shifts</string>
     <string name="group_pic_create_hint">Now, upload your Group picture:</string>
     <string name="group_pic_edit_hint">Upload a new group picture:</string>
