@@ -42,6 +42,23 @@ public class Group {
         this.schedule= new ArrayList<>();
     }
 
+    // Copy C'tor
+    public Group(Group g) {
+        this.admin = g.admin;
+        this.group_name = g.group_name;
+        this.members_count = g.members_count;
+        this.days_num = g.days_num;
+        this.shifts_per_day = g.shifts_per_day;
+        this.employees_per_shift = g.employees_per_shift;
+        this.starting_time = g.starting_time;
+        this.shift_length = g.shift_length;
+        this.group_icon_url = g.group_icon_url;
+
+        this.members = new HashMap<>(g.members);
+        this.options = new HashMap<>(g.options);
+        this.schedule = cloneList(g.schedule);
+    }
+
     public ArrayList<String> getSchedule() {
         return schedule;
     }

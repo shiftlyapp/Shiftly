@@ -13,7 +13,6 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -22,27 +21,27 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
+import com.technion.shiftlyapp.shiftly.dataTypes.User;
 import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
 public class UserUpdateActivity extends AppCompatActivity {
 
     private ConstraintLayout mLayout;
-    private EditText /*email_edt,*/ password_edt, firstname_edt, lastname_edt;
-    private DatabaseReference databaseRef;
+    private EditText password_edt, firstname_edt, lastname_edt;
     private String user_id;
     private ArrayList<String> groupsUserIsMemberOf;
+    private DataAccess dataAccess = new DataAccess();
+    private User oldUser;
 
     public void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) UserUpdateActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -105,7 +104,6 @@ public class UserUpdateActivity extends AppCompatActivity {
         lastname_edt = findViewById(R.id.user_update_lastname_edittext);
 
         // Get user details to present in the initial form
-        databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         loadUserDetails();
 
         findViewById(R.id.user_update_button).setOnClickListener(new View.OnClickListener(){
@@ -135,46 +133,49 @@ public class UserUpdateActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUserDetails(FirebaseUser user) {
+    private void updateUserDetails(FirebaseUser firebaseAuthUser) {
         final String newfirstname = firstname_edt.getText().toString();
         final String newlastname = lastname_edt.getText().toString();
         String newPassword = password_edt.getText().toString();
 
         // Change first and last names
-        databaseRef.child("firstname").setValue(newfirstname);
-        databaseRef.child("lastname").setValue(newlastname);
+        User newUser = new User(oldUser);
+        newUser.setFirstname(newfirstname);
+        newUser.setLastname(newlastname);
+        dataAccess.updateUser(user_id, newUser);
 
-        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups");
-        for (String groupId : groupsUserIsMemberOf) {
-            databaseRef.child(groupId).child("members").child(user_id)
-                    .setValue(String.format("%s %s", newfirstname, newlastname));
+        if (!oldUser.getFirstname().equals(newfirstname) || !oldUser.getLastname().equals(newlastname)) {
+            // TODO: implement findGroupBy in DataAccess
+            for (final String groupId : groupsUserIsMemberOf) {
+                dataAccess.getGroup(groupId, new DataAccess.DataAccessCallback<Group>() {
+                    @Override
+                    public void onCallBack(Group group) {
+                        Group updatedGroup = new Group(group);
+                        Map<String, String> updatedMembers = group.getMembers();
+                        updatedMembers.put(user_id, String.format("%s %s", newfirstname, newlastname));
+                        updatedGroup.setMembers(updatedMembers);
+                        dataAccess.updateGroup(groupId, updatedGroup);
+                    }
+                });
+            }
         }
-
         // If password is empty, it means its unchanged
         if (!newPassword.isEmpty()) {
-            user.updatePassword(newPassword);
+            firebaseAuthUser.updatePassword(newPassword);
         }
     }
 
     private void loadUserDetails() {
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        dataAccess.getUser(user_id, new DataAccess.DataAccessCallback<User>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String firstName = dataSnapshot.child("firstname").getValue().toString();
-                String lastName = dataSnapshot.child("lastname").getValue().toString();
+            public void onCallBack(User user) {
+                oldUser = new User(user);
                 groupsUserIsMemberOf = new ArrayList<>();
-                if(dataSnapshot.child("groups").exists()) {
-                    for (DataSnapshot group : dataSnapshot.child("groups").getChildren()) {
-                        groupsUserIsMemberOf.add(group.getValue().toString());
-                    }
-                }
+                groupsUserIsMemberOf.addAll(user.getGroups());
 
-                firstname_edt.setText(firstName);
-                lastname_edt.setText(lastName);
+                firstname_edt.setText(user.getFirstname());
+                lastname_edt.setText(user.getLastname());
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
