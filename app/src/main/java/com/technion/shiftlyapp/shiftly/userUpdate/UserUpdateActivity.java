@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +13,13 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -101,17 +100,66 @@ public class UserUpdateActivity extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user_id = user.getUid();
 
-//        email_edt = findViewById(R.id.user_update_email_edittext);
         password_edt = findViewById(R.id.user_update_password_edittext);
         firstname_edt = findViewById(R.id.user_update_firstname_edittext);
         lastname_edt = findViewById(R.id.user_update_lastname_edittext);
 
         // Get user details to present in the initial form
         databaseRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+        loadUserDetails();
+
+        findViewById(R.id.user_update_button).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                CustomSnackbar snackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
+
+                if (mAwesomeValidation.validate()) {
+
+                    updateUserDetails(user);
+
+                    snackbar.show(UserUpdateActivity.this, mLayout,
+                            getResources().getString(R.string.account_updated),
+                            CustomSnackbar.SNACKBAR_SUCCESS ,Snackbar.LENGTH_SHORT);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateUI();
+                        }
+                    }, Constants.REDIRECTION_DELAY);
+                } else {
+                    snackbar.show(UserUpdateActivity.this, mLayout, "An error occurred",
+                            CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
+                }
+            }
+        });
+    }
+
+    private void updateUserDetails(FirebaseUser user) {
+        final String newfirstname = firstname_edt.getText().toString();
+        final String newlastname = lastname_edt.getText().toString();
+        String newPassword = password_edt.getText().toString();
+
+        // Change first and last names
+        databaseRef.child("firstname").setValue(newfirstname);
+        databaseRef.child("lastname").setValue(newlastname);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+        for (String groupId : groupsUserIsMemberOf) {
+            databaseRef.child(groupId).child("members").child(user_id)
+                    .setValue(String.format("%s %s", newfirstname, newlastname));
+        }
+
+        // If password is empty, it means its unchanged
+        if (!newPassword.isEmpty()) {
+            user.updatePassword(newPassword);
+        }
+    }
+
+    private void loadUserDetails() {
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String email = dataSnapshot.child("email").getValue().toString();
                 String firstName = dataSnapshot.child("firstname").getValue().toString();
                 String lastName = dataSnapshot.child("lastname").getValue().toString();
                 groupsUserIsMemberOf = new ArrayList<>();
@@ -123,82 +171,21 @@ public class UserUpdateActivity extends AppCompatActivity {
 
                 firstname_edt.setText(firstName);
                 lastname_edt.setText(lastName);
-//                email_edt.setText(email);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
-        findViewById(R.id.user_update_button).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                CustomSnackbar snackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
-
-                if (mAwesomeValidation.validate()) {
-
-                    final String newfirstname = firstname_edt.getText().toString();
-                    final String newlastname = lastname_edt.getText().toString();
-                    String newPassword = password_edt.getText().toString();
-
-                    // Change first and last names
-                    databaseRef.child("firstname").setValue(newfirstname);
-                    databaseRef.child("lastname").setValue(newlastname);
-
-                    databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups");
-                    for (String groupId : groupsUserIsMemberOf) {
-                        databaseRef.child(groupId).child("members").child(user_id)
-                                .setValue(String.format("%s %s", newfirstname, newlastname));
-                    }
-
-//                    String newemail = email_edt.getText().toString();
-//                    user.updateEmail(newemail).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()) {
-//                                String mail = email_edt.getText().toString();
-//                                pushUserIntoDatabase(newfirstname, newlastname, mail);
-//                            } else {
-//                                Log.d("Failed", "User password not updated.");
-//                            }
-//                        }
-//                    });
-
-                    // If password is empty, it means its unchanged
-                    if (!newPassword.isEmpty()) {
-                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                //Log.d("PASS", "User password updated.");
-                            }
-                        }
-                        });
-                    }
-
-                    snackbar.show(UserUpdateActivity.this, mLayout, getResources().getString(R.string.account_updated),CustomSnackbar.SNACKBAR_SUCCESS ,Snackbar.LENGTH_SHORT);
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            updateUI();
-                        }
-                    }, Constants.REDIRECTION_DELAY);
-
-
-                } else {
-                    snackbar.show(UserUpdateActivity.this, mLayout, "An error occurred", CustomSnackbar.SNACKBAR_ERROR,Snackbar.LENGTH_SHORT);
-                }
-            }
-        });
     }
 
     public static void addSignUpValidation(AwesomeValidation mAwesomeValidation, Activity activity) {
-        mAwesomeValidation.addValidation(activity, R.id.user_update_firstname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
-        mAwesomeValidation.addValidation(activity, R.id.user_update_lastname_edittext, Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
-//        mAwesomeValidation.addValidation(activity, R.id.user_update_email_edittext, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-        mAwesomeValidation.addValidation(activity, R.id.user_update_password_edittext, Constants.REGEX_PASSWORD_CHANGE_VALIDATION, R.string.err_password);
-        mAwesomeValidation.addValidation(activity, R.id.user_update_confirm_password_edittext, R.id.user_update_password_edittext, R.string.err_password_confirmation);
-
+        mAwesomeValidation.addValidation(activity, R.id.user_update_firstname_edittext,
+                Constants.REGEX_NAME_VALIDATION, R.string.err_firstname);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_lastname_edittext,
+                Constants.REGEX_NAME_VALIDATION, R.string.err_lastname);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_password_edittext,
+                Constants.REGEX_PASSWORD_CHANGE_VALIDATION, R.string.err_password);
+        mAwesomeValidation.addValidation(activity, R.id.user_update_confirm_password_edittext,
+                R.id.user_update_password_edittext, R.string.err_password_confirmation);
     }
 }

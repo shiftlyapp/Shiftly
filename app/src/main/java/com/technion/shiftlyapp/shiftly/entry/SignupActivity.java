@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +13,20 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
 import com.technion.shiftlyapp.shiftly.dataTypes.User;
 import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -66,12 +65,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void pushUserIntoDatabase(String firstname, String lastname, String email) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser mCurrentUser = mAuth.getCurrentUser();
-        String userId = mCurrentUser.getUid();
         User user = new User(firstname, lastname, email);
-        DatabaseReference mDatabase = database.getReference().child("Users").child(userId);
-        mDatabase.setValue(user);
+
+        DataAccess dataAccess = new DataAccess();
+        dataAccess.addUser(user);
     }
 
     private void updateUI() {
