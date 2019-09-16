@@ -25,17 +25,18 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     private List<String> mEmployeesList;
     private LayoutInflater mInflater;
     private Context context;
-    private ShiftsListAdapter.ItemClickListener shifts_listener;
     private ArrayAdapter<String> employees_name_spinner_adapter;
+    private OnSpinnerChangeListener onSpinnerChangeListener;
 
     // data is passed into the constructor
-    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names, List<String> employees_list) {
+    ShiftsListAdapter(Context context, List<String> names, List<String> start_times, List<String> end_times, List<String> employees_names, List<String> employees_list, OnSpinnerChangeListener onSpinnerChangeListener) {
         this.mInflater = LayoutInflater.from(context);
         this.mDaysNames = names;
         this.mStartTimes = start_times;
         this.mEndTimes = end_times;
         this.mEmployeesNames = employees_names;
         this.mEmployeesList = employees_list;
+        this.onSpinnerChangeListener = onSpinnerChangeListener;
 
         employees_name_spinner_adapter = new ArrayAdapter<>(context, R.layout.custom_spinner_item, employees_list);
         employees_name_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -46,6 +47,7 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.agenda_recycleview_list_item, parent, false);
         return new ViewHolder(view);
+
     }
 
     // binds the data to the TextView in each row
@@ -62,12 +64,17 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         if (!endingHour.equals("")) endingHour = context.getResources().getString(R.string.end_time) + " " + endingHour;
         holder.mEndHourView.setText(endingHour);
 
+        // If it is the agenda activity
         if (mEmployeesList.isEmpty()) {
             holder.mEmployeeNameSpinner.setVisibility(View.GONE);
+        // else it is the edit schedule activity
         } else {
-            String employeeName = String.format("%s", mEmployeesNames.get(position));
-            holder.mEmployeeNameSpinner.setAdapter(employees_name_spinner_adapter);
-            holder.mEmployeeNameSpinner.setSelection(getEmployeePosition(employeeName));
+            // Set the spinner to have the chosen option
+            // change the employee_names list accordingly - in the edit schedule activity
+            String selected_employee = holder.mEmployeeNameSpinner.getSelectedItem().toString();
+            holder.mEmployeeNameSpinner.setSelection(getEmployeePosition(selected_employee));
+            onSpinnerChangeListener.onSpinnerChange(position, selected_employee);
+
         }
 
         if (position == 0) { // Do this if first item (Remove top line)
@@ -89,7 +96,7 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mDayNameView;
         TextView mStartHourView;
         TextView mEndHourView;
@@ -101,27 +108,15 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
             mStartHourView = itemView.findViewById(R.id.shift_starting_hour);
             mEndHourView = itemView.findViewById(R.id.shift_ending_hour);
             mEmployeeNameSpinner = itemView.findViewById(R.id.employee_name_spinner);
+
+            mEmployeeNameSpinner.setAdapter(employees_name_spinner_adapter);
+//            mEmployeeNameSpinner.setSelection(itemView.);
+
             context = itemView.getContext();
-            itemView.setOnClickListener(this);
 
         }
 
-        @Override
-        public void onClick(View view) {
-
-
-        }
     }
-
-
-    void setClickListener(ShiftsListAdapter.ItemClickListener itemClickListener) {
-        this.shifts_listener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
 
     // total number of rows
     @Override

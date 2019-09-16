@@ -40,6 +40,7 @@ public class AgendaViewFragment extends Fragment {
     private String groupId;
     private String employeeId;
     private DatabaseReference groupsRef;
+    private OnSpinnerChangeListener onSpinnerChangeListener;
 
     @Nullable
     @Override
@@ -63,6 +64,13 @@ public class AgendaViewFragment extends Fragment {
         end_times = new ArrayList<>();
         employees_ids = new ArrayList<>();
         employees_list = new ArrayList<>();
+
+        onSpinnerChangeListener = new OnSpinnerChangeListener() {
+            @Override
+            public void onSpinnerChange(int index, String employee_name) {
+                return;
+            }
+        };
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -93,7 +101,7 @@ public class AgendaViewFragment extends Fragment {
                     start_times.add("");
                     end_times.add("");
                 }
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_ids, employees_list);
+                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_ids, employees_list, onSpinnerChangeListener);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));

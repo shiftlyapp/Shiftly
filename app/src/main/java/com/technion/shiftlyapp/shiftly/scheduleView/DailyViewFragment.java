@@ -27,7 +27,7 @@ public class DailyViewFragment extends Fragment {
         String groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.daily_label));
         WeekView mDayView = (WeekView) v.findViewById(R.id.dayView);
-        Scheduler daily_schedule = new Scheduler(mDayView,groupId,mColors,1);
+        Scheduler daily_schedule = new Scheduler(mDayView,groupId,mColors,1, getContext());
         return v;
     }
 }

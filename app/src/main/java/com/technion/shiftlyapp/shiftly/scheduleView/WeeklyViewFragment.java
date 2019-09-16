@@ -32,7 +32,7 @@ public class WeeklyViewFragment extends Fragment {
         String groupId = getActivity().getIntent().getExtras().getString("GROUP_ID");
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.weekly_label));
         WeekView mWeekView = (WeekView) v.findViewById(R.id.weekView);
-        Scheduler weekly_schedule = new Scheduler(mWeekView, groupId, mColors, 7);
+        Scheduler weekly_schedule = new Scheduler(mWeekView, groupId, mColors, 7, getContext());
         return v;
     }
 }

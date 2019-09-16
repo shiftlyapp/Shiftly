@@ -1,5 +1,7 @@
 package com.technion.shiftlyapp.shiftly.scheduleView;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.alamkanak.weekview.MonthLoader;
@@ -10,6 +12,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftlyapp.shiftly.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +32,7 @@ public class Scheduler {
     private Long duration;
     private Map<String, Integer> employeeColors;
     private int steps = 0;
+    private Context context;
 
     private int[] mColors;
 
@@ -48,12 +52,13 @@ public class Scheduler {
         this.events = events;
     }
 
-    Scheduler(WeekView mWeekView, String groupId, int[] mColors, int num_of_days_to_show) {
+    Scheduler(WeekView mWeekView, String groupId, int[] mColors, int num_of_days_to_show, Context context) {
         this.mWeekView = mWeekView;
         this.mWeekView.setNumberOfVisibleDays(num_of_days_to_show);
         this.groupId = groupId;
         this.mColors = mColors;
         this.events = new ArrayList<>();
+        this.context = context;
 
         Calendar cal = Calendar.getInstance();
         int current_year = cal.get(Calendar.YEAR);
@@ -100,7 +105,8 @@ public class Scheduler {
                 int x = 0;
                 for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                     String employeeId = current_employee.getValue(String.class);
-                    String employeeName = (employeeId.equals("null")) ? "N/A" : dataSnapshot.child("members").child(employeeId).getValue().toString();
+                    String employeeName = (employeeId.equals("null")) ? context.getString(R.string.not_available)
+                                        : dataSnapshot.child("members").child(employeeId).getValue().toString();
 //                    if (employeeId.equals(employee_id_agenda) && !foundAgendaName) {
 //                        agendaName = employeeName;
 //                        foundAgendaName = true;

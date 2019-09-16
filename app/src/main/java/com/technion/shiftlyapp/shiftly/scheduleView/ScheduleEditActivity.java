@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,9 +25,11 @@ import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 import com.venmo.view.TooltipView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ScheduleEditActivity extends AppCompatActivity {
+public class ScheduleEditActivity extends AppCompatActivity implements OnSpinnerChangeListener {
 
     private RecyclerView mRecyclerView;
     private ShiftsListAdapter mAdapter;
@@ -41,7 +44,9 @@ public class ScheduleEditActivity extends AppCompatActivity {
     private String employeeId;
     private DatabaseReference groupsRef;
     private CustomSnackbar mSnackbar;
-
+    private DatabaseReference databaseRef;
+    private Map<String, String> employeeIdByName;
+    private OnSpinnerChangeListener onSpinnerChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
 
         groupId = getIntent().getExtras().getString("GROUP_ID");
 
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupId);
 
         // Configuring RecyclerView with A LinearLayout and adding dividers
         initializeRecyclerAnimation();
@@ -73,6 +79,15 @@ public class ScheduleEditActivity extends AppCompatActivity {
         end_times = new ArrayList<>();
         employees_names = new ArrayList<>();
         employees_list = new ArrayList<>();
+        employeeIdByName = new HashMap<>();
+
+        // interface method that gets called when a spinner is changed in the adapter
+        onSpinnerChangeListener = new OnSpinnerChangeListener() {
+            @Override
+            public void onSpinnerChange(int index, String employee_name) {
+                employees_names.set(index, employee_name);
+            }
+        };
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -87,6 +102,7 @@ public class ScheduleEditActivity extends AppCompatActivity {
             }
         });
 
+        // TODO call the other file's readData
         readData(new FirebaseCallback() {
             @Override
             public void populateShiftsLists(Long employees_per_shift, Long days_num, Long shift_length, Long shifts_per_day, String starting_time) {
@@ -113,7 +129,8 @@ public class ScheduleEditActivity extends AppCompatActivity {
                     end_times.add("");
                     employees_list.add("");
                 }
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list);
+
+                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list, onSpinnerChangeListener);
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -128,29 +145,28 @@ public class ScheduleEditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Push schedule to DB
 
-//                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        Map<String, Object> options_map = new HashMap<>();
-//                        for (DataSnapshot postSnapshot : dataSnapshot.child("schedule").getChildren()) {
-//                            options_map.put(postSnapshot.getKey(), postSnapshot.getValue());
-//                        }
-//                        String streched = strech_string_by_num_of_employees();
-//                        schedule_map.put(currentUser.getUid(), streched);
-//
-//                        Map<String, Object> schedule_map_of_db = new HashMap<>();
-//                        schedule_map_of_db.put("options", options_map);
-//
-//                        databaseRef.updateChildren(schedule_map_of_db);
-//
-//                        Toast.makeText(ScheduleEditActivity.this, R.string.schedule_updated_text, Toast.LENGTH_LONG).show();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> schedule_map = new HashMap<>();
+                        Long i = 0L;
+                        for (String updated_employee_name : employees_names) {
+                            schedule_map.put(i.toString(), getEmployeeIdByName(updated_employee_name));
+                            i++;
+                        }
+                        Map<String, Object> schedule_map_of_db = new HashMap<>();
+                        schedule_map_of_db.put("schedule", schedule_map);
+
+                        databaseRef.updateChildren(schedule_map_of_db);
+
+                        Toast.makeText(ScheduleEditActivity.this, R.string.schedule_updated_text, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -164,6 +180,10 @@ public class ScheduleEditActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private String getEmployeeIdByName(String updated_employee_name) {
+        return employeeIdByName.get(updated_employee_name);
     }
 
     // TODO leave only this
@@ -187,7 +207,9 @@ public class ScheduleEditActivity extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.child(groupId).child("members").getChildren()) {
                     employees_list.add((String) postSnapshot.getValue());
+                    employeeIdByName.put((String) postSnapshot.getValue(), postSnapshot.getKey());
                 }
+                employees_list.add(getResources().getString(R.string.not_available));
 
                 firebaseCallback.populateShiftsLists(employees_per_shift, days_num, shift_length,
                         shifts_per_day, starting_time);
@@ -201,6 +223,11 @@ public class ScheduleEditActivity extends AppCompatActivity {
         };
 
         groupsRef.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    @Override
+    public void onSpinnerChange(int index, String employee_name) {
+        return;
     }
 
     private interface FirebaseCallback {
