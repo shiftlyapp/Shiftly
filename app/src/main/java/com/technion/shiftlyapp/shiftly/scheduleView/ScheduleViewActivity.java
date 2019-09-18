@@ -159,8 +159,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 view.setVisibility(View.GONE);
             }
         });
-        final TooltipView edit_schedule_tooltip = findViewById(R.id.edit_schedule_tooltip);
-        edit_schedule_tooltip.setOnClickListener(new View.OnClickListener() {
+        final TooltipView edit_schedule_fab_tooltip = findViewById(R.id.edit_schedule_fab_tooltip);
+        edit_schedule_fab_tooltip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.GONE);
@@ -205,7 +205,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     menuFab.setVisibility(View.VISIBLE);
 
                     schedule_tooltip.setVisibility(View.VISIBLE);
-                    edit_schedule_tooltip.setVisibility(View.VISIBLE);
+                    edit_schedule_fab_tooltip.setVisibility(View.VISIBLE);
                     view_options_tooltip.setVisibility(View.VISIBLE);
 
                 } else {
@@ -356,7 +356,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     schedule_map.put("schedule", generated_schedule);
                     databaseRef.updateChildren(schedule_map);
 
-                    if (generated_schedule.contains("null")) {
+                    if (generated_schedule.contains(R.string.not_available)) {
                         // Present a snackbar of "A full schedule could not be created" (warning)
                         mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
 

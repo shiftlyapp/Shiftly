@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,7 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +47,19 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
     private DatabaseReference databaseRef;
     private Map<String, String> employeeIdByName;
     private OnSpinnerChangeListener onSpinnerChangeListener;
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +115,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
             }
         });
 
-        // TODO call the other file's readData
+        // Future change: call the agenda's readData method
         readData(new FirebaseCallback() {
             @Override
             public void populateShiftsLists(Long employees_per_shift, Long days_num, Long shift_length, Long shifts_per_day, String starting_time) {
@@ -131,16 +144,17 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
                 }
 
                 mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list, onSpinnerChangeListener);
-                mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mAdapter.notifyDataSetChanged();
+
 
             }
         });
 
-
-        FloatingActionButton saveFab = findViewById(R.id.save_fab);
-        saveFab.setOnClickListener(new View.OnClickListener() {
+        // Saving the changed schedule and uploading it to the DB
+        Button saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Push schedule to DB
@@ -149,9 +163,9 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Map<String, Object> schedule_map = new HashMap<>();
-                        Long i = 0L;
+                        int i = 0;
                         for (String updated_employee_name : employees_names) {
-                            schedule_map.put(i.toString(), getEmployeeIdByName(updated_employee_name));
+                            schedule_map.put(Integer.toString(i), getEmployeeIdByName(updated_employee_name));
                             i++;
                         }
                         Map<String, Object> schedule_map_of_db = new HashMap<>();
@@ -167,11 +181,14 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
 
                     }
                 });
+                // Going back to thw schedule view
+                finish();
             }
         });
 
-        FloatingActionButton cancelFab = findViewById(R.id.cancel_fab);
-        cancelFab.setOnClickListener(new View.OnClickListener() {
+        // Canceling the changed schedule and discarding the changes
+        Button cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Cancel action
@@ -186,7 +203,6 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
         return employeeIdByName.get(updated_employee_name);
     }
 
-    // TODO leave only this
     private void readData(final FirebaseCallback firebaseCallback) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -209,6 +225,10 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
                     employees_list.add((String) postSnapshot.getValue());
                     employeeIdByName.put((String) postSnapshot.getValue(), postSnapshot.getKey());
                 }
+                // Adding the N/A as a member in the group
+                String NA = getResources().getString(R.string.not_available);
+                employeeIdByName.put(NA, NA);
+
                 employees_list.add(getResources().getString(R.string.not_available));
 
                 firebaseCallback.populateShiftsLists(employees_per_shift, days_num, shift_length,

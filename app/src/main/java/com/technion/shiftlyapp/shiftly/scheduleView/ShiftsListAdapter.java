@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,7 +53,7 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(@NonNull final ShiftsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ShiftsListAdapter.ViewHolder holder, final int position) {
         String dayName = mDaysNames.get(position);
         holder.mDayNameView.setText(dayName);
 
@@ -69,14 +70,31 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
             holder.mEmployeeNameSpinner.setVisibility(View.GONE);
         // else it is the edit schedule activity
         } else {
+            final String selected_employee = mEmployeesNames.get(position);
             // Set the spinner to have the chosen option
-            // change the employee_names list accordingly - in the edit schedule activity
-            String selected_employee = holder.mEmployeeNameSpinner.getSelectedItem().toString();
             holder.mEmployeeNameSpinner.setSelection(getEmployeePosition(selected_employee));
-            onSpinnerChangeListener.onSpinnerChange(position, selected_employee);
+
+            holder.mEmployeeNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position_within_spinner, long id) {
+                    // change the employee_names list accordingly - in the edit schedule activity
+                    String selected_employee = holder.mEmployeeNameSpinner.getSelectedItem().toString();
+                    // Update the list in ScheduleEditActivity for the update via save button clicking
+                    onSpinnerChangeListener.onSpinnerChange(position, selected_employee);
+                    // Update the list in this adapter for correct presentation of the list rows
+                    mEmployeesNames.set(position, selected_employee);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
 
         }
 
+        // Different appearance for the first row
         if (position == 0) { // Do this if first item (Remove top line)
             ViewGroup.MarginLayoutParams marginLayoutParams =
                     (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
@@ -102,7 +120,7 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
         TextView mEndHourView;
         Spinner mEmployeeNameSpinner;
 
-        ViewHolder(View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
             mDayNameView = itemView.findViewById(R.id.shift_day);
             mStartHourView = itemView.findViewById(R.id.shift_starting_hour);
@@ -110,12 +128,10 @@ class ShiftsListAdapter extends RecyclerView.Adapter<ShiftsListAdapter.ViewHolde
             mEmployeeNameSpinner = itemView.findViewById(R.id.employee_name_spinner);
 
             mEmployeeNameSpinner.setAdapter(employees_name_spinner_adapter);
-//            mEmployeeNameSpinner.setSelection(itemView.);
 
             context = itemView.getContext();
 
         }
-
     }
 
     // total number of rows

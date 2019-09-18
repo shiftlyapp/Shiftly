@@ -87,5 +87,7 @@
     <dimen name="user_update_edittext_width">300dp</dimen>
     <!-- Edit Schedule -->
     <dimen name="edit_schedule_spinner_margin">16dp</dimen>
+    <dimen name="recyclerlist_height">500dp</dimen>
+    <dimen name="button_edit_schedule_width">150dp</dimen>
 
 </resources>

@@ -105,12 +105,8 @@ public class Scheduler {
                 int x = 0;
                 for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                     String employeeId = current_employee.getValue(String.class);
-                    String employeeName = (employeeId.equals("null")) ? context.getString(R.string.not_available)
-                                        : dataSnapshot.child("members").child(employeeId).getValue().toString();
-//                    if (employeeId.equals(employee_id_agenda) && !foundAgendaName) {
-//                        agendaName = employeeName;
-//                        foundAgendaName = true;
-//                    }
+                    String NA = String.valueOf(R.string.not_available);
+                    String employeeName = (employeeId.equals(NA)) ? NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
                     employeeNamesList.add(employeeName);
                     employeeColors.put(employeeName, mColors[x++ % mColors.length]);
                 }
