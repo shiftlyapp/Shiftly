@@ -13,6 +13,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.dataTypes.User;
 
+import java.util.HashMap;
+
 public class DataAccess {
     private DatabaseReference databaseRef;
     private FirebaseAuth mAuth;
@@ -113,5 +115,35 @@ public class DataAccess {
 
     public void addGroup(Group group) {
         updateGroup(databaseRef.child(groups).push().getKey(), group);
+    }
+
+    public interface FindFilter<T> {
+        boolean test(T t);
+    }
+
+    public void findGroupsBy(FindFilter<Group> filter, DataAccessCallback<HashMap<String, Group>> callback) {
+        HashMap<String, Group> foundGroups = new HashMap<>();
+        DatabaseReference groupsRef = databaseRef.child(groups);
+        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot currentGroup : dataSnapshot.getChildren()) {
+                    getGroup(currentGroup.getKey(), new DataAccessCallback<Group>() {
+                        @Override
+                        public void onCallBack(Group g) {
+                            if (filter.test(g)) {
+                                foundGroups.put(currentGroup.getKey(), g);
+                            }
+                        }
+                    });
+                }
+                callback.onCallBack(foundGroups);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.err.println(databaseError.toString());
+            }
+        });
     }
 }

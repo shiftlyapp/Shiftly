@@ -29,8 +29,9 @@ import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
@@ -39,7 +40,7 @@ public class UserUpdateActivity extends AppCompatActivity {
     private ConstraintLayout mLayout;
     private EditText password_edt, firstname_edt, lastname_edt;
     private String user_id;
-    private ArrayList<String> groupsUserIsMemberOf;
+    private Set<Map.Entry<String, Group>> groupsUserIsMemberOf;
     private DataAccess dataAccess = new DataAccess();
     private User oldUser;
 
@@ -144,21 +145,14 @@ public class UserUpdateActivity extends AppCompatActivity {
         newUser.setLastname(newlastname);
         dataAccess.updateUser(user_id, newUser);
 
-        if (!oldUser.getFirstname().equals(newfirstname) || !oldUser.getLastname().equals(newlastname)) {
-            // TODO: implement findGroupBy in DataAccess
-            for (final String groupId : groupsUserIsMemberOf) {
-                dataAccess.getGroup(groupId, new DataAccess.DataAccessCallback<Group>() {
-                    @Override
-                    public void onCallBack(Group group) {
-                        Group updatedGroup = new Group(group);
-                        Map<String, String> updatedMembers = group.getMembers();
-                        updatedMembers.put(user_id, String.format("%s %s", newfirstname, newlastname));
-                        updatedGroup.setMembers(updatedMembers);
-                        dataAccess.updateGroup(groupId, updatedGroup);
-                    }
-                });
-            }
+        for (Map.Entry<String, Group> currentGroup : groupsUserIsMemberOf) {
+            Group updatedGroup = new Group(currentGroup.getValue());
+            Map<String, String> updatedMembers = currentGroup.getValue().getMembers();
+            updatedMembers.put(user_id, String.format("%s %s", newfirstname, newlastname));
+            updatedGroup.setMembers(updatedMembers);
+            dataAccess.updateGroup(currentGroup.getKey(), updatedGroup);
         }
+
         // If password is empty, it means its unchanged
         if (!newPassword.isEmpty()) {
             firebaseAuthUser.updatePassword(newPassword);
@@ -170,8 +164,14 @@ public class UserUpdateActivity extends AppCompatActivity {
             @Override
             public void onCallBack(User user) {
                 oldUser = new User(user);
-                groupsUserIsMemberOf = new ArrayList<>();
-                groupsUserIsMemberOf.addAll(user.getGroups());
+
+                dataAccess.findGroupsBy((Group group) -> group.getMembers().keySet().contains(user_id),
+                        new DataAccess.DataAccessCallback<HashMap<String, Group>>() {
+                    @Override
+                    public void onCallBack(HashMap<String, Group> foundGroups) {
+                        groupsUserIsMemberOf = foundGroups.entrySet();
+                    }
+                });
 
                 firstname_edt.setText(user.getFirstname());
                 lastname_edt.setText(user.getLastname());
