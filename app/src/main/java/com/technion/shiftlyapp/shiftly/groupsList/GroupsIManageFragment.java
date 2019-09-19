@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
 import com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation1Activity;
 import com.technion.shiftlyapp.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -278,7 +279,7 @@ public class GroupsIManageFragment extends Fragment {
         delete_dialog.show();
     }
 
-    public void deleteGroup(int position) {
+    private void deleteGroup(int position) {
         // Save the group IDs
 
         final String group_id = groupsIds.get(position);
@@ -293,18 +294,14 @@ public class GroupsIManageFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 showError(databaseError);
-
             }
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 // Go over the group members and save their ID's in a variable
                 for (DataSnapshot member : dataSnapshot.getChildren()) {
                     memberIds.add(member.getKey());
                 }
-
-
 
                 // Go over the saved list and for each user go to groups and delete the correct group
                 usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -321,12 +318,12 @@ public class GroupsIManageFragment extends Fragment {
                             // for each user, decrease the groups number by 1
                             for (final DataSnapshot user : dataSnapshot.getChildren()) {
                                 if (memberIds.contains(user.getKey())) {
-
                                     final String old_groups_num = String.valueOf(dataSnapshot.child(user.getKey()).child("groups_count").getValue());
                                     final String new_groups_num = String.valueOf(Long.valueOf(old_groups_num) - 1);
 
                                     // Delete the group entirely
-                                    groupsRef.child(group_id).removeValue();
+                                    DataAccess dataAccess = new DataAccess();
+                                    dataAccess.removeGroup(group_id);
 
                                     final DatabaseReference userGroups = usersRef.child(user.getKey()).child("groups");
                                     userGroups.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -345,9 +342,7 @@ public class GroupsIManageFragment extends Fragment {
                                         }
 
                                         @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
+                                        public void onCancelled(@NonNull DatabaseError databaseError) { }
                                     });
                                 }
                             }

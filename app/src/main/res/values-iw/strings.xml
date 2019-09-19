@@ -13,7 +13,6 @@
 
     <string name="yes">כן</string>
     <string name="no">לא</string>
-
     <string name="not_available">לא זמין</string>
 
     <!-- Signup and Login -->
@@ -194,6 +193,12 @@
     <string name="edit_schedule_tooltip">לחצ/י על שם העובד/ת בכדי לשנותו</string>
     <string name="schedule_updated_text">הסידור נשמר בהצלחה!</string>
 
+    <!-- Schedule View -->
+    <string name="copy_group_code">העתק קוד קבוצה</string>
 
+    <!-- Sharing -->
+    <string name="share">שתף</string>
+    <string name="no_schedule_available">לא קיים סידור</string>
+    <string name="shift_number_title">"מספר משמרת: "</string>
 
 </resources>

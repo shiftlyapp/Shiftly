@@ -65,6 +65,7 @@
     <string name="group_create_succeed">%1$s was created successfully! </string>
     <string name="group_share_hint">Share this code with your Employees\n so they can join the group: </string>
     <string name="options_configure">Configure Options</string>
+    <string name="shift_number_title">Shift number:</string>
     <string name="fill_options_text">To proceed, please choose general settings for your shifts</string>
     <string name="group_pic_create_hint">Now, upload your Group picture:</string>
     <string name="group_pic_edit_hint">Upload a new group picture:</string>
@@ -145,7 +146,6 @@
     <string name="options_view_subtitle">The following members are yet to send options this week:</string>
 
     <!-- Group Deletion -->
-
     <string name="edit_delete_group_dialog">Choose an action:</string>
     <string name="delete_group_tooltip">Long click here to edit or delete the group</string>
     <string name="delete_user_dialog">Are you sure you want to delete your account?</string>
@@ -188,8 +188,14 @@
     <!-- Agenda -->
     <string name="agenda_no_shifts_message">No upcoming shifts</string>
 
-    <!-- Edit Schedule -->
+    <!-- Schedule View -->
+    <string name="copy_group_code">Copy Group Code</string>
 
+    <!-- Sharing -->
+    <string name="share">Share</string>
+    <string name="no_schedule_available">There\'s no schedule available</string>
+
+    <!-- Edit Schedule -->
     <string name="edit_schedule_label">Edit Schedule</string>
     <string name="edit_schedule_tooltip">Tap employee name to change it</string>
     <string name="schedule_updated_text">The schedule was updated successfully!</string>

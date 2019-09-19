@@ -2,6 +2,14 @@ package com.technion.shiftlyapp.shiftly.options;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -19,12 +27,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.utility.DividerItemDecorator;
 
@@ -32,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OptionsListActivity extends AppCompatActivity {
 
@@ -41,16 +45,13 @@ public class OptionsListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager options_layoutmanager;
 
     private List<Pair<String, String>> list_of_texts;
-    private Long days_num_param;
-    private Long shifts_per_day_param;
-    private Long num_of_employees_per_shift;
     private String options;
     private String group_id;
 
-    private DatabaseReference databaseRef;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private GoogleSignInAccount mGoogleSignInAccount;
+    private Group group;
 
     @Override
     public void onBackPressed() {
@@ -98,24 +99,18 @@ public class OptionsListActivity extends AppCompatActivity {
 
         group_id = getIntent().getExtras().getString("GROUP_ID");
 
-        databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        final DataAccess dataAccess = new DataAccess();
+        dataAccess.getGroup(group_id, new DataAccess.DataAccessCallback<Group>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                days_num_param = dataSnapshot.child("days_num").getValue(Long.class);
-                shifts_per_day_param = dataSnapshot.child("shifts_per_day").getValue(Long.class);
-                num_of_employees_per_shift = dataSnapshot.child("employees_per_shift").getValue(Long.class);
-                int total_num_of_shifts = (int) (days_num_param.intValue() * shifts_per_day_param.intValue());
+            public void onCallBack(Group g) {
+                group = g;
+
+                int total_num_of_shifts = group.getDays_num().intValue() * group.getShifts_per_day().intValue();
                 char[] chars = new char[total_num_of_shifts];
                 Arrays.fill(chars, '0');
                 options = new String(chars);
                 addShiftsToList();
                 options_adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
@@ -123,14 +118,8 @@ public class OptionsListActivity extends AppCompatActivity {
         OptionsListAdapter.ItemClickListener listener = new OptionsListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.v("TAG", "Item position: " + position);
-                Character c = options.charAt(position);
-                Character newChar;
-                if (c == '0') {
-                    newChar = '1';
-                } else {
-                    newChar = '0';
-                }
+                char c = options.charAt(position);
+                char newChar = c == '0' ? '1' : '0';
                 options = options.substring(0, position) + newChar + options.substring(position + 1);
             }
         };
@@ -142,59 +131,44 @@ public class OptionsListActivity extends AppCompatActivity {
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Push options to DB
+                // Update to the new options=
+                HashMap<String, String> options_map = group.getOptions();
 
-                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> options_map = new HashMap<>();
-                        for (DataSnapshot postSnapshot : dataSnapshot.child("options").getChildren()) {
-                            options_map.put(postSnapshot.getKey(), postSnapshot.getValue());
-                        }
-                        String streched = strech_string_by_num_of_employees();
-                        options_map.put(currentUser.getUid(), streched);
+                String stretched = stretchStringByNameOfEmployees();
+                options_map.put(currentUser.getUid(), stretched);
 
-                        Map<String, Object> options_map_of_db = new HashMap<>();
-                        options_map_of_db.put("options", options_map);
-
-                        databaseRef.updateChildren(options_map_of_db);
-
-                        Toast.makeText(OptionsListActivity.this, R.string.options_updated_text, Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                group.setOptions(options_map);
+                dataAccess.updateGroup(group_id, group);
             }
         });
     }
-    private String strech_string_by_num_of_employees() {
+
+    private String stretchStringByNameOfEmployees() {
         String streached = "";
-        for (int i=0 ; i<options.length() ; i++) {
+        for (int i = 0; i < options.length(); i++) {
             char charToAdd = options.charAt(i);
-            String str = "";
-            for (int j=0 ; j<num_of_employees_per_shift.intValue() ; j++) {
-                str += charToAdd;
+            StringBuilder str = new StringBuilder();
+            for (int j = 0; j < group.getEmployees_per_shift().intValue(); j++) {
+                str.append(charToAdd);
             }
-            streached = streached.substring(0, i*num_of_employees_per_shift.intValue()) + str;
+            streached = streached.substring(0, i * group.getEmployees_per_shift().intValue()) + str.toString();
         }
         return streached;
     }
+
     private void addShiftsToList() {
         List<String> days_array = new ArrayList<>();
-        days_array.add(getResources().getString(R.string.sunday));
-        days_array.add(getResources().getString(R.string.monday));
-        days_array.add(getResources().getString(R.string.tuesday));
-        days_array.add(getResources().getString(R.string.wednesday));
-        days_array.add(getResources().getString(R.string.thursday));
-        days_array.add(getResources().getString(R.string.friday));
-        days_array.add(getResources().getString(R.string.saturday));
-        for (int i = 1; i < days_num_param + 1; i++) {
-            for (int j = 1; j < shifts_per_day_param + 1; j++) {
+        days_array.add(getString(R.string.sunday));
+        days_array.add(getString(R.string.monday));
+        days_array.add(getString(R.string.tuesday));
+        days_array.add(getString(R.string.wednesday));
+        days_array.add(getString(R.string.thursday));
+        days_array.add(getString(R.string.friday));
+        days_array.add(getString(R.string.saturday));
+        for (int i = 1; i < group.getDays_num().intValue() + 1; i++) {
+            for (int j = 1; j < group.getShifts_per_day().intValue() + 1; j++) {
                 String shift_as_string = Integer.toString(j);
-                Pair<String, String> p = new Pair<>(days_array.get(i-1), "Shift number: " + shift_as_string);
+                Pair<String, String> p = new Pair<>(days_array.get(i - 1), getString(R.string.shift_number_title) + shift_as_string);
                 list_of_texts.add(p);
             }
         }

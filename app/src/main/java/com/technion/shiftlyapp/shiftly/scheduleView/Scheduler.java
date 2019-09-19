@@ -88,9 +88,7 @@ public class Scheduler {
 
         mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
