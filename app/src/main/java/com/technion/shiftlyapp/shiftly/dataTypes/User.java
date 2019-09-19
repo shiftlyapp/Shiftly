@@ -12,7 +12,7 @@ public class User {
     private String lastname;
     private String email;
     private Long groups_count;
-    private List<String> groups;
+    private ArrayList<String> groups;
 
     public User() {
     }
@@ -32,7 +32,7 @@ public class User {
         this.lastname = u.lastname;
         this.email = u.email;
         this.groups_count = u.groups_count;
-        this.groups.addAll(u.groups);
+        this.groups = new ArrayList<>(u.groups);
     }
 
     public String getFirstname() {
