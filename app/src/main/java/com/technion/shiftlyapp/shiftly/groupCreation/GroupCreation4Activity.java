@@ -222,23 +222,28 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
-        whatsapp_share.setOnClickListener(new View.OnClickListener() {
+        setWhatsappSharing(message_share_group_code);
+        // Email sharing
+        setEmailSharing(res, message_share_group_code);
+        // Other sharing
+        setOtherSharing(res, message_share_group_code);
+    }
+
+    private void setOtherSharing(final Resources res, final String message_share_group_code) {
+        etc_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
-                whatsapp_intent.setType("text/plain");
-                whatsapp_intent.setPackage("com.whatsapp");
-
-                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
-                try {
-                    startActivity(whatsapp_intent);
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(view.getContext(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
-                }
+                Intent etc_intent = new Intent(Intent.ACTION_SEND);
+                etc_intent.setType("text/html");
+                etc_intent.putExtra(Intent.EXTRA_EMAIL, "");
+                etc_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
+                etc_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
+                startActivity(Intent.createChooser(etc_intent, "Share"));
             }
         });
+    }
 
-        // Email sharing
+    private void setEmailSharing(final Resources res, final String message_share_group_code) {
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,17 +265,22 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        // Other sharing
-        etc_share.setOnClickListener(new View.OnClickListener() {
+    private void setWhatsappSharing(final String message_share_group_code) {
+        whatsapp_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent etc_intent = new Intent(Intent.ACTION_SEND);
-                etc_intent.setType("text/html");
-                etc_intent.putExtra(Intent.EXTRA_EMAIL, "");
-                etc_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
-                etc_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
-                startActivity(Intent.createChooser(etc_intent, "Share"));
+                Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
+                whatsapp_intent.setType("text/plain");
+                whatsapp_intent.setPackage("com.whatsapp");
+
+                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
+                try {
+                    startActivity(whatsapp_intent);
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(view.getContext(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

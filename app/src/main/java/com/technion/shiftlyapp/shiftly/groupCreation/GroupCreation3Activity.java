@@ -4,18 +4,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,6 +77,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 R.array.days_num, R.layout.custom_spinner_item);
         days_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         days_spinner.setAdapter(days_spinner_adapter);
+
         // set in case of group editing
         String days_num = getIntent().getExtras().getString("days_num");
         if (days_num != null) {
@@ -87,6 +89,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 R.array.shifts_per_day, R.layout.custom_spinner_item);
         shifts_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shifts_per_day_spinner.setAdapter(shifts_spinner_adapter);
+
         // set in case of group editing
         String shifts_per_day = getIntent().getExtras().getString("shifts_per_day");
         if (shifts_per_day != null) {
@@ -98,6 +101,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 R.array.employees_per_shift, R.layout.custom_spinner_item);
         employees_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employees_per_shift_spinner.setAdapter(employees_spinner_adapter);
+
         // set in case of group editing
         String employees_per_shift = getIntent().getExtras().getString("employees_per_shift");
         if (employees_per_shift != null) {
@@ -109,6 +113,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 R.array.starting_hour, R.layout.custom_spinner_item);
         starting_hour_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         starting_hour_spinner.setAdapter(starting_hour_spinner_adapter);
+
         // set in case of group editing
         String starting_time = getIntent().getExtras().getString("starting_time");
         if (starting_time != null) {
@@ -120,6 +125,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                 R.array.shift_len, R.layout.custom_spinner_item);
         shift_len_spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         shift_len_spinner.setAdapter(shift_len_spinner_adapter);
+
         // set in case of group editing
         String shift_len = getIntent().getExtras().getString("shift_length");
         if (shift_len != null) {
@@ -214,7 +220,9 @@ public class GroupCreation3Activity extends AppCompatActivity {
         updateCallback.onCallBack();
     }
 
-    private void edit_group(final String group_id, Long days_num, Long shifts_per_day, Long employees_per_shift, String starting_time, Long shift_length, String group_name, byte[] group_pic_array) {
+    private void edit_group(final String group_id, Long days_num, Long shifts_per_day,
+                            Long employees_per_shift, String starting_time, Long shift_length,
+                            String group_name, byte[] group_pic_array) {
         // Group icon
         uploadPic(group_id, group_pic_array);
 
