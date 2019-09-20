@@ -1,12 +1,15 @@
 package com.technion.shiftlyapp.shiftly.dataTypes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 // A class that represents a group in the app.
 // This group syncs with the firebase database
-public class Group {
+public class Group implements Parcelable {
 
     private String admin;
     private String group_name;
@@ -153,5 +156,97 @@ public class Group {
         HashMap<String, String> clone = new HashMap<>(map.size());
         clone.putAll(map);
         return clone;
+    }
+
+    ///
+    // --- Ability to pass Group into another intent ---
+    ///
+    protected Group(Parcel in) {
+        admin = in.readString();
+        group_name = in.readString();
+        if (in.readByte() == 0) {
+            members_count = null;
+        } else {
+            members_count = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            days_num = null;
+        } else {
+            days_num = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            shifts_per_day = null;
+        } else {
+            shifts_per_day = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            employees_per_shift = null;
+        } else {
+            employees_per_shift = in.readLong();
+        }
+        group_icon_url = in.readString();
+        starting_time = in.readString();
+        if (in.readByte() == 0) {
+            shift_length = null;
+        } else {
+            shift_length = in.readLong();
+        }
+        schedule = in.createStringArrayList();
+    }
+
+    public static final Creator<Group> CREATOR = new Creator<Group>() {
+        @Override
+        public Group createFromParcel(Parcel in) {
+            return new Group(in);
+        }
+
+        @Override
+        public Group[] newArray(int size) {
+            return new Group[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(admin);
+        dest.writeString(group_name);
+        if (members_count == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(members_count);
+        }
+        if (days_num == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(days_num);
+        }
+        if (shifts_per_day == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(shifts_per_day);
+        }
+        if (employees_per_shift == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(employees_per_shift);
+        }
+        dest.writeString(group_icon_url);
+        dest.writeString(starting_time);
+        if (shift_length == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(shift_length);
+        }
+        dest.writeStringList(schedule);
     }
 }
