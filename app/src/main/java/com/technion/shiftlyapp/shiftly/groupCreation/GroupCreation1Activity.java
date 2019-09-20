@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
@@ -19,6 +20,7 @@ import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 // In this activity the future admin sets the group name.
 
 public class GroupCreation1Activity extends AppCompatActivity {
+    private Group group;
 
     @Override
     public void onBackPressed() {
@@ -39,6 +41,8 @@ public class GroupCreation1Activity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
 
         final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
+
+        setGroupType(group_action);
 
         final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
 
@@ -66,19 +70,13 @@ public class GroupCreation1Activity extends AppCompatActivity {
                 if (mAwesomeValidation.validate()) {
                     Intent group_creation_2_intent = new Intent(getApplicationContext(), GroupCreation2Activity.class);
                     String group_name = group_name_edittext.getText().toString();
-                    group_creation_2_intent.putExtra("GROUP_NAME", group_name);
+
+                    group.setGroup_name(group_name);
+
+                    group_creation_2_intent.putExtra("GROUP", group);
                     group_creation_2_intent.putExtra("GROUP_ACTION", group_action);
                     group_creation_2_intent.putExtra("GROUP_ID", group_id);
                     group_creation_2_intent.putExtra("TITLE", action_bar_title);
-
-                    if (group_action.equals("EDIT")) {
-                        group_creation_2_intent.putExtra("days_num", getIntent().getExtras().getString("days_num"));
-                        group_creation_2_intent.putExtra("employees_per_shift", getIntent().getExtras().getString("employees_per_shift"));
-                        group_creation_2_intent.putExtra("shifts_per_day", getIntent().getExtras().getString("shifts_per_day"));
-                        group_creation_2_intent.putExtra("shift_length", getIntent().getExtras().getString("shift_length"));
-                        group_creation_2_intent.putExtra("starting_time", getIntent().getExtras().getString("starting_time"));
-                        group_creation_2_intent.putExtra("group_icon_uri", getIntent().getExtras().getString("group_icon_uri"));
-                    }
 
                     startActivity(group_creation_2_intent);
                 }
@@ -86,10 +84,19 @@ public class GroupCreation1Activity extends AppCompatActivity {
         });
     }
 
+    private void setGroupType(String group_action) {
+        if (group_action.equals("CREATE")) {
+            group = new Group();
+        }
+        else {
+            group = getIntent().getExtras().getParcelable("GROUP");
+        }
+    }
+
     private void setGroupName(String group_action, EditText group_name_edittext) {
         if (!group_action.equals("CREATE")) {
             // Set current group name
-            group_name_edittext.setText(getIntent().getExtras().getString("group_name"));
+            group_name_edittext.setText(group.getGroup_name());
         }
     }
 

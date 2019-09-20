@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
 
@@ -35,6 +36,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
     private Uri mImageUri;
     private CircleImageView circleImageView;
     private byte[] compressed_group_byte_array;
+    private Group group;
 
     @Override
     public void onStart() {
@@ -96,6 +98,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
 
         final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
+        group = getIntent().getExtras().getParcelable("GROUP");
 
         final String action_bar_title = getIntent().getExtras().getString("TITLE");
         final String final_group_id = getGroupId(group_action);
@@ -126,19 +129,12 @@ public class GroupCreation2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent group_creation_3_intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
+
                 String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                group_creation_3_intent.putExtra("GROUP_NAME", group_name);
                 group_creation_3_intent.putExtra("GROUP_ACTION", group_action);
                 group_creation_3_intent.putExtra("GROUP_ID", final_group_id);
                 group_creation_3_intent.putExtra("TITLE", action_bar_title);
-
-                if (group_action.equals("EDIT")) {
-                    group_creation_3_intent.putExtra("days_num", getIntent().getExtras().getString("days_num"));
-                    group_creation_3_intent.putExtra("employees_per_shift", getIntent().getExtras().getString("employees_per_shift"));
-                    group_creation_3_intent.putExtra("shifts_per_day", getIntent().getExtras().getString("shifts_per_day"));
-                    group_creation_3_intent.putExtra("shift_length", getIntent().getExtras().getString("shift_length"));
-                    group_creation_3_intent.putExtra("starting_time", getIntent().getExtras().getString("starting_time"));
-                }
+                group_creation_3_intent.putExtra("GROUP", group);
 
                 if (compressed_group_byte_array != null) {
                     group_creation_3_intent.putExtra("GROUP_PICTURE", compressed_group_byte_array);

@@ -25,10 +25,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,17 +45,19 @@ public class GroupCreation4Activity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
-    private DatabaseReference mGroupRef;
     private UploadTask uploadTask;
 
     private Toolbar mainToolbar;
     private TextView signup_text, share_with_friends_txt;
     private LottieAnimationView done_animation, loading_animation;
-    private ImageView whatsapp_share, email_share, /*sms_share,*/ etc_share;
+    private ImageView whatsapp_share, email_share, etc_share;
     private EditText group_code_edittext;
     private boolean back_pressed_locked;
     private ConstraintLayout mLayout;
     private CustomSnackbar mSnackbar;
+    private Group group;
+    private String group_UID;
+    DataAccess dataAccess = new DataAccess();
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -78,33 +76,23 @@ public class GroupCreation4Activity extends AppCompatActivity {
         }
     }
 
-    private void pushGroupToDatabase(byte[] compressed_bitmap, final String filename,
-                                     final Long days_num, final Long shifts_per_day,
-                                     final Long employees_per_shift, final String starting_hour, final Long shift_length, final String admin_UID,
-                                     final String group_name, final String group_UID) {
-        mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
-        final DataAccess dataAccess = new DataAccess();
-
-        final Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day,
-                employees_per_shift, starting_hour, shift_length, "none");
+    private void pushGroupToDatabase(byte[] compressed_bitmap) {
+        group_UID = dataAccess.addGroup(group);
 
         if (compressed_bitmap == null) {
             // No image upload
             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
 
-            dataAccess.updateGroup(group_UID, group);
-
             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
             success_sound.start();
         } else {
+            mStorageRef = mStorage.getReference().child("group_pics/" + group_UID + ".png");
             uploadTask = mStorageRef.putBytes(compressed_bitmap);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
                     handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                    dataAccess.updateGroup(group_UID, group);
-
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -187,24 +175,14 @@ public class GroupCreation4Activity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         done_animation.setSpeed(0.5f);
         // ------------------------- Firebase instances --------------------------------------------
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mGroupRef = database.getReference().child(("Groups"));
-        // -----------------------------------------------------------------------------------------
-        String group_UID = mGroupRef.push().getKey();
-        String group_name = extras.getString("GROUP_NAME");
-        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
-        String admin_UID = currentUser.getUid();
-        Long days_num = extras.getLong("DAYS_NUM");
-        Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
-        Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
-        final String starting_hour = extras.getString("STARTING_HOUR");
-        Long shift_length = extras.getLong("SHIFT_LEN");
+        // ------------------------------ Group upload ---------------------------------------------
+        group = getIntent().getExtras().getParcelable("GROUP");
 
-        pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, admin_UID, group_name, group_UID);
-        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
+        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
+
+        pushGroupToDatabase(group_pic_array);
+        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group.getGroup_name()));
         group_code_edittext.setText(group_UID);
         group_code_edittext.setInputType(InputType.TYPE_NULL);
         group_code_edittext.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +196,7 @@ public class GroupCreation4Activity extends AppCompatActivity {
         });
 
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
-                group_name + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
+                group.getGroup_name() + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
                 res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
