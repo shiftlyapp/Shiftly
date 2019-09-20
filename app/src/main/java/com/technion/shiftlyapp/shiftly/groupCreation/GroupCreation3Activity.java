@@ -17,11 +17,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,7 +35,6 @@ public class GroupCreation3Activity extends AppCompatActivity {
     private CustomSnackbar mSnackbar;
     private ConstraintLayout mLayout;
     private FirebaseStorage mStorage;
-    private DatabaseReference mGroupsRef;
     private StorageReference mStorageRef;
     private UploadTask uploadTask;
     private Group group;
@@ -116,8 +110,6 @@ public class GroupCreation3Activity extends AppCompatActivity {
         setSpinners(group_action, shifts_per_day_spinner, employees_per_shift_spinner, starting_hour_spinner, shift_len_spinner);
 
         mStorage = FirebaseStorage.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mGroupsRef = database.getReference().child(("Groups"));
 
         Button apply_button = findViewById(R.id.continue_button);
         apply_button.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +141,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
                     group_creation_4_intent.putExtra("GROUP", group);
                     group_creation_4_intent.putExtra("GROUP_ACTION", group_action);
-                    if (group_pic_array!=null) {
+                    if (group_pic_array != null) {
                         group_creation_4_intent.putExtra("GROUP_PICTURE", group_pic_array);
                     }
                     startActivity(group_creation_4_intent);
@@ -177,7 +169,6 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void setSpinners(String group_action, Spinner shifts_per_day_spinner, Spinner employees_per_shift_spinner, Spinner starting_hour_spinner, Spinner shift_len_spinner) {
@@ -196,49 +187,18 @@ public class GroupCreation3Activity extends AppCompatActivity {
         }
     }
 
-    interface GroupUpdateCallback {
-        void onCallBack();
-    }
-
-    // A wrapper which handles the options & schedule deletion after editing a group
-    private void deleteOptionsAndSchedule(GroupUpdateCallback updateCallback, String group_id) {
-        mGroupsRef.child(group_id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("options").exists()) {
-                    dataSnapshot.child("options").getRef().removeValue();
-                }
-                if(dataSnapshot.child("schedule").exists()) {
-                    dataSnapshot.child("schedule").getRef().removeValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
-        updateCallback.onCallBack();
-    }
-
     private void edit_group(final String group_id, byte[] group_pic_array) {
         // Group icon
         uploadPic(group_id, group_pic_array);
 
         // Group characteristics
         dataAccess.updateGroup(group_id, group);
-
-        // Remove current schedule and options
-        deleteOptionsAndSchedule(new GroupUpdateCallback() {
-            @Override
-            public void onCallBack() { }
-        }, group_id);
-
     }
 
     private void uploadPic(final String group_id, byte[] group_pic_array) {
         mStorageRef = mStorage.getReference().child("group_pics/" + group_id + ".png");
         if (group_pic_array == null) {
             // No image upload - update image url to be "none"
-            mGroupsRef.child(group_id).child("group_icon_url").setValue("none");
             group.setGroup_icon_url("none");
         } else {
             uploadTask = mStorageRef.putBytes(group_pic_array);
@@ -254,7 +214,6 @@ public class GroupCreation3Activity extends AppCompatActivity {
                     mStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            mGroupsRef.child(group_id).child("group_icon_url").setValue(uri.toString());
                             group.setGroup_icon_url(uri.toString());
                         }
                     });
@@ -262,6 +221,4 @@ public class GroupCreation3Activity extends AppCompatActivity {
             });
         }
     }
-
-
 }

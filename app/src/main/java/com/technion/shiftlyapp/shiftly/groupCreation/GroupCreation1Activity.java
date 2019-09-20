@@ -14,11 +14,13 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
 
 // The first activity of the group creation process.
 // In this activity the future admin sets the group name.
-
 public class GroupCreation1Activity extends AppCompatActivity {
     private Group group;
 
@@ -44,13 +46,12 @@ public class GroupCreation1Activity extends AppCompatActivity {
 
         setGroupType(group_action);
 
-        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
-
         TextView group_hint = findViewById(R.id.group_name_hint);
         setGroupHintText(group_action, group_hint);
 
         final String action_bar_title = setActionBarTitle(group_action);
 
+        final EditText group_name_edittext = findViewById(R.id.group_name_edittext);
         setGroupName(group_action, group_name_edittext);
 
         getSupportActionBar().setTitle(action_bar_title);
@@ -63,7 +64,6 @@ public class GroupCreation1Activity extends AppCompatActivity {
         Button createButton = findViewById(R.id.create_button);
 
         final String group_id = setGroupId(group_action);
-
         createButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,6 +90,10 @@ public class GroupCreation1Activity extends AppCompatActivity {
         }
         else {
             group = getIntent().getExtras().getParcelable("GROUP");
+
+            // Remove current schedule and options
+            group.setOptions(new HashMap<>());
+            group.setSchedule(new ArrayList<>());
         }
     }
 

@@ -225,8 +225,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 Intent email_intent = new Intent(Intent.ACTION_SENDTO);
 
                 email_intent.setData(Uri.parse("mailto:"));
@@ -239,7 +237,6 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     // In case no email app is available
                     mSnackbar.show(GroupCreation4Activity.this, mLayout, getResources().getString(R.string.no_email_app), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
-
                 }
             }
         });

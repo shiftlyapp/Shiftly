@@ -130,7 +130,6 @@ public class GroupCreation2Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent group_creation_3_intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
 
-                String group_name = getIntent().getExtras().getString("GROUP_NAME");
                 group_creation_3_intent.putExtra("GROUP_ACTION", group_action);
                 group_creation_3_intent.putExtra("GROUP_ID", final_group_id);
                 group_creation_3_intent.putExtra("TITLE", action_bar_title);
@@ -143,7 +142,6 @@ public class GroupCreation2Activity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private void setGroupHint(String group_action, TextView group_hint) {
