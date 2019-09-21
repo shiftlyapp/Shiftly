@@ -44,6 +44,7 @@ import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.algorithm.ShiftSchedulingSolver;
 import com.technion.shiftlyapp.shiftly.options.OptionsListActivity;
 import com.technion.shiftlyapp.shiftly.optionsView.OptionsViewActivity;
+import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 import com.venmo.view.TooltipView;
 
@@ -139,7 +140,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     employeeNamesList = new ArrayList<>();
                     for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                         String employeeId = current_employee.getValue(String.class);
-                        String employeeName = (employeeId.equals("null")) ? "N/A" : dataSnapshot.child("members").child(employeeId).getValue().toString();
+                        String employeeName = (employeeId.equals(Constants.NA)) ? Constants.NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
 
                         employeeNamesList.add(employeeName);
                     }

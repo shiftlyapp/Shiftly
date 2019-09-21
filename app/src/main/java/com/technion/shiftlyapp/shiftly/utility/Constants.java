@@ -23,4 +23,5 @@ public final class Constants {
     public static final String SIGNOUT_MESSAGE = "Are you sure you want to sign out?";
     public static final String YES = "Yes";
     public static final String NO = "No";
+    public static final String NA = "N/A";
 }

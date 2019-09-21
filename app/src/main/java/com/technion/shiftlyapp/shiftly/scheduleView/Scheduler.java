@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.utility.Constants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,8 +103,7 @@ public class Scheduler {
                 int x = 0;
                 for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                     String employeeId = current_employee.getValue(String.class);
-                    String NA = String.valueOf(R.string.not_available);
-                    String employeeName = (employeeId.equals(NA)) ? NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
+                    String employeeName = (employeeId.equals(Constants.NA)) ? Constants.NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
                     employeeNamesList.add(employeeName);
                     employeeColors.put(employeeName, mColors[x++ % mColors.length]);
                 }

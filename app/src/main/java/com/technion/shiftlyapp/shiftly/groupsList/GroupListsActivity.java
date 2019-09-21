@@ -311,8 +311,7 @@ public class GroupListsActivity extends AppCompatActivity {
                                                 for(DataSnapshot current_shift : group.child("schedule").getChildren()) {
                                                     String currentEmployeeId = current_shift.getValue(String.class);
                                                     if(currentEmployeeId.equals(currentUser.getUid())) {
-//                                                        current_shift.getRef().setValue("null");
-                                                        group.child("schedule").getRef().child(String.valueOf(i)).setValue("null");
+                                                        group.child("schedule").getRef().child(String.valueOf(i)).setValue(Constants.NA);
                                                     }
                                                     i++;
                                                 }
