@@ -5,12 +5,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.abdularis.civ.CircleImageView;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
 
@@ -34,6 +36,7 @@ public class GroupCreation2Activity extends AppCompatActivity {
     private Uri mImageUri;
     private CircleImageView circleImageView;
     private byte[] compressed_group_byte_array;
+    private Group group;
 
     @Override
     public void onStart() {
@@ -66,7 +69,8 @@ public class GroupCreation2Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             LottieAnimationView upload_anim = findViewById(R.id.upload_anim);
             upload_anim.setVisibility(View.GONE);
             mImageUri = data.getData();
@@ -94,25 +98,22 @@ public class GroupCreation2Activity extends AppCompatActivity {
         setSupportActionBar(mainToolbar);
 
         final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
-        String group_id = "";
+        group = getIntent().getExtras().getParcelable("GROUP");
 
         final String action_bar_title = getIntent().getExtras().getString("TITLE");
-        TextView group_hint = findViewById(R.id.group_pic_hint);
+        final String final_group_id = getGroupId(group_action);
 
-        if (group_action.equals("CREATE")) {
-            group_hint.setText(R.string.group_pic_create_hint);
-        } else {
-            group_hint.setText(R.string.group_pic_edit_hint);
-            group_id = getIntent().getExtras().getString("GROUP_ID");
-        }
+        TextView group_hint = findViewById(R.id.group_pic_hint);
+        setGroupHint(group_action, group_hint);
 
         getSupportActionBar().setTitle(action_bar_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         circleImageView = findViewById(R.id.group_image);
+
         // handle uploading group image in case of editing
-        String url = getIntent().getExtras().getString("group_icon_uri");
+        String url = group.getGroup_icon_url();
         if (url != null && !url.equals("none")) {
             Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(circleImageView);
         }
@@ -124,25 +125,16 @@ public class GroupCreation2Activity extends AppCompatActivity {
         });
 
         Button continue_button = findViewById(R.id.continue_button_group_creation_2);
-        final String final_group_id = group_id;
 
         continue_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent group_creation_3_intent = new Intent(getApplicationContext(), GroupCreation3Activity.class);
-                String group_name = getIntent().getExtras().getString("GROUP_NAME");
-                group_creation_3_intent.putExtra("GROUP_NAME", group_name);
+
                 group_creation_3_intent.putExtra("GROUP_ACTION", group_action);
                 group_creation_3_intent.putExtra("GROUP_ID", final_group_id);
                 group_creation_3_intent.putExtra("TITLE", action_bar_title);
-
-                if (group_action.equals("EDIT")) {
-                    group_creation_3_intent.putExtra("days_num", getIntent().getExtras().getString("days_num"));
-                    group_creation_3_intent.putExtra("employees_per_shift", getIntent().getExtras().getString("employees_per_shift"));
-                    group_creation_3_intent.putExtra("shifts_per_day", getIntent().getExtras().getString("shifts_per_day"));
-                    group_creation_3_intent.putExtra("shift_length", getIntent().getExtras().getString("shift_length"));
-                    group_creation_3_intent.putExtra("starting_time", getIntent().getExtras().getString("starting_time"));
-                }
+                group_creation_3_intent.putExtra("GROUP", group);
 
                 if (compressed_group_byte_array != null) {
                     group_creation_3_intent.putExtra("GROUP_PICTURE", compressed_group_byte_array);
@@ -151,6 +143,23 @@ public class GroupCreation2Activity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    private void setGroupHint(String group_action, TextView group_hint) {
+        if (group_action.equals("CREATE")) {
+            group_hint.setText(R.string.group_pic_create_hint);
+        } else {
+            group_hint.setText(R.string.group_pic_edit_hint);
+        }
+    }
+
+    private String getGroupId(String group_action) {
+        String group_id;
+        if (group_action.equals("CREATE")) {
+            group_id = "";
+        } else {
+            group_id = getIntent().getExtras().getString("GROUP_ID");
+        }
+        return group_id;
     }
 }

@@ -26,9 +26,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -49,17 +46,19 @@ public class GroupCreation4Activity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
-    private DatabaseReference mGroupRef;
     private UploadTask uploadTask;
 
     private Toolbar mainToolbar;
     private TextView signup_text, share_with_friends_txt;
     private LottieAnimationView done_animation, loading_animation;
-    private ImageView whatsapp_share, email_share, /*sms_share,*/ etc_share;
+    private ImageView whatsapp_share, email_share, etc_share;
     private EditText group_code_edittext;
     private boolean back_pressed_locked;
     private ConstraintLayout mLayout;
     private CustomSnackbar mSnackbar;
+    private Group group;
+    private String group_UID;
+    DataAccess dataAccess = new DataAccess();
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -78,33 +77,25 @@ public class GroupCreation4Activity extends AppCompatActivity {
         }
     }
 
-    private void pushGroupToDatabase(byte[] compressed_bitmap, final String filename,
-                                     final Long days_num, final Long shifts_per_day,
-                                     final Long employees_per_shift, final String starting_hour, final Long shift_length, final String admin_UID,
-                                     final String group_name, final String group_UID) {
-        mStorageRef = mStorage.getReference().child("group_pics/" + filename + ".png");
-        final DataAccess dataAccess = new DataAccess();
-
-        final Group group = new Group(admin_UID, group_name, 0L, days_num, shifts_per_day,
-                employees_per_shift, starting_hour, shift_length, "none");
+    private void pushGroupToDatabase(byte[] compressed_bitmap) {
+        String adminUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        group.setAdmin(adminUid);
+        group_UID = dataAccess.addGroup(group);
 
         if (compressed_bitmap == null) {
             // No image upload
             handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
 
-            dataAccess.updateGroup(group_UID, group);
-
             MediaPlayer success_sound = MediaPlayer.create(getBaseContext(), R.raw.success);
             success_sound.start();
         } else {
+            mStorageRef = mStorage.getReference().child("group_pics/" + group_UID + ".png");
             uploadTask = mStorageRef.putBytes(compressed_bitmap);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
                     handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                    dataAccess.updateGroup(group_UID, group);
-
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -187,24 +178,14 @@ public class GroupCreation4Activity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         done_animation.setSpeed(0.5f);
         // ------------------------- Firebase instances --------------------------------------------
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mGroupRef = database.getReference().child(("Groups"));
-        // -----------------------------------------------------------------------------------------
-        String group_UID = mGroupRef.push().getKey();
-        String group_name = extras.getString("GROUP_NAME");
-        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
-        String admin_UID = currentUser.getUid();
-        Long days_num = extras.getLong("DAYS_NUM");
-        Long shifts_per_day = extras.getLong("SHIFTS_PER_DAY");
-        Long employees_per_shift = extras.getLong("EMPLOYEES_PER_SHIFT");
-        final String starting_hour = extras.getString("STARTING_HOUR");
-        Long shift_length = extras.getLong("SHIFT_LEN");
+        // ------------------------------ Group upload ---------------------------------------------
+        group = getIntent().getExtras().getParcelable("GROUP");
 
-        pushGroupToDatabase(group_pic_array, group_UID, days_num, shifts_per_day, employees_per_shift, starting_hour, shift_length, admin_UID, group_name, group_UID);
-        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group_name));
+        byte[] group_pic_array = extras.getByteArray("GROUP_PICTURE");
+
+        pushGroupToDatabase(group_pic_array);
+        signup_text.setText(String.format(res.getString(R.string.group_create_succeed), group.getGroup_name()));
         group_code_edittext.setText(group_UID);
         group_code_edittext.setInputType(InputType.TYPE_NULL);
         group_code_edittext.setOnClickListener(new View.OnClickListener() {
@@ -218,32 +199,35 @@ public class GroupCreation4Activity extends AppCompatActivity {
         });
 
         final String message_share_group_code = res.getString(R.string.message1_share_group_code) + " " +
-                group_name + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
+                group.getGroup_name() + " " + res.getString(R.string.message2_share_group_code) + "\n\n" + group_UID + "\n\n" +
                 res.getString(R.string.message3_share_group_code);
 
         // Whatsapp sharing
-        whatsapp_share.setOnClickListener(new View.OnClickListener() {
+        setWhatsappSharing(message_share_group_code);
+        // Email sharing
+        setEmailSharing(res, message_share_group_code);
+        // Other sharing
+        setOtherSharing(res, message_share_group_code);
+    }
+
+    private void setOtherSharing(final Resources res, final String message_share_group_code) {
+        etc_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
-                whatsapp_intent.setType("text/plain");
-                whatsapp_intent.setPackage("com.whatsapp");
-
-                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
-                try {
-                    startActivity(whatsapp_intent);
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(view.getContext(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
-                }
+                Intent etc_intent = new Intent(Intent.ACTION_SEND);
+                etc_intent.setType("text/html");
+                etc_intent.putExtra(Intent.EXTRA_EMAIL, "");
+                etc_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
+                etc_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
+                startActivity(Intent.createChooser(etc_intent, "Share"));
             }
         });
+    }
 
-        // Email sharing
+    private void setEmailSharing(final Resources res, final String message_share_group_code) {
         email_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 Intent email_intent = new Intent(Intent.ACTION_SENDTO);
 
                 email_intent.setData(Uri.parse("mailto:"));
@@ -256,21 +240,25 @@ public class GroupCreation4Activity extends AppCompatActivity {
                 } catch (ActivityNotFoundException e) {
                     // In case no email app is available
                     mSnackbar.show(GroupCreation4Activity.this, mLayout, getResources().getString(R.string.no_email_app), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
-
                 }
             }
         });
+    }
 
-        // Other sharing
-        etc_share.setOnClickListener(new View.OnClickListener() {
+    private void setWhatsappSharing(final String message_share_group_code) {
+        whatsapp_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent etc_intent = new Intent(Intent.ACTION_SEND);
-                etc_intent.setType("text/html");
-                etc_intent.putExtra(Intent.EXTRA_EMAIL, "");
-                etc_intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.email_subject_message_share_group_code));
-                etc_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
-                startActivity(Intent.createChooser(etc_intent, "Share"));
+                Intent whatsapp_intent = new Intent(Intent.ACTION_SEND);
+                whatsapp_intent.setType("text/plain");
+                whatsapp_intent.setPackage("com.whatsapp");
+
+                whatsapp_intent.putExtra(Intent.EXTRA_TEXT, message_share_group_code);
+                try {
+                    startActivity(whatsapp_intent);
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(view.getContext(), "Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -1,4 +1,5 @@
 package com.technion.shiftlyapp.shiftly.groupsList;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.groupCreation.GroupCreation1Activity;
 import com.technion.shiftlyapp.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -55,9 +55,7 @@ public class GroupsIManageFragment extends Fragment {
     private TooltipView manage_tooltip;
     private TooltipView delete_group_tooltip;
     private FloatingActionButton create_group_fab;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-    private DatabaseReference databaseRef;
+    private DataAccess dataAccess;
 
     private void handleLoadingState(int state) {
         switch (state) {
@@ -134,8 +132,8 @@ public class GroupsIManageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_groups_i_manage, container, false);
         activity = (GroupListsActivity) getActivity();
         context = getContext();
-        mAuth = FirebaseAuth.getInstance();
-        databaseRef = FirebaseDatabase.getInstance().getReference();
+
+        dataAccess = new DataAccess();
 
         // Getting views loaded with findViewById
         mRecyclerView = (RecyclerView) view.findViewById(R.id.groups_i_manage);
@@ -209,7 +207,7 @@ public class GroupsIManageFragment extends Fragment {
         return view;
     }
 
-    public void presentEditDeleteDialog(final int position) {
+    private void presentEditDeleteDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
         builder.setMessage(R.string.edit_delete_group_dialog);
         builder.setCancelable(true);
@@ -218,39 +216,18 @@ public class GroupsIManageFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 // Get group details to present in the initial form
                 String group_id = groupsIds.get(position);
-                databaseRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(group_id);
-                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                dataAccess.getGroup(group_id, new DataAccess.DataAccessCallback<Group>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String groupsName = dataSnapshot.child("group_name").getValue().toString();
-                        String daysNum = dataSnapshot.child("days_num").getValue().toString();
-                        String employeesPerShift = dataSnapshot.child("employees_per_shift").getValue().toString();
-                        String shiftsPerDay = dataSnapshot.child("shifts_per_day").getValue().toString();
-                        String shiftLength = dataSnapshot.child("shift_length").getValue().toString();
-                        String startingTime = dataSnapshot.child("starting_time").getValue().toString();
-                        String iconUri = dataSnapshot.child("group_icon_url").getValue().toString();
-
+                    public void onCallBack(Group group) {
                         Intent group_edit_creation = new Intent(context,GroupCreation1Activity.class);
+
                         group_edit_creation.putExtra("GROUP_ACTION", "EDIT");
                         group_edit_creation.putExtra("GROUP_ID", groupsIds.get(position));
-
-                        group_edit_creation.putExtra("group_name", groupsName);
-                        group_edit_creation.putExtra("days_num", daysNum);
-                        group_edit_creation.putExtra("employees_per_shift", employeesPerShift);
-                        group_edit_creation.putExtra("shifts_per_day", shiftsPerDay);
-                        group_edit_creation.putExtra("shift_length", shiftLength);
-                        group_edit_creation.putExtra("starting_time", startingTime);
-                        group_edit_creation.putExtra("group_icon_uri", iconUri);
+                        group_edit_creation.putExtra("GROUP", group);
 
                         startActivity(group_edit_creation);
-
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
-
-
             }
         });
         builder.setNegativeButton(R.string.delete_group, new DialogInterface.OnClickListener() {
@@ -272,7 +249,6 @@ public class GroupsIManageFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-
             }
         });
         AlertDialog delete_dialog = builder.create();

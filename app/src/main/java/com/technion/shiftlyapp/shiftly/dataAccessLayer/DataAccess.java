@@ -113,8 +113,10 @@ public class DataAccess {
         });
     }
 
-    public void addGroup(Group group) {
-        updateGroup(databaseRef.child(groups).push().getKey(), group);
+    public String addGroup(Group group) {
+        String groupUid = databaseRef.child(groups).push().getKey();
+        updateGroup(groupUid, group);
+        return groupUid;
     }
 
     public interface FindFilter<T> {
