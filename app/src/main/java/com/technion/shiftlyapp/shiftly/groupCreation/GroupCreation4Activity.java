@@ -25,6 +25,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -77,6 +78,8 @@ public class GroupCreation4Activity extends AppCompatActivity {
     }
 
     private void pushGroupToDatabase(byte[] compressed_bitmap) {
+        String adminUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        group.setAdmin(adminUid);
         group_UID = dataAccess.addGroup(group);
 
         if (compressed_bitmap == null) {

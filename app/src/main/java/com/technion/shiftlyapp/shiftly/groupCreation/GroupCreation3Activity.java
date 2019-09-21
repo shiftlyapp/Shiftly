@@ -39,6 +39,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
     private UploadTask uploadTask;
     private Group group;
     private DataAccess dataAccess = new DataAccess();
+    private String group_action;
 
     @Override
     public void onBackPressed() {
@@ -62,7 +63,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
         Toolbar mainToolbar = findViewById(R.id.group_creation_toolbar_3);
         setSupportActionBar(mainToolbar);
 
-        final String group_action = getIntent().getExtras().getString("GROUP_ACTION");
+        group_action = getIntent().getExtras().getString("GROUP_ACTION");
         group = getIntent().getExtras().getParcelable("GROUP");
         String action_bar_title = getIntent().getExtras().getString("TITLE");
 
@@ -198,14 +199,19 @@ public class GroupCreation3Activity extends AppCompatActivity {
     private void uploadPic(final String group_id, byte[] group_pic_array) {
         mStorageRef = mStorage.getReference().child("group_pics/" + group_id + ".png");
         if (group_pic_array == null) {
-            // No image upload - update image url to be "none"
-            group.setGroup_icon_url("none");
+            if (group_action.equals("CREATE")) {
+                // No image upload - update image url to be "none"
+                group.setGroup_icon_url("none");
+                dataAccess.updateGroup(group_id, group);
+            }
         } else {
             uploadTask = mStorageRef.putBytes(group_pic_array);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
+                    group.setGroup_icon_url("none");
+                    dataAccess.updateGroup(group_id, group);
                     mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.edit_pic_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -215,6 +221,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             group.setGroup_icon_url(uri.toString());
+                            dataAccess.updateGroup(group_id, group);
                         }
                     });
                 }

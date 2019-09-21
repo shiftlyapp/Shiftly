@@ -25,8 +25,10 @@ public class Group implements Parcelable {
     private ArrayList<String> schedule; // UUID's: at the i'th position works shift i
 
     public Group() {
+        this.members_count = 0L;
+        this.members = new HashMap<>();
         this.options = new HashMap<>();
-        this.schedule= new ArrayList<>();
+        this.schedule = new ArrayList<>();
     }
 
     public Group(String admin, String group_name, Long members_count,

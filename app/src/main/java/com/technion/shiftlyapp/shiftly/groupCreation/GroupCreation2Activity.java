@@ -111,8 +111,9 @@ public class GroupCreation2Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         circleImageView = findViewById(R.id.group_image);
+
         // handle uploading group image in case of editing
-        String url = getIntent().getExtras().getString("group_icon_uri");
+        String url = group.getGroup_icon_url();
         if (url != null && !url.equals("none")) {
             Picasso.get().load(url).noFade().placeholder(R.drawable.group).into(circleImageView);
         }
