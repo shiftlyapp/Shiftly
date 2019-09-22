@@ -112,7 +112,7 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance();
 
-        Button apply_button = findViewById(R.id.continue_button);
+        Button apply_button = findViewById(R.id.continue_button_group_creation_3);
         apply_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

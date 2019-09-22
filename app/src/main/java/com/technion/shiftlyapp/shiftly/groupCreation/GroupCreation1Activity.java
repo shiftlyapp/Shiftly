@@ -92,8 +92,8 @@ public class GroupCreation1Activity extends AppCompatActivity {
             group = getIntent().getExtras().getParcelable("GROUP");
 
             // Remove current schedule and options
-            group.setOptions(new HashMap<>());
-            group.setSchedule(new ArrayList<>());
+            group.setOptions(new HashMap<String, String>());
+            group.setSchedule(new ArrayList<String>());
         }
     }
 
