@@ -72,6 +72,7 @@ public class GroupCreation1Activity extends AppCompatActivity {
                     String group_name = group_name_edittext.getText().toString();
 
                     group.setGroup_name(group_name);
+                    group.setGroup_icon_url("none");
 
                     group_creation_2_intent.putExtra("GROUP", group);
                     group_creation_2_intent.putExtra("GROUP_ACTION", group_action);
