@@ -198,20 +198,12 @@ public class GroupCreation3Activity extends AppCompatActivity {
 
     private void uploadPic(final String group_id, byte[] group_pic_array) {
         mStorageRef = mStorage.getReference().child("group_pics/" + group_id + ".png");
-        if (group_pic_array == null) {
-            if (group_action.equals("CREATE")) {
-                // No image upload - update image url to be "none"
-                group.setGroup_icon_url("none");
-                dataAccess.updateGroup(group_id, group);
-            }
-        } else {
+        if (group_pic_array != null) {
             uploadTask = mStorageRef.putBytes(group_pic_array);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Image upload failed
-                    group.setGroup_icon_url("none");
-                    dataAccess.updateGroup(group_id, group);
                     mSnackbar.show(GroupCreation3Activity.this, mLayout, getResources().getString(R.string.edit_pic_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
