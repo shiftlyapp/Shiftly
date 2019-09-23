@@ -19,7 +19,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.User;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.miscellaneous.AboutActivity;
 import com.technion.shiftlyapp.shiftly.userUpdate.UserUpdateActivity;
@@ -60,16 +60,16 @@ public class GroupListsActivity extends AppCompatActivity {
 
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
-    private GoogleSignInAccount mGoogleSignInAccount;
     private TabLayout mTabLayout;
     private Toolbar mToolbar;
     private ViewPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private String fullName;
-    private DatabaseReference databaseRef;
     private Boolean groupsIManageExist;
     private CustomSnackbar mSnackbar;
     private ConstraintLayout mLayout;
+
+    private DataAccess dataAccess = new DataAccess();
 
     public String getFullName() {
         return fullName;
@@ -115,7 +115,6 @@ public class GroupListsActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        String userDisplayName = currentUser.getDisplayName();
         mToolbar = (Toolbar) findViewById(R.id.group_list_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,25 +123,7 @@ public class GroupListsActivity extends AppCompatActivity {
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         mLayout = (ConstraintLayout) findViewById(R.id.group_lists);
 
-        if (userDisplayName==null || userDisplayName.isEmpty()) {
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
-            db.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String firstname = dataSnapshot.child("firstname").getValue(String.class);
-                    String lastname = dataSnapshot.child("lastname").getValue(String.class);
-                    fullName = firstname + " " + lastname;
-                    mToolbar.setSubtitle(fullName);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        } else {
-            fullName = currentUser.getDisplayName();
-            mToolbar.setSubtitle(fullName);
-        }
+        setToolbarSubtitile();
 
         del_group = (ImageView) findViewById(R.id.del_group);
         final DrawerLayout mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -170,6 +151,17 @@ public class GroupListsActivity extends AppCompatActivity {
         setupTabIcons(mPagerAdapter);
 
         // Drawer layout
+        setDrawerLayout();
+
+        if (getIntent().getExtras() == null ||
+                getIntent().getExtras().getInt("FRAGMENT_TO_LOAD") == Constants.GROUPS_I_BELONG_FRAGMENT) {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
+        } else {
+            mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
+        }
+    }
+
+    private void setDrawerLayout() {
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -189,47 +181,61 @@ public class GroupListsActivity extends AppCompatActivity {
                                 break;
                             }
                             case R.id.drawer_signout_button: {
-                                AlertDialog.Builder signoutDialogBuilder = new AlertDialog.Builder(navigationView.getContext(), R.style.CustomAlertDialog);
-                                signoutDialogBuilder.setMessage(Constants.SIGNOUT_MESSAGE);
-                                signoutDialogBuilder.setCancelable(true);
-                                signoutDialogBuilder.setPositiveButton(
-                                        Constants.YES,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                                mAuth.signOut(); // Firebase Sign-out
-                                                mGoogleSignInClient.signOut()
-                                                        .addOnCompleteListener(GroupListsActivity.this, new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                gotoLogin();
-                                                            }
-                                                        });
-                                                LoginManager.getInstance().logOut();
-                                                gotoLogin();
-                                            }
-                                        });
-                                signoutDialogBuilder.setNegativeButton(
-                                        Constants.NO,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                AlertDialog signoutDialog = signoutDialogBuilder.create();
-                                signoutDialog.show();
+                                presentSignoutDialog(navigationView);
                                 break;
                             }
                         }
                         return true;
                     }
                 });
-        if (getIntent().getExtras() == null ||
-                getIntent().getExtras().getInt("FRAGMENT_TO_LOAD") == Constants.GROUPS_I_BELONG_FRAGMENT) {
-            mViewPager.setCurrentItem(Constants.GROUPS_I_BELONG_FRAGMENT);
+    }
+
+    private void setToolbarSubtitile() {
+        String userDisplayName = currentUser.getDisplayName();
+        if (userDisplayName==null || userDisplayName.isEmpty()) {
+            dataAccess.getUser(currentUser.getUid(), new DataAccess.DataAccessCallback<User>() {
+                @Override
+                public void onCallBack(User user) {
+                    fullName = String.format("%s %s", user.getFirstname(), user.getLastname());
+                    mToolbar.setSubtitle(fullName);
+                }
+            });
         } else {
-            mViewPager.setCurrentItem(Constants.GROUPS_I_MANAGE_FRAGMENT);
+            fullName = currentUser.getDisplayName();
+            mToolbar.setSubtitle(fullName);
         }
+    }
+
+    private void presentSignoutDialog(NavigationView navigationView) {
+        AlertDialog.Builder signoutDialogBuilder = new AlertDialog.Builder(navigationView.getContext(), R.style.CustomAlertDialog);
+        signoutDialogBuilder.setMessage(Constants.SIGNOUT_MESSAGE);
+        signoutDialogBuilder.setCancelable(true);
+        signoutDialogBuilder.setPositiveButton(
+                Constants.YES,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        mAuth.signOut(); // Firebase Sign-out
+                        mGoogleSignInClient.signOut()
+                                .addOnCompleteListener(GroupListsActivity.this, new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        gotoLogin();
+                                    }
+                                });
+                        LoginManager.getInstance().logOut();
+                        gotoLogin();
+                    }
+                });
+        signoutDialogBuilder.setNegativeButton(
+                Constants.NO,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog signoutDialog = signoutDialogBuilder.create();
+        signoutDialog.show();
     }
 
     public void presentDeleteUserDialog() {
@@ -340,21 +346,18 @@ public class GroupListsActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                }
+                                public void onCancelled(@NonNull DatabaseError databaseError) { }
                             });
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
                     });
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
