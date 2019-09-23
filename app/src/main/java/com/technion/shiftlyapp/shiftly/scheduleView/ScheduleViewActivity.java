@@ -54,7 +54,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ScheduleViewActivity extends AppCompatActivity implements ShareActionProvider.OnShareTargetSelectedListener{
 
@@ -455,24 +454,17 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                         generateSchedule();
                     }
                 });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                builder.setNegativeButton(R.string.no, (dialog, which) -> dialog.cancel());
                 AlertDialog generate_schedule_dialog = builder.create();
                 generate_schedule_dialog.show();
             }
         });
 
-        editScheduleFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ScheduleEditActivity.class);
-                intent.putExtra("GROUP_ID", group_id);
-                startActivity(intent);
-            }
+        editScheduleFab.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), ScheduleEditActivity.class);
+            intent.putExtra("GROUP_ID", group_id);
+            finish();
+            startActivity(intent);
         });
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -481,51 +473,40 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
 
     // Toolbar menu items
     private void setToolbarMenuItems(Toolbar schedule_view_toolbar) {
-        schedule_view_toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(final MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.copy_to_clipboard_item:
-                        copyGroupIDToClipboard();
-                        break;
-                    case R.id.share_item:
-                        if (currentFragmentName.equals("agenda")) {
-                            RecyclerView agendaView = findViewById(R.id.users_shifts);
-                            if (agendaView.getChildCount() > 0) {
-                                Bitmap scheduleAgendaBitMap = getBitmapFromView(agendaView);
-                                sendImage(scheduleAgendaBitMap);
-                            } else {
-                                Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
-                            }
+        schedule_view_toolbar.setOnMenuItemClickListener(item -> {
+            switch(item.getItemId()) {
+                case R.id.copy_to_clipboard_item:
+                    copyGroupIDToClipboard();
+                    break;
+                case R.id.share_item:
+                    if (currentFragmentName.equals("agenda")) {
+                        RecyclerView agendaView = findViewById(R.id.users_shifts);
+                        if (agendaView.getChildCount() > 0) {
+                            Bitmap scheduleAgendaBitMap = getBitmapFromView(agendaView);
+                            sendImage(scheduleAgendaBitMap);
                         } else {
-                            // call share methods
-                            fetchSchedule(new FetchSchedulecallback() {
-                                @Override
-                                public void onCallBack(boolean isSuccessful) {
-                                    if (isSuccessful) {
-                                        // Clear the old share table
-                                        scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
-                                        scheduleTable.removeAllViewsInLayout();
-                                        createWeeklyScheduleTableLayout();
-
-                                        scheduleTable.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                            @Override
-                                            public void onLayoutChange(View v, int left, int top, int right,
-                                                                       int bottom, int oldLeft, int oldTop,
-                                                                       int oldRight, int oldBottom) {
-                                                Bitmap scheduleBitMap = getBitmapFromView(scheduleTable);
-                                                sendImage(scheduleBitMap);
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+                            Toast.makeText(ScheduleViewActivity.this, R.string.no_schedule_available, Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        // call share methods
+                        fetchSchedule(isSuccessful -> {
+                            if (isSuccessful) {
+                                // Clear the old share table
+                                scheduleTable = (TableLayout) findViewById(R.id.schedule_table);
+                                scheduleTable.removeAllViewsInLayout();
+                                createWeeklyScheduleTableLayout();
 
-                        break;
-                }
-                return true;
+                                scheduleTable.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                                    Bitmap scheduleBitMap = getBitmapFromView(scheduleTable);
+                                    sendImage(scheduleBitMap);
+                                });
+                            }
+                        });
+                    }
+
+                    break;
             }
+            return true;
         });
     }
 

@@ -154,47 +154,41 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
 
         // Saving the changed schedule and uploading it to the DB
         Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Push schedule to DB
+        saveButton.setOnClickListener(view -> {
+            // Push schedule to DB
 
-                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> schedule_map = new HashMap<>();
-                        int i = 0;
-                        for (String updated_employee_name : employees_names) {
-                            schedule_map.put(Integer.toString(i), getEmployeeIdByName(updated_employee_name));
-                            i++;
-                        }
-                        Map<String, Object> schedule_map_of_db = new HashMap<>();
-                        schedule_map_of_db.put("schedule", schedule_map);
-
-                        databaseRef.updateChildren(schedule_map_of_db);
-
-                        Toast.makeText(ScheduleEditActivity.this, R.string.schedule_updated_text, Toast.LENGTH_LONG).show();
+            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> schedule_map = new HashMap<>();
+                    int i = 0;
+                    for (String updated_employee_name : employees_names) {
+                        schedule_map.put(Integer.toString(i), getEmployeeIdByName(updated_employee_name));
+                        i++;
                     }
+                    Map<String, Object> schedule_map_of_db = new HashMap<>();
+                    schedule_map_of_db.put("schedule", schedule_map);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    databaseRef.updateChildren(schedule_map_of_db);
 
-                    }
-                });
-                // Going back to thw schedule view
-                finish();
-            }
+                    Toast.makeText(ScheduleEditActivity.this, R.string.schedule_updated_text, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            finish();
+
         });
 
         // Canceling the changed schedule and discarding the changes
         Button cancelButton = findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Cancel action
-                finish();
+        cancelButton.setOnClickListener(view -> {
+            // Cancel action
+            finish();
 
-            }
         });
 
     }
