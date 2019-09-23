@@ -2,16 +2,11 @@ package com.technion.shiftlyapp.shiftly.scheduleView;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
 
 import java.util.ArrayList;
@@ -21,18 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 public class Scheduler {
-
     private String groupId;
     private WeekView mWeekView;
     private List<WeekViewEvent> events;
-    private Long numOfShifts;
     private List<String> employeeNamesList;
-    private Long numOfEmployeesPerShifts;
-    private int initHour;
-    private Long duration;
     private Map<String, Integer> employeeColors;
     private int steps = 0;
     private Context context;
+    private DataAccess dataAccess = new DataAccess();
+    private Group group;
 
     private int[] mColors;
 
@@ -59,12 +51,13 @@ public class Scheduler {
         this.mColors = mColors;
         this.events = new ArrayList<>();
         this.context = context;
+        this.group = new Group();
 
         Calendar cal = Calendar.getInstance();
         int current_year = cal.get(Calendar.YEAR);
         int current_month = cal.get(Calendar.MONTH);
         // Creating the events only once for the current week upon loading
-        pullDatabaseData(current_year, current_month);
+        getEmployeeNamesAndColors(current_year, current_month);
 
         MonthLoader.MonthChangeListener listener = new MonthLoader.MonthChangeListener() {
             @Override
@@ -81,31 +74,20 @@ public class Scheduler {
         this.mWeekView.setMonthChangeListener(listener);
     }
 
-    private void pullDatabaseData(final int newYear, final int newMonth) {
+    private void getEmployeeNamesAndColors(final int newYear, final int newMonth) {
         // Pull the ids of the scheduled employees from DB
-        DatabaseReference mGroupDatabase = FirebaseDatabase.getInstance()
-                .getReference("Groups").child(groupId); // a reference the the group
-
-        mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        dataAccess.getGroup(groupId, new DataAccess.DataAccessCallback<Group>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Load the weekly schedule parameters
-                numOfShifts = (Long) dataSnapshot.child("shifts_per_day").getValue();
-                numOfEmployeesPerShifts = (Long) dataSnapshot.child("employees_per_shift").getValue();
-                initHour = Integer.parseInt(dataSnapshot.child("starting_time").getValue().toString());
-                duration = ((Long) dataSnapshot.child("shift_length").getValue());
-                // Load the ids of the employees from the schedule
+            public void onCallBack(Group g) {
+                group = new Group(g);
                 employeeNamesList = new ArrayList<>();
                 employeeColors = new HashMap<>();
-                int x = 0;
-                for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
-                    String employeeId = current_employee.getValue(String.class);
-                    String employeeName = (employeeId.equals(Constants.NA)) ? Constants.NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
+                int i = 0;
+                for (String employeeId : group.getSchedule()) {
+                    String employeeName = (employeeId.equals(Constants.NA)) ?
+                            Constants.NA : group.getMembers().get(employeeId);
                     employeeNamesList.add(employeeName);
-                    employeeColors.put(employeeName, mColors[x++ % mColors.length]);
+                    employeeColors.put(employeeName, mColors[i++ % mColors.length]);
                 }
                 getEvents(newYear, newMonth);
             }
@@ -114,19 +96,19 @@ public class Scheduler {
 
     private void getEvents(int newYear, int newMonth) {
         // Initialize the parameters required for the calendar
-        int init_hour = initHour;
+        int init_hour = Integer.parseInt(group.getStarting_time());
         int count = 0;
-        int duration_time = duration.intValue();
+        int duration_time = group.getShift_length().intValue();
         int currHour = init_hour;
         int currDay = 0;
 
         for (String employeeName : employeeNamesList) {
             // Check if we maxed out on the employees in one shift
-            if (count % numOfEmployeesPerShifts.intValue() == 0) {
+            if (count % group.getEmployees_per_shift().intValue() == 0) {
                 currHour += duration_time;
             }
             // Check if we maxed out on the employees in one day
-            if (count % numOfShifts.intValue() == 0) {
+            if (count % group.getShifts_per_day().intValue() == 0) {
                 currHour = init_hour;
                 currDay++;
             }
@@ -165,6 +147,7 @@ public class Scheduler {
     }
 
     private boolean eventMatches(WeekViewEvent event, int year, int month) {
-        return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month) || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month);
+        return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month)
+                || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month);
     }
 }
