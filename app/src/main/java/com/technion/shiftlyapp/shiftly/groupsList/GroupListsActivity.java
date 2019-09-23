@@ -28,15 +28,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.dataTypes.User;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.miscellaneous.AboutActivity;
@@ -45,6 +41,8 @@ import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GroupListsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -65,7 +63,6 @@ public class GroupListsActivity extends AppCompatActivity {
     private ViewPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private String fullName;
-    private Boolean groupsIManageExist;
     private CustomSnackbar mSnackbar;
     private ConstraintLayout mLayout;
 
@@ -119,7 +116,6 @@ public class GroupListsActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        groupsIManageExist = false;
         mSnackbar = new CustomSnackbar(CustomSnackbar.SNACKBAR_DEFAULT_TEXT_SIZE);
         mLayout = (ConstraintLayout) findViewById(R.id.group_lists);
 
@@ -163,31 +159,27 @@ public class GroupListsActivity extends AppCompatActivity {
 
     private void setDrawerLayout() {
         final NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.drawer_about_button: {
-                                gotoAbout();
-                                break;
-                            }
-                            case R.id.drawer_edit_user_button: {
-                                gotoUserUpdate();
-                                break;
-                            }
-                            case R.id.drawer_delete_user_button: {
-                                presentDeleteUserDialog();
-                                break;
-                            }
-                            case R.id.drawer_signout_button: {
-                                presentSignoutDialog(navigationView);
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener((MenuItem menuItem) -> {
+            switch (menuItem.getItemId()) {
+                case R.id.drawer_about_button: {
+                    gotoAbout();
+                    break;
+                }
+                case R.id.drawer_edit_user_button: {
+                    gotoUserUpdate();
+                    break;
+                }
+                case R.id.drawer_delete_user_button: {
+                    presentDeleteUserDialog();
+                    break;
+                }
+                case R.id.drawer_signout_button: {
+                    presentSignoutDialog(navigationView);
+                    break;
+                }
+            }
+            return true;
+        });
     }
 
     private void setToolbarSubtitile() {
@@ -260,105 +252,65 @@ public class GroupListsActivity extends AppCompatActivity {
     }
 
     public void deleteUser() {
-        groupsIManageExist = false;
-
-        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        final ArrayList<String> groupsUserIsMemberOf = new ArrayList<>();
-
+        String currUid = currentUser.getUid();
         // Check if the user still manages one or more groups.
-        final DatabaseReference groupsRef = FirebaseDatabase.getInstance().getReference("Groups");
-        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot groupToCheckAdmin : dataSnapshot.getChildren()) {
-                    String admin = String.valueOf(groupToCheckAdmin.child("admin").getValue());
-                    if (admin.equals(currentUser.getUid())) {
-                        groupsIManageExist = true;
-                        break;
-                    }
-                }
-                // If yes - present a message saying "you have to delete all of the groups you manage first"
-                if (groupsIManageExist) {
-                    mSnackbar.show(GroupListsActivity.this, mLayout, getResources().getString(R.string.user_deletion_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                // Else
-                } else {
-                    usersRef.child(currentUser.getUid()).child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot groupMemberOf : dataSnapshot.getChildren()) {
-                                String group = String.valueOf(groupMemberOf.getValue());
-                                // Save the groups that the user is a member of
-                                groupsUserIsMemberOf.add(group);
-                            }
+        dataAccess.findGroupsBy((group -> group.getAdmin().equals(currUid)),
+                new DataAccess.DataAccessCallback<HashMap<String, Group>>() {
+                    @Override
+                    public void onCallBack(HashMap<String, Group> groupsByAdmin) {
+                        // If yes - present a message saying "you have to delete all of the groups you manage first"
+                        if (groupsByAdmin.size() > 0) {
+                            mSnackbar.show(GroupListsActivity.this, mLayout, GroupListsActivity.this.getResources().getString(R.string.user_deletion_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                            // Else proceed
+                        } else {
+                            // Iterate over the user's groups and remove him from them
+                            dataAccess.findGroupsBy((Group group) -> group.getMembers().containsKey(currUid),
+                                    (HashMap<String, Group> groupsUserBelongsTo) -> {
+                                        HashMap<String, Group> updatedGroups = new HashMap<>();
+                                        for (Map.Entry<String, Group> groupEntry : groupsUserBelongsTo.entrySet()) {
+                                            Group currentGroup = groupEntry.getValue();
 
-                            // Delete the user from her/his groups
-                            groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                // For each group - delete the member from the members section
-                                    // And reduce members count by one
-                                    for (DataSnapshot group : dataSnapshot.getChildren()) {
-                                        if (groupsUserIsMemberOf.contains(group.getKey())) {
-                                            final Long old_members_count_num = (Long)dataSnapshot.child(group.getKey()).child("members_count").getValue();
-                                            final Long new_members_count_num = (Long)Long.valueOf(old_members_count_num) - 1;
+                                            // Reduce members count by one
+                                            currentGroup.setMembers_count(currentGroup.getMembers_count() - 1);
 
-                                            // Delete member
-                                            DataAccess dataAccess = new DataAccess();
-                                            dataAccess.removeUser(currentUser.getUid());
-                                            // Reduce members_count of group by 1
-                                            groupsRef.child(group.getKey()).child("members_count").setValue(new_members_count_num);
+                                            // Remove user from group members
+                                            Map<String, String> updatedMembers = currentGroup.getMembers();
+                                            updatedGroups.remove(currUid);
+                                            currentGroup.setMembers(updatedMembers);
 
-                                            // Remove the user from options & schedule in the group
-                                            if(group.child("options").exists()) {
-                                                group.child("options").child(currentUser.getUid()).getRef().removeValue();
-                                            }
-                                            if(group.child("schedule").exists()) {
-                                                int i=0;
-                                                for(DataSnapshot current_shift : group.child("schedule").getChildren()) {
-                                                    String currentEmployeeId = current_shift.getValue(String.class);
-                                                    if(currentEmployeeId.equals(currentUser.getUid())) {
-                                                        group.child("schedule").getRef().child(String.valueOf(i)).setValue(Constants.NA);
-                                                    }
-                                                    i++;
+                                            // Remove the user from options
+                                            HashMap<String, String> updatedOptions = currentGroup.getOptions();
+                                            updatedOptions.remove(currUid);
+                                            currentGroup.setOptions(updatedOptions);
+
+                                            // Remove the user from schedule
+                                            ArrayList<String> updatedSchedule = currentGroup.getSchedule();
+                                            for (int i = 0; i < updatedSchedule.size(); i++) {
+                                                if (updatedSchedule.get(i).equals(currUid)) {
+                                                    updatedSchedule.set(i, Constants.NA);
                                                 }
                                             }
-
+                                            updatedGroups.put(groupEntry.getKey(), currentGroup);
                                         }
-                                    }
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    });
+                            // Delete member from Database
+                            DataAccess dataAccess = new DataAccess();
+                            dataAccess.removeUser(currUid);
 
-                                    user.delete()
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
+                            // Delete member from auth
+                            FirebaseAuth.getInstance().getCurrentUser().delete();
 
-                                                }
-                                            });
-                                    // Go back to the login activity
-                                    AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                                    if (accessToken != null) {
-                                        LoginManager.getInstance().logOut();
-                                    } else {
-                                        mAuth.signOut();
-                                    }
-                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                    usersRef.child(currentUser.getUid()).removeValue();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) { }
-                            });
+                            // Go back to the login activity
+                            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                            if (accessToken != null) {
+                                LoginManager.getInstance().logOut();
+                            } else {
+                                mAuth.signOut();
+                            }
+                            GroupListsActivity.this.startActivity(new Intent(GroupListsActivity.this.getApplicationContext(), LoginActivity.class));
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
+                    }
+                });
     }
 
     public void gotoAbout() {
