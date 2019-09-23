@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 // A class that represents a group in the app.
 // This group syncs with the firebase database
@@ -13,7 +12,7 @@ public class Group implements Parcelable {
 
     private String admin;
     private String group_name;
-    private Map<String, String> members;
+    private HashMap<String, String> members;
     private Long members_count;
     private Long days_num;
     private Long shifts_per_day;
@@ -25,10 +24,10 @@ public class Group implements Parcelable {
     private ArrayList<String> schedule; // UUID's: at the i'th position works shift i
 
     public Group() {
-        this.members_count = 0L;
-        this.members = new HashMap<>();
-        this.options = new HashMap<>();
-        this.schedule = new ArrayList<>();
+        members_count = 0L;
+        members = new HashMap<>();
+        options = new HashMap<>();
+        schedule = new ArrayList<>();
     }
 
     public Group(String admin, String group_name, Long members_count,
@@ -59,8 +58,8 @@ public class Group implements Parcelable {
         this.shift_length = g.shift_length;
         this.group_icon_url = g.group_icon_url;
 
-        this.members = new HashMap<>(g.members);
-        this.options = new HashMap<>(g.options);
+        this.members = cloneMap(g.members);
+        this.options = cloneMap(g.options);
         this.schedule = cloneList(g.schedule);
     }
 
@@ -99,10 +98,10 @@ public class Group implements Parcelable {
         this.group_name = group_name;
     }
 
-    public Map<String, String> getMembers() {
+    public HashMap<String, String> getMembers() {
         return members;
     }
-    public void setMembers(Map<String, String> members) {
+    public void setMembers(HashMap<String, String> members) {
         this.members = members;
     }
 

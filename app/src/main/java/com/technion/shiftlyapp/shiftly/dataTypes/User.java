@@ -1,7 +1,6 @@
 package com.technion.shiftlyapp.shiftly.dataTypes;
 
 import java.util.ArrayList;
-import java.util.List;
 
 // A class that represents a user in the app
 // This group syncs with the firebase database
@@ -15,6 +14,7 @@ public class User {
     private ArrayList<String> groups;
 
     public User() {
+        groups = new ArrayList<>();
     }
 
     // C'tor that is used for a new user creation
@@ -62,9 +62,15 @@ public class User {
     public Long getGroups_count() {
         return groups_count;
     }
+    public void setGroups_count(Long gc) {
+        groups_count = gc;
+    }
 
-    public List<String> getGroups() {
+    public ArrayList<String> getGroups() {
         return groups;
+    }
+    public void setGroups(ArrayList<String> gr) {
+        this.groups = gr;
     }
 
 }
