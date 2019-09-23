@@ -47,7 +47,7 @@ public class GroupCreation4Test {
 
 
     @Test
-    public void group_code_starts_with_dash() {
+    public void group_code_contains_dash() {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
