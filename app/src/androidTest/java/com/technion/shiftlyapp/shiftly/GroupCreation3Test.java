@@ -34,7 +34,7 @@ public class GroupCreation3Test {
             Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
             Intent i = new Intent(targetContext, GroupCreation3Activity.class);
             i.putExtra("GROUP_ACTION", "CREATE");
-            Group group = new Group("admin", "group_name", 0L, 1L, 1L, 1L, "8", 1L, null);
+            Group group = new Group("admin", "group_name", 0L, 1L, 1L, 1L, "8", 1L, "none");
             i.putExtra("GROUP", group);
             return i;
         }
