@@ -3,13 +3,6 @@ package com.technion.shiftlyapp.shiftly.groupsList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +10,18 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.firebase.database.DataSnapshot;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
 import com.technion.shiftlyapp.shiftly.groupJoin.JoinGroupActivity;
 import com.technion.shiftlyapp.shiftly.scheduleView.ScheduleViewActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -86,70 +84,23 @@ public class GroupsIBelongFragment extends Fragment {
     }
 
     private void loadRecyclerViewData() {
-        // ---------------------------- Check current User groups_count ----------------------------
-        DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Users/" + activity.getCurrentUser().getUid());
-        mUserDatabase.child("groups_count").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Long groups_count = dataSnapshot.getValue(Long.class);
-                if (groups_count != null && groups_count.equals(0L)) {
-                    handleLoadingState(Constants.EMPTY_GROUPS_COUNT);
-                } else {
-                    handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
-                }
-                mAdapter.notifyDataSetChanged();
+        DataAccess dataAccess = new DataAccess();
+        dataAccess.getUser(activity.getCurrentUser().getUid(), user -> {
+            if (user.getGroups_count() != null && user.getGroups_count().equals(0L)) {
+                handleLoadingState(Constants.EMPTY_GROUPS_COUNT);
+            } else {
+                handleLoadingState(Constants.HIDE_LOADING_ANIMATION);
             }
+            mAdapter.notifyDataSetChanged();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                showError(databaseError);
-            }
-        });
-        // ---------------------------- Load user groups IDs into a List ---------------------------
-        final DatabaseReference mGroupDatabase = FirebaseDatabase.getInstance().getReference("Groups");
-        mUserDatabase.child("groups").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                showError(databaseError);
-            }
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // -------------------------- Save groups IDs of current user ----------------------
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    groupsIds.add(postSnapshot.getValue(String.class));
-                }
-                mGroupDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        showError(databaseError);
-                    }
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (final String current_group_id : groupsIds) {
-                            DatabaseReference innerRef = mGroupDatabase.child(current_group_id);
-                            innerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    String group_name = dataSnapshot.child("group_name").getValue(String.class);
-                                    Long members_count = dataSnapshot.child("members_count").getValue(Long.class);
-                                    String group_icon_url = dataSnapshot.child("group_icon_url").getValue(String.class);
-                                    groupsIconsUrls.add(group_icon_url);
-                                    groupsName.add(group_name);
-                                    groupsMembersCount.add(members_count);
-                                    mAdapter.notifyDataSetChanged();
-                                    mRecyclerView.scheduleLayoutAnimation();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    showError(databaseError);
-                                }
-                            });
-                        }
-                    }
+            for (String groupId : user.getGroups()) {
+                groupsIds.add(groupId);
+                dataAccess.getGroup(groupId, group -> {
+                    groupsIconsUrls.add(group.getGroup_icon_url());
+                    groupsName.add(group.getGroup_name());
+                    groupsMembersCount.add(group.getMembers_count());
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.scheduleLayoutAnimation();
                 });
             }
         });
