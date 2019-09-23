@@ -147,7 +147,7 @@ public class UserUpdateActivity extends AppCompatActivity {
 
         for (Map.Entry<String, Group> currentGroup : groupsUserIsMemberOf) {
             Group updatedGroup = new Group(currentGroup.getValue());
-            Map<String, String> updatedMembers = currentGroup.getValue().getMembers();
+            HashMap<String, String> updatedMembers = currentGroup.getValue().getMembers();
             updatedMembers.put(user_id, String.format("%s %s", newfirstname, newlastname));
             updatedGroup.setMembers(updatedMembers);
             dataAccess.updateGroup(currentGroup.getKey(), updatedGroup);

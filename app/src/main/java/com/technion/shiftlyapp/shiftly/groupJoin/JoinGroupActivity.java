@@ -6,24 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
+import com.technion.shiftlyapp.shiftly.dataTypes.User;
 import com.technion.shiftlyapp.shiftly.entry.LoginActivity;
 import com.technion.shiftlyapp.shiftly.groupsList.GroupListsActivity;
 import com.technion.shiftlyapp.shiftly.utility.Constants;
@@ -32,7 +32,6 @@ import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static com.basgeekball.awesomevalidation.ValidationStyle.BASIC;
@@ -46,7 +45,7 @@ public class JoinGroupActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference databaseRef;
     private List<String> groupsIds;
-    private Map<String, String> currentGroupMembers;
+    private HashMap<String, String> currentGroupMembers;
     private Long currGroupMembersCount;
     private CustomSnackbar mSnackbar;
     private ConstraintLayout mLayout;
@@ -126,103 +125,64 @@ public class JoinGroupActivity extends AppCompatActivity {
                         // Add the user to the group and close this intent
                         final String group_code = join_group_edittext.getText().toString();
 
-                        // Check if group exists in the db
-                        databaseRef.child("Groups").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    String group = postSnapshot.getKey();
-                                    if (group.equals(group_code)) {
-                                        if (postSnapshot.child("admin").getValue().toString().equals(mAuth.getUid())) {
-                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_user_is_admin), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                                            return;
-                                        } else {
-                                            for (DataSnapshot postSnap : dataSnapshot.child(group_code).child("members").getChildren()) {
-                                                currentGroupMembers.put(postSnap.getKey(), postSnap.getValue().toString());
-                                            }
-                                            currGroupMembersCount = dataSnapshot.child(group_code).child("members_count").getValue(Long.class);
-                                            group_exists_in_db = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                // Group does not exist in DB
-                                if (!group_exists_in_db) {
-                                    mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_doesnt_exist), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-
+                        DataAccess dataAccess = new DataAccess();
+                        dataAccess.getGroup(group_code, group -> {
+                            // Group does not exist
+                            if (group == null) {
+                                mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_doesnt_exist), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                            } else {
+                                // User is the manager of the group
+                                if (group.getAdmin().equals(mAuth.getUid())) {
+                                    mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_user_is_admin), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                                 } else {
+                                    Group updatedGroup = new Group(group);
+                                    currentGroupMembers = new HashMap<>(group.getMembers());
+                                    currGroupMembersCount = group.getMembers_count();
+
+                                    // Update user
                                     final String user_id = currentUser.getUid();
-                                    final DatabaseReference userGroupsRef = databaseRef.child("Users").child(user_id);
-                                    userGroupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    dataAccess.getUser(user_id, user -> {
+                                        if (user.getGroups().contains(group_code)) {
+                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_already_exist), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                                        } else {
+                                            User updatedUser = new User(user);
 
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            // Add this group to the user's groups list in the DB
+                                            ArrayList<String> updatedGroups = user.getGroups();
+                                            updatedGroups.add(group_code);
+                                            updatedUser.setGroups(updatedGroups);
 
-                                            // Get all of the groups that the user is a member of
-                                            for (DataSnapshot postSnapshot : dataSnapshot.child("groups").getChildren()) {
-                                                groupsIds.add(postSnapshot.getValue(String.class));
-                                            }
+                                            // Increment the user's groups number by one
+                                            updatedUser.setGroups_count(user.getGroups_count() + 1L);
 
-                                            // Check if the user is already a member of this group
-                                            if (groupsIds.contains(group_code)) {
-                                                mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.err_group_already_exist), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                                            } else {
+                                            // Update members of a group
+                                            String fullName = getIntent().getExtras().getString("FULL_NAME");
+                                            currentGroupMembers.put(currentUser.getUid(), fullName);
+                                            updatedGroup.setMembers(currentGroupMembers);
 
-                                                // Add this group to the user's groups list in the DB
-                                                Map<String, Object> groups_map = new HashMap<>();
-                                                groupsIds.add(group_code);
-                                                groups_map.put("groups", groupsIds);
-                                                userGroupsRef.updateChildren(groups_map);
+                                            // Update members count of a group
+                                            updatedGroup.setMembers_count(group.getMembers_count() + 1L);
 
-                                                // Increment the user's groups number by one
-                                                Map<String, Object> groups_count_map = new HashMap<>();
-                                                Long groups_count = dataSnapshot.child("groups_count").getValue(Long.class);
-                                                Long newGroupsCountValue = (groups_count + 1L);
-                                                groups_count_map.put("groups_count", newGroupsCountValue);
-                                                userGroupsRef.updateChildren(groups_count_map);
+                                            // Update user and group
+                                            dataAccess.updateGroup(group_code, updatedGroup);
+                                            dataAccess.updateUser(currentUser.getUid(), updatedUser);
 
-                                                // Update members of a group
-                                                final DatabaseReference groupMembersRef = databaseRef.child("Groups").child(group_code);
-
-                                                Map<String, Object> groupMembers = new HashMap<>();
-                                                String fullName = getIntent().getExtras().getString("FULL_NAME");
-                                                currentGroupMembers.put(currentUser.getUid(), fullName);
-                                                groupMembers.put("members", currentGroupMembers);
-                                                groupMembersRef.updateChildren(groupMembers);
-
-                                                // Update members count of a group
-                                                Map<String, Object> groupMembersCount = new HashMap<>();
-                                                Long newMembersCountValue = (currGroupMembersCount + 1L);
-                                                groupMembersCount.put("members_count", newMembersCountValue);
-                                                groupMembersRef.updateChildren(groupMembersCount);
-
-
-                                                mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.group_join_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
-                                                Handler handler = new Handler();
-                                                handler.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        // Switch back to the GROUPS_I_BELONG fragment after a short delay
-                                                        Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                        intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_BELONG_FRAGMENT);
-                                                        startActivity(intent);
-                                                    }
-                                                }, Constants.REDIRECTION_DELAY);
-                                            }
+                                            mSnackbar.show(JoinGroupActivity.this, mLayout, getResources().getString(R.string.group_join_success), CustomSnackbar.SNACKBAR_SUCCESS, Snackbar.LENGTH_SHORT);
+                                            Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    // Switch back to the GROUPS_I_BELONG fragment after a short delay
+                                                    Intent intent = new Intent(getApplicationContext(), GroupListsActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    intent.putExtra("FRAGMENT_TO_LOAD", Constants.GROUPS_I_BELONG_FRAGMENT);
+                                                    startActivity(intent);
+                                                }
+                                            }, Constants.REDIRECTION_DELAY);
                                         }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            mSnackbar.show(JoinGroupActivity.this, mLayout, databaseError.getMessage(), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
-                                        }
                                     });
                                 }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                mSnackbar.show(JoinGroupActivity.this, mLayout, databaseError.getMessage(), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                             }
                         });
 
