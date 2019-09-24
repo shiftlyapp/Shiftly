@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -448,12 +447,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                 AlertDialog.Builder builder = new AlertDialog.Builder(ScheduleViewActivity.this, R.style.CustomAlertDialog);
                 builder.setMessage(R.string.generate_schedule_dialog);
                 builder.setCancelable(true);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        generateSchedule();
-                    }
-                });
+                builder.setPositiveButton(R.string.yes, (dialog, which) -> generateSchedule());
                 builder.setNegativeButton(R.string.no, (dialog, which) -> dialog.cancel());
                 AlertDialog generate_schedule_dialog = builder.create();
                 generate_schedule_dialog.show();
@@ -590,7 +584,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     schedule_map.put("schedule", generated_schedule);
                     databaseRef.updateChildren(schedule_map);
 
-                    if (generated_schedule.contains(R.string.not_available)) {
+                    if (generated_schedule.contains(Constants.NA)) {
                         // Present a snackbar of "A full schedule could not be created" (warning)
                         mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                     } else {

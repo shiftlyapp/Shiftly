@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 import com.venmo.view.TooltipView;
 
@@ -220,10 +221,10 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
                     employeeIdByName.put((String) postSnapshot.getValue(), postSnapshot.getKey());
                 }
                 // Adding the N/A as a member in the group
-                String NA = getResources().getString(R.string.not_available);
+                String NA = Constants.NA;
                 employeeIdByName.put(NA, NA);
 
-                employees_list.add(getResources().getString(R.string.not_available));
+                employees_list.add(Constants.NA);
 
                 firebaseCallback.populateShiftsLists(employees_per_shift, days_num, shift_length,
                         shifts_per_day, starting_time);

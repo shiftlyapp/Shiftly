@@ -1,6 +1,6 @@
 package com.technion.shiftlyapp.shiftly.algorithm;
 
-import com.technion.shiftlyapp.shiftly.R;
+import com.technion.shiftlyapp.shiftly.utility.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +132,7 @@ public class ShiftSchedulingSolver {
         }
 
         // In case no employee can work this shift - add "N/A" to the schedule and continue
-        String NA = String.valueOf(R.string.not_available);
+        String NA = Constants.NA;
         this.final_schedule.add(NA);
         Boolean res = solve_aux(starting_sched_from_shift + 1, shuffled_options);
         return res;
