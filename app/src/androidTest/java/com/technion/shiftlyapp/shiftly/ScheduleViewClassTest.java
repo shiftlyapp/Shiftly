@@ -23,7 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class ScheduleViewTest {
+public class ScheduleViewClassTest {
 
     @Rule
     public ActivityTestRule<ScheduleViewActivity> mActivityRule = new ActivityTestRule<ScheduleViewActivity>(ScheduleViewActivity.class) {

@@ -156,7 +156,7 @@ public class AgendaViewFragment extends Fragment {
     }
 
     private String num_to_end_time(int shift, Long shift_length, String starting_time) {
-        return String.valueOf(Long.valueOf(starting_time) + (shift_length * shift) + shift_length);
+        return String.valueOf((Long.valueOf(starting_time) + (shift_length * shift) + shift_length) % 24L);
     }
 
     private String num_to_day(int day) {

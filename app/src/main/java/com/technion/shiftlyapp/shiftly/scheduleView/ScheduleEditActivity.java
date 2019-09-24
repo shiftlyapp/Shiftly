@@ -96,12 +96,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
         employeeIdByName = new HashMap<>();
 
         // interface method that gets called when a spinner is changed in the adapter
-        onSpinnerChangeListener = new OnSpinnerChangeListener() {
-            @Override
-            public void onSpinnerChange(int index, String employee_name) {
-                employees_names.set(index, employee_name);
-            }
-        };
+        onSpinnerChangeListener = (index, employee_name) -> employees_names.set(index, employee_name);
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference firebaseRootRef = firebaseDatabase.getReference();
@@ -117,40 +112,37 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
         });
 
         // Future change: call the agenda's readData method
-        readData(new FirebaseCallback() {
-            @Override
-            public void populateShiftsLists(Long employees_per_shift, Long days_num, Long shift_length, Long shifts_per_day, String starting_time) {
-                for (int day = 0; day < days_num; day++) {
+        readData((employees_per_shift, days_num, shift_length, shifts_per_day, starting_time) -> {
+            for (int day = 0; day < days_num; day++) {
 
-                    for (int shift = 0; shift < shifts_per_day; shift++) {
+                for (int shift = 0; shift < shifts_per_day; shift++) {
 
-                        for (int sub_shift = 0; sub_shift < employees_per_shift; sub_shift++) {
+                    for (int sub_shift = 0; sub_shift < employees_per_shift; sub_shift++) {
 
-                            Long current_shift_num = day * (shifts_per_day * employees_per_shift) + (shift * employees_per_shift) + sub_shift;
+                        Long current_shift_num = day * (shifts_per_day * employees_per_shift) + (shift * employees_per_shift) + sub_shift;
 
-                            if (shift_nums.contains(current_shift_num)) {
-                                days.add(num_to_day(day));
-                                start_times.add(num_to_start_time(shift, shift_length, starting_time));
-                                end_times.add(num_to_end_time(shift, shift_length, starting_time));
-                            }
+                        if (shift_nums.contains(current_shift_num)) {
+                            days.add(num_to_day(day));
+                            start_times.add(num_to_start_time(shift, shift_length, starting_time));
+                            end_times.add(num_to_end_time(shift, shift_length, starting_time));
                         }
                     }
                 }
-
-                if (days.isEmpty()) {
-                    days.add(context.getResources().getString(R.string.agenda_no_shifts_message));
-                    start_times.add("");
-                    end_times.add("");
-                    employees_list.add("");
-                }
-
-                mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list, onSpinnerChangeListener);
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-                mAdapter.notifyDataSetChanged();
-
-
             }
+
+            if (days.isEmpty()) {
+                days.add(context.getResources().getString(R.string.agenda_no_shifts_message));
+                start_times.add("");
+                end_times.add("");
+                employees_list.add("");
+            }
+
+            mAdapter = new ShiftsListAdapter(context, days, start_times, end_times, employees_names, employees_list, onSpinnerChangeListener);
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter.notifyDataSetChanged();
+
+
         });
 
         // Saving the changed schedule and uploading it to the DB
@@ -221,8 +213,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
                     employeeIdByName.put((String) postSnapshot.getValue(), postSnapshot.getKey());
                 }
                 // Adding the N/A as a member in the group
-                String NA = Constants.NA;
-                employeeIdByName.put(NA, NA);
+                employeeIdByName.put(Constants.NA, Constants.NA);
 
                 employees_list.add(Constants.NA);
 
@@ -261,7 +252,7 @@ public class ScheduleEditActivity extends AppCompatActivity implements OnSpinner
     }
 
     private String num_to_end_time(int shift, Long shift_length, String starting_time) {
-        return String.valueOf(Long.valueOf(starting_time) + (shift_length * shift) + shift_length);
+        return String.valueOf((Long.valueOf(starting_time) + (shift_length * shift) + shift_length) % 24L);
     }
 
     private String num_to_day(int day) {

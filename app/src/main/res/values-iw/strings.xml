@@ -14,6 +14,8 @@
     <string name="yes">כן</string>
     <string name="no">לא</string>
 
+    <string name="not_available">לא זמין</string>
+
     <!-- Signup and Login -->
     <string name="signup_img">הרשמה</string>
     <string name="email_edittext_hint">כתובת דוא״ל</string>

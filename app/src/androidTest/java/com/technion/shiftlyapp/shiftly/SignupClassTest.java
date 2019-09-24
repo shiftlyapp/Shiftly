@@ -19,8 +19,11 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class SignupClassTest {
@@ -42,25 +45,66 @@ public class SignupClassTest {
             builder.append(ALPHA.charAt(character));
         }
         String email = builder.toString() + "@gmail.com";
-        MethodsForTests.wait_to_load();
 
         Espresso.onView(ViewMatchers.withId(R.id.signup_firstname_edittext)).perform(ViewActions.replaceText("Chris"), closeSoftKeyboard());
-        MethodsForTests.wait_to_load();
         Espresso.onView(ViewMatchers.withId(R.id.signup_lastname_edittext)).perform(ViewActions.replaceText("Gardener"), closeSoftKeyboard());
-        MethodsForTests.wait_to_load();
         Espresso.onView(ViewMatchers.withId(R.id.signup_email_edittext)).perform(ViewActions.replaceText(email), closeSoftKeyboard());
-        MethodsForTests.wait_to_load();
         Espresso.onView(ViewMatchers.withId(R.id.signup_password_edittext)).perform(ViewActions.replaceText("12345678"), closeSoftKeyboard());
-        MethodsForTests.wait_to_load();
         Espresso.onView(ViewMatchers.withId(R.id.signup_confirm_password_edittext)).perform(ViewActions.replaceText("12345678"), closeSoftKeyboard());
         MethodsForTests.wait_to_load();
 
         Espresso.onView(ViewMatchers.withId(R.id.signup_button)).perform(scrollTo(), ViewActions.click());
         MethodsForTests.wait_to_load();
-
         intended(hasComponent(GroupListsActivity.class.getName()));
         MethodsForTests.wait_to_load();
 
+    }
+
+    @Test
+    public void signup_header_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_header)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_pic_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_pic)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_firstname_edittext_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_firstname_edittext)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_lastname_edittext_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_lastname_edittext)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_email_edittext_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_email_edittext)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_password_edittext_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_password_edittext)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void signup_confirm_password_edittext_displays_correctly() {
+        Espresso.onView(withId(R.id.signup_confirm_password_edittext)).check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    public void signup_button_displays_correctly() {
+        Espresso.onView(ViewMatchers.withId(R.id.signup_button)).perform(scrollTo(), ViewActions.closeSoftKeyboard());
+        Espresso.onView(withId(R.id.signup_button)).check(matches(isDisplayed()));
     }
 
     @AfterClass

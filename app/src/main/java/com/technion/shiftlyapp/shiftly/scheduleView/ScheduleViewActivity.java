@@ -41,9 +41,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.technion.shiftlyapp.shiftly.R;
 import com.technion.shiftlyapp.shiftly.algorithm.ShiftSchedulingSolver;
+import com.technion.shiftlyapp.shiftly.dataAccessLayer.DataAccess;
+import com.technion.shiftlyapp.shiftly.dataTypes.Group;
 import com.technion.shiftlyapp.shiftly.options.OptionsListActivity;
 import com.technion.shiftlyapp.shiftly.optionsView.OptionsViewActivity;
-import com.technion.shiftlyapp.shiftly.utility.Constants;
 import com.technion.shiftlyapp.shiftly.utility.CustomSnackbar;
 import com.venmo.view.TooltipView;
 
@@ -70,6 +71,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
     private int days_num;
     private int workers_in_shift;
     private String group_name;
+    private String NA;
 
     // Weekly schedule table creation
     TableLayout scheduleTable;
@@ -139,7 +141,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     employeeNamesList = new ArrayList<>();
                     for (DataSnapshot current_employee : dataSnapshot.child("schedule").getChildren()) {
                         String employeeId = current_employee.getValue(String.class);
-                        String employeeName = (employeeId.equals(Constants.NA)) ? Constants.NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
+                        String employeeName = (employeeId.equals(NA)) ? NA : dataSnapshot.child("members").child(employeeId).getValue().toString();
 
                         employeeNamesList.add(employeeName);
                     }
@@ -321,7 +323,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         navigationView = findViewById(R.id.bottom_navigation_schedule);
 
         group_id = getIntent().getExtras().getString("GROUP_ID");
-
+        NA = getResources().getString(R.string.not_available);
         setToolbarMenuItems(schedule_view_toolbar);
 
         mLayout = (ConstraintLayout) findViewById(R.id.container_schedule_view);
@@ -455,10 +457,21 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
         });
 
         editScheduleFab.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), ScheduleEditActivity.class);
-            intent.putExtra("GROUP_ID", group_id);
-            finish();
-            startActivity(intent);
+            DataAccess dataAccess = new DataAccess();
+            dataAccess.getGroup(group_id, new DataAccess.DataAccessCallback<Group>() {
+                @Override
+                public void onCallBack(Group group) {
+                    if (group.getSchedule() == null || group.getSchedule().size() == 0) {
+                        mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.no_schedule_available), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
+                    } else {
+                        Intent intent = new Intent(view.getContext(), ScheduleEditActivity.class);
+                        intent.putExtra("GROUP_ID", group_id);
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+            });
+
         });
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -584,7 +597,7 @@ public class ScheduleViewActivity extends AppCompatActivity implements ShareActi
                     schedule_map.put("schedule", generated_schedule);
                     databaseRef.updateChildren(schedule_map);
 
-                    if (generated_schedule.contains(Constants.NA)) {
+                    if (generated_schedule.contains(NA)) {
                         // Present a snackbar of "A full schedule could not be created" (warning)
                         mSnackbar.show(ScheduleViewActivity.this, mLayout, getResources().getString(R.string.schedule_generation_error), CustomSnackbar.SNACKBAR_ERROR, Snackbar.LENGTH_SHORT);
                     } else {
